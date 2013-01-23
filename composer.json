@@ -1,0 +1,30 @@
+{
+	"name": "arachne/verifier",
+	"type": "library",
+	"keywords": [ "nette", "arachne" ],
+	"homepage": "http://enumag.cz",
+	"license": [ "BSD-3-Clause", "GPL-2.0", "GPL-3.0" ],
+	"authors": [
+		{
+			"name": "Jáchym Toušek",
+			"homepage": "http://m33.cz/",
+			"email": "enumag@gmail.com"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"nette/nette": "@dev"
+	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "1.*",
+		"arachne/coding-style": "@dev",
+		"codeception/codeception": "@stable",
+		"mockery/mockery": "@dev"
+	},
+	"autoload": {
+		"psr-0": {
+			"Arachne\\Verifier": ""
+		},
+		"classmap": [ "src/Arachne/Verifier/exceptions.php" ]
+	}
+}
