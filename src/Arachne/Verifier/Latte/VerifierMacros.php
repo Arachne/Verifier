@@ -8,13 +8,12 @@
  * For the full copyright and license information, please view the file license.md that was distributed with this source code.
  */
 
-namespace Arachne\Verifier;
+namespace Arachne\Verifier\Latte;
 
 class VerifierMacros extends \Nette\Latte\Macros\MacroSet
 {
 
 	/**
-	 * @static
 	 * @param \Nette\Latte\Compiler $compiler
 	 */
 	public static function install(\Nette\Latte\Compiler $compiler)

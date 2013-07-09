@@ -13,7 +13,7 @@ namespace Arachne\Verifier\DI;
 /**
  * @author Jáchym Toušek
  */
-class VerifierExtension extends \Nette\Config\CompilerExtension
+class VerifierExtension extends \Nette\DI\CompilerExtension
 {
 
 	public function loadConfiguration()
@@ -23,9 +23,12 @@ class VerifierExtension extends \Nette\Config\CompilerExtension
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier');
 
+		$builder->addDefinition($this->prefix('securityAnnotationHandler'))
+			->setClass('Arachne\Verifier\Security\SecurityAnnotationHandler');
+
 		if ($builder->hasDefinition('nette.latte')) {
 			$builder->getDefinition('nette.latte')
-				->addSetup('Arachne\Verifier\VerifierMacros::install(?->getCompiler())', [ '@self' ]);
+				->addSetup('Arachne\Verifier\Latte\VerifierMacros::install(?->getCompiler())', [ '@self' ]);
 		}
 	}
 

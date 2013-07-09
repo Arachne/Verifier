@@ -10,8 +10,6 @@
 
 namespace Arachne\Verifier;
 
-use Nette\Application\ForbiddenRequestException;
-
 /**
  * The exception that is thrown when a method call is invalid for the object's
  * current state, method has been invoked at an illegal or inappropriate time.
@@ -24,13 +22,5 @@ class InvalidStateException extends \RuntimeException
  * The exception that is thrown when an argument does not match with the expected value.
  */
 class InvalidArgumentException extends \InvalidArgumentException
-{
-}
-
-class FailedAuthenticationException extends ForbiddenRequestException
-{
-}
-
-class FailedAuthorizationException extends ForbiddenRequestException
 {
 }

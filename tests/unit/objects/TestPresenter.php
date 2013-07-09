@@ -11,14 +11,17 @@ class TestPresenter extends \Nette\Application\UI\Presenter
 	}
 
 	/**
-	 *
+	 * @Requirements({
+	 *		@InRole("admin")
+	 *		@Allowed("")
+	 * })
 	 */
 	public function actionAction()
 	{
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public function renderView()
 	{

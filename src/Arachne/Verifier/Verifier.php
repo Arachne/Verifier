@@ -19,55 +19,48 @@ class Verifier extends \Nette\Object
 	/** @var \Nette\Application\IPresenterFactory */
 	protected $presenterFactory;
 
-	/** @var \Nette\Security\User */
-	protected $user;
+	/** @var \Doctrine\Common\Annotations\Reader */
+	protected $reader;
+
+	/** @var \Nette\DI\Container */
+	protected $container;
 
 	/**
 	 * @param \Nette\Application\IPresenterFactory $presenterFactory
-	 * @param \Nette\Security\User $user
+	 * @param \Doctrine\Common\Annotations\Reader $reader
+	 * @param \Nette\DI\Container $container $container
 	 */
-	public function __construct(\Nette\Application\IPresenterFactory $presenterFactory, \Nette\Security\User $user)
+	public function __construct(\Nette\Application\IPresenterFactory $presenterFactory, \Doctrine\Common\Annotations\Reader $reader, \Nette\DI\Container $container)
 	{
 		$this->presenterFactory = $presenterFactory;
-		$this->user = $user;
+		$this->reader = $reader;
+		$this->container = $container;
 	}
 
 	/**
-	 * @param mixed[] $annotations
-	 * @throws FailedAuthenticationException
-	 * @throws FailedAuthorizationException
-	 * @throws InvalidStateException
+	 * @param \ReflectionClass|\ReflectionMethod $annotations
 	 */
-	public function checkAnnotations(array $annotations)
+	public function checkAnnotations(\Reflector $reflection)
 	{
-		// @LoggedIn
-		// TODO: @LoggedIn FALSE pro nepřihlášené
-		if (isset($annotations['LoggedIn']) && !$this->user->isLoggedIn()) {
-			throw new FailedAuthenticationException('User is not logged in.');
+		if ($reflection instanceof \ReflectionMethod)  {
+			$requirements = $this->reader->getMethodAnnotation($reflection, 'Arachne\Verifier\Requirements');
+		} elseif ($reflection instanceof \ReflectionClass) {
+			$requirements = $this->reader->getClassAnnotation($reflection, 'Arachne\Verifier\Requirements');
+		} else {
+			throw new InvalidArgumentException('Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.');
 		}
 
-		// @InRole <role>
-		$roles = isset($annotations['InRole']) ? $annotations['InRole'] : [];
-		foreach ($roles as $role) {
-			if (!$this->user->isInRole($role)) {
-				throw new FailedAuthorizationException("Required role '$role'.");
-			}
-		}
-
-		// @Allowed (<resource>, <privilege>)
-		$privileges = isset($annotations['Allowed']) ? $annotations['Allowed'] : [];
-		foreach ($privileges as $item) {
-			if (is_string($item)) {
-				$item = [ $item ];
-			}
-			$resource = isset($item[0]) ? $item[0] : \Nette\Security\IAuthorizator::ALL;
-			$privilege = isset($item[1]) ? $item[1] : \Nette\Security\IAuthorizator::ALL;
-
-			if (!$this->user->isAllowed($resource, $privilege)) {
-				if ($resource instanceof \Nette\Security\IResource) {
-					$resource = $resource->getResourceId();
+		static $handlers = [];
+		if ($requirements !== NULL) {
+			foreach ($requirements->rules as $rule) {
+				$class = $rule->getHandlerClass();
+				if (!isset($handlers[$class])) {
+					$handlers[$class] = $this->container->getByType($class);
+					if (!$handlers[$class] instanceof IAnnotationHandler) {
+						throw new InvalidStateException('Class \'' . get_class($handlers[$class]) . '\' does not implement \Arachne\Verifier\IAnnotationHandler interface.');
+					}
 				}
-				throw new FailedAuthorizationException("Required privilege '$resource / $privilege' is not allowed.");
+				$handlers[$class]->checkAnnotation($rule);
 			}
 		}
 	}
@@ -84,18 +77,18 @@ class Verifier extends \Nette\Object
 
 		try {
 			// Presenter requirements
-			$this->checkAnnotations($presenterReflection->getAnnotations());
+			$this->checkAnnotations($presenterReflection);
 
 			// Action requirements
 			$action = $parameters[\Nette\Application\UI\Presenter::ACTION_KEY];
 			$method = 'action' . $action;
-			$element = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
-			if (!$element) {
+			$reflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
+			if (!$reflection) {
 				$method = 'render' . $action;
-				$element = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
+				$reflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
 			}
-			if ($element) {
-				$this->checkAnnotations($element->getAnnotations());
+			if ($reflection) {
+				$this->checkAnnotations($reflection);
 			}
 
 			// Signal requirements
@@ -103,8 +96,8 @@ class Verifier extends \Nette\Object
 				$signal = $parameters[\Nette\Application\UI\Presenter::SIGNAL_KEY];
 				$method = 'handle' . ucfirst($signal);
 				if ($presenterReflection->hasCallableMethod($method)) {
-					$element = $presenterReflection->getMethod($method);
-					$this->checkAnnotations($element->getAnnotations());
+					$reflection = $presenterReflection->getMethod($method);
+					$this->checkAnnotations($reflection);
 				}
 			}
 
