@@ -13,7 +13,7 @@ namespace Arachne\Verifier\Application;
 /**
  * @author Jáchym Toušek
  */
-trait TVerificationPresenter
+trait TVerifierPresenter
 {
 
 	/** @var \Arachne\Verifier\Verifier */

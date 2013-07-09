@@ -1,7 +1,7 @@
 {
 	"name": "arachne/verifier",
 	"type": "library",
-	"keywords": [ "nette", "arachne" ],
+	"keywords": [ "nette", "arachne", "security" ],
 	"homepage": "http://enumag.cz",
 	"license": [ "BSD-3-Clause", "GPL-2.0", "GPL-3.0" ],
 	"authors": [
@@ -28,8 +28,7 @@
 	"autoload": {
 		"psr-0": {
 			"Arachne\\Verifier": ""
-		},
-		"classmap": [ "src/Arachne/Verifier/exceptions.php" ]
+		}
 	},
 	"repositories": [
 		{
