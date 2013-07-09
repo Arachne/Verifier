@@ -24,7 +24,7 @@ class Verifier extends \Nette\Object
 
 	/**
 	 * @param \Nette\Application\IPresenterFactory $presenterFactory
-	 * @param \Nette\Security\User $verifier
+	 * @param \Nette\Security\User $user
 	 */
 	public function __construct(\Nette\Application\IPresenterFactory $presenterFactory, \Nette\Security\User $user)
 	{
@@ -41,8 +41,9 @@ class Verifier extends \Nette\Object
 	public function checkAnnotations(array $annotations)
 	{
 		// @LoggedIn
+		// TODO: @LoggedIn FALSE pro nepřihlášené
 		if (isset($annotations['LoggedIn']) && !$this->user->isLoggedIn()) {
-			throw new FailedAuthenticationException("User isn't logged in.");
+			throw new FailedAuthenticationException('User is not logged in.');
 		}
 
 		// @InRole <role>

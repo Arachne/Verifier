@@ -19,20 +19,32 @@ trait TPresenter
 	/** @var \Arachne\Verifier\Verifier */
 	protected $verifier;
 
+	/** @var \Doctrine\Common\Annotations\Reader */
+	protected $annotationsReader;
+
 	/**
 	 * @param \Arachne\Verifier\Verifier $verifier
+	 * @param \Doctrine\Common\Annotations\Reader $reader
 	 */
-	public function injectVerifier(Verifier $verifier)
+	public function injectVerifier(Verifier $verifier, \Doctrine\Common\Annotations\Reader $reader)
 	{
 		$this->verifier = $verifier;
+		$this->annotationsReader = $reader;
 	}
 
 	/**
 	 * @param \Nette\Reflection\ClassType|\Nette\Reflection\Method $element
 	 */
-	public function checkRequirements($element)
+	public function checkRequirements($reflection)
 	{
-		$this->verifier->checkAnnotations($element->getAnnotations(), $this->params, $this->getName());
+		if ($reflection instanceof \ReflectionMethod)  {
+			$annotations = $this->annotationsReader->getMethodAnnotations($reflection);
+		} elseif ($reflection instanceof \ReflectionClass) {
+			$annotations = $this->annotationsReader->getClassAnnotations($reflection);
+		} else {
+			throw new InvalidArgumentException('Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.');
+		}
+		$this->verifier->checkAnnotations($annotations, $this->getParameters(), $this->getName());
 	}
 
 	/**

@@ -28,7 +28,6 @@ class VerifierMacros extends \Nette\Latte\Macros\MacroSet
 			}
 			return ' ?> href="<?php ' . $writer->write('echo %escape(%modify($_l->verifiedLink))') . ' ?>"<?php ';
 		});
-		$me->addMacro('hideEmpty', 'ob_start()', 'if (\Nette\Utils\Strings::match(ob_get_contents(), \'#^\s*+<(\w++)(?:\s++(?:\w|-)++(?:=(?:"[^"]++"|\w++))?+)*\s*+>\s*+</\1>\s*+$#\')): ob_end_clean(); else: ob_end_flush(); endif');
 	}
 
 }

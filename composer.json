@@ -13,18 +13,36 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"nette/nette": "@dev"
+		"nette/nette": "@dev",
+		"doctrine/annotations": "1.1",
+		"kdyby/doctrine-cache": "@dev",
+		"kdyby/annotations": "@dev"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "1.*",
 		"arachne/coding-style": "@dev",
 		"codeception/codeception": "@stable",
-		"mockery/mockery": "@dev"
+		"mockery/mockery": "@dev",
+		"arachne/nette-codeception-module": "@dev"
 	},
 	"autoload": {
 		"psr-0": {
 			"Arachne\\Verifier": ""
 		},
 		"classmap": [ "src/Arachne/Verifier/exceptions.php" ]
-	}
+	},
+	"repositories": [
+		{
+            "type": "composer",
+            "url": "http://packages.m33.cz"
+        },
+		{
+			"type": "vcs",
+			"url": "https://github.com/Kdyby/Annotations.git"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/Kdyby/DoctrineCache.git"
+		}
+	]
 }
