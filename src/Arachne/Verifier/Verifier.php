@@ -39,8 +39,10 @@ class Verifier extends \Nette\Object
 
 	/**
 	 * @param \ReflectionClass|\ReflectionMethod $annotations
+	 * @param string $presenter
+	 * @param array $parameters
 	 */
-	public function checkAnnotations(\Reflector $reflection)
+	public function checkAnnotations(\Reflector $reflection, $presenter, array $parameters)
 	{
 		if ($reflection instanceof \ReflectionMethod)  {
 			$requirements = $this->reader->getMethodAnnotation($reflection, 'Arachne\Verifier\Requirements');
@@ -60,7 +62,7 @@ class Verifier extends \Nette\Object
 						throw new InvalidStateException('Class \'' . get_class($handlers[$class]) . '\' does not implement \Arachne\Verifier\IAnnotationHandler interface.');
 					}
 				}
-				$handlers[$class]->checkAnnotation($rule);
+				$handlers[$class]->checkAnnotation($rule, $presenter, $parameters);
 			}
 		}
 	}
@@ -77,7 +79,7 @@ class Verifier extends \Nette\Object
 
 		try {
 			// Presenter requirements
-			$this->checkAnnotations($presenterReflection);
+			$this->checkAnnotations($presenterReflection, $presenter, $parameters);
 
 			// Action requirements
 			$action = $parameters[\Nette\Application\UI\Presenter::ACTION_KEY];
@@ -88,7 +90,7 @@ class Verifier extends \Nette\Object
 				$reflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
 			}
 			if ($reflection) {
-				$this->checkAnnotations($reflection);
+				$this->checkAnnotations($reflection, $presenter, $parameters);
 			}
 
 			// Signal requirements
@@ -97,7 +99,7 @@ class Verifier extends \Nette\Object
 				$method = 'handle' . ucfirst($signal);
 				if ($presenterReflection->hasCallableMethod($method)) {
 					$reflection = $presenterReflection->getMethod($method);
-					$this->checkAnnotations($reflection);
+					$this->checkAnnotations($reflection, $presenter, $parameters);
 				}
 			}
 
