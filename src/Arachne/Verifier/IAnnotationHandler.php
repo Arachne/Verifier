@@ -15,10 +15,9 @@ interface IAnnotationHandler
 
 	/**
 	 * @param \Arachne\Verifier\IRule $rule
-	 * @param string $presenter
-	 * @param array $parameters
+	 * @param \Nette\Application\Request $request
 	 * @throws \Nette\Application\ForbiddenRequestException
 	 */
-	public function checkAnnotation(IRule $rule, $presenter, array $parameters);
+	public function checkAnnotation(IRule $rule, \Nette\Application\Request $request);
 
 }

@@ -26,18 +26,19 @@ class SecurityAnnotationHandler extends \Nette\Object implements \Arachne\Verifi
 
 	/**
 	 * @param \Arachne\Verifier\IRule $rule
-	 * @param string $presenter
-	 * @param array $parameters
+	 * @param \Nette\Application\Request $request
 	 * @throws \Arachne\Verifier\Security\FailedAuthorizationException
 	 * @throws \Arachne\Verifier\Security\FailedAuthenticationException
 	 */
-	public function checkAnnotation(\Arachne\Verifier\IRule $rule, $presenter, array $parameters)
+	public function checkAnnotation(\Arachne\Verifier\IRule $rule, \Nette\Application\Request $request)
 	{
 		if ($rule instanceof Allowed) {
 			$resource = $rule->resource;
 			if (\Nette\Utils\Strings::startsWith($resource, '$')) {
+				$parameters = $request->getParameters();
 				$parameter = substr($resource, 1);
 				if ($parameter === 'this') {
+					$presenter = $request->getPresenterName ();
 					$resource = substr($presenter, strrpos(':' . $presenter, ':'));
 				} elseif (!isset($parameters[$parameter])) {
 					throw new \Arachne\Verifier\InvalidStateException("Missing parameter '$resource'.");
