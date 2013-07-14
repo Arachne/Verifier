@@ -38,7 +38,7 @@ class SecurityAnnotationHandler extends \Nette\Object implements \Arachne\Verifi
 				$parameters = $request->getParameters();
 				$parameter = substr($resource, 1);
 				if ($parameter === 'this') {
-					$presenter = $request->getPresenterName ();
+					$presenter = $request->getPresenterName();
 					$resource = substr($presenter, strrpos(':' . $presenter, ':'));
 				} elseif (!isset($parameters[$parameter])) {
 					throw new \Arachne\Verifier\InvalidStateException("Missing parameter '$resource'.");
