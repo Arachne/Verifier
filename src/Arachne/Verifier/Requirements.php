@@ -18,6 +18,6 @@ class Requirements extends \Nette\Object
 {
 
 	/** @var array<\Arachne\Verifier\IRule> */
-    public $rules;
+	public $rules;
 
 }

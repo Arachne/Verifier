@@ -40,10 +40,11 @@ class Verifier extends \Nette\Object
 	/**
 	 * @param \ReflectionClass|\ReflectionMethod $annotations
 	 * @param \Nette\Application\Request $request
+	 * @throws \Nette\Application\ForbiddenRequestException
 	 */
 	public function checkAnnotations(\Reflector $reflection, \Nette\Application\Request $request)
 	{
-		if ($reflection instanceof \ReflectionMethod)  {
+		if ($reflection instanceof \ReflectionMethod) {
 			$requirements = $this->reader->getMethodAnnotation($reflection, 'Arachne\Verifier\Requirements');
 		} elseif ($reflection instanceof \ReflectionClass) {
 			$requirements = $this->reader->getClassAnnotation($reflection, 'Arachne\Verifier\Requirements');

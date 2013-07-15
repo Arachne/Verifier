@@ -1,9 +1,16 @@
 <?php
 
-namespace Test;
+namespace Tests;
 
+use Arachne\Verifier\Requirements;
+
+/**
+ * @Requirements(@TestAnnotation)
+ */
 class TestPresenter extends \Nette\Application\UI\Presenter
 {
+
+	protected $property;
 
 	final public function __construct()
 	{
@@ -12,25 +19,11 @@ class TestPresenter extends \Nette\Application\UI\Presenter
 
 	/**
 	 * @Requirements({
-	 *		@InRole("admin")
-	 *		@Allowed("")
+	 *		@TestAnnotation,
+	 *		@TestAnnotation,
 	 * })
 	 */
 	public function actionAction()
-	{
-	}
-
-	/**
-	 *
-	 */
-	public function renderView()
-	{
-	}
-
-	/**
-	 *
-	 */
-	public function handleSignal()
 	{
 	}
 
