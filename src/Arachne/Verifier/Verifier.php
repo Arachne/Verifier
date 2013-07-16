@@ -26,15 +26,15 @@ class Verifier extends \Nette\Object
 	protected $container;
 
 	/**
-	 * @param \Nette\Application\IPresenterFactory $presenterFactory
 	 * @param \Doctrine\Common\Annotations\Reader $reader
 	 * @param \Nette\DI\Container $container $container
+	 * @param \Nette\Application\IPresenterFactory $presenterFactory
 	 */
-	public function __construct(\Nette\Application\IPresenterFactory $presenterFactory, \Doctrine\Common\Annotations\Reader $reader, \Nette\DI\Container $container)
+	public function __construct(\Doctrine\Common\Annotations\Reader $reader, \Nette\DI\Container $container, \Nette\Application\IPresenterFactory $presenterFactory)
 	{
-		$this->presenterFactory = $presenterFactory;
 		$this->reader = $reader;
 		$this->container = $container;
+		$this->presenterFactory = $presenterFactory;
 	}
 
 	/**

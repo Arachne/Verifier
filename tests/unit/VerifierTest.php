@@ -32,7 +32,7 @@ final class VerifierTest extends \Codeception\TestCase\Test
 				})
 				->getMock();
 
-		$this->verifier = new \Arachne\Verifier\Verifier($this->presenterFactory, $reader, $container);
+		$this->verifier = new \Arachne\Verifier\Verifier($reader, $container, $this->presenterFactory);
 	}
 
 	protected function _after()
