@@ -5,7 +5,6 @@
 
 
 use \Codeception\Maybe;
-use Codeception\Module\CodeHelper;
 
 /**
  * Inherited methods
@@ -19,7 +18,7 @@ use Codeception\Module\CodeHelper;
  * @method void lookForwardTo($role)
 */
 
-class CodeGuy extends \Codeception\AbstractGuy
+class NoGuy extends \Codeception\AbstractGuy
 {
     
 }
