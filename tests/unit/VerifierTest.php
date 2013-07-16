@@ -19,13 +19,9 @@ final class VerifierTest extends BaseTest
 	protected function _before()
 	{
 		parent::_before();
-
 		$this->presenterFactory = Mockery::mock('Nette\Application\IPresenterFactory');
-
 		$reader = new \Doctrine\Common\Annotations\AnnotationReader();
-
 		$this->container = Mockery::mock('Nette\DI\Container');
-
 		$this->verifier = new \Arachne\Verifier\Verifier($reader, $this->container, $this->presenterFactory);
 	}
 
@@ -33,7 +29,7 @@ final class VerifierTest extends BaseTest
 	 * @param \Nette\Application\Request $request
 	 * @param int $annotationCount
 	 */
-	private function setupContainer(\Nette\Application\Request $request, $annotationCount)
+	private function setupContainerMock(\Nette\Application\Request $request, $annotationCount)
 	{
 		$this->container
 				->shouldReceive('getByType')
@@ -57,7 +53,7 @@ final class VerifierTest extends BaseTest
 		$reflection = new \ReflectionClass('Tests\TestPresenter');
 		$request = new \Nette\Application\Request('', 'GET', []);
 
-		$this->setupContainer($request, 1);
+		$this->setupContainerMock($request, 1);
 
 		$this->assertNull($this->verifier->checkAnnotations($reflection, $request));
 	}
@@ -67,7 +63,7 @@ final class VerifierTest extends BaseTest
 		$reflection = new \ReflectionMethod('Tests\TestPresenter', 'actionAction');
 		$request = new \Nette\Application\Request('', 'GET', []);
 
-		$this->setupContainer($request, 2);
+		$this->setupContainerMock($request, 2);
 
 		$this->assertNull($this->verifier->checkAnnotations($reflection, $request));
 	}
