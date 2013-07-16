@@ -22,8 +22,7 @@
 		"squizlabs/php_codesniffer": "1.*",
 		"arachne/coding-style": "@dev",
 		"codeception/codeception": "@stable",
-		"mockery/mockery": "@dev",
-		"arachne/nette-codeception-module": "@dev"
+		"mockery/mockery": "@dev"
 	},
 	"autoload": {
 		"psr-0": {
