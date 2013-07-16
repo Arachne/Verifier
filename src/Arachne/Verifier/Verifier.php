@@ -44,7 +44,7 @@ class Verifier extends \Nette\Object
 	/**
 	 * @param \ReflectionClass|\ReflectionMethod $annotations
 	 * @param \Nette\Application\Request $request
-	 * @throws \Nette\Application\ForbiddenRequestException
+	 * @throws \Arachne\Verifier\ForbiddenRequestException
 	 */
 	public function checkAnnotations(\Reflector $reflection, \Nette\Application\Request $request)
 	{
@@ -106,7 +106,7 @@ class Verifier extends \Nette\Object
 				}
 			}
 
-		} catch (\Nette\Application\ForbiddenRequestException $e) {
+		} catch (ForbiddenRequestException $e) {
 			return FALSE;
 		}
 

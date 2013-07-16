@@ -10,14 +10,9 @@
 
 namespace Arachne\Verifier;
 
-interface IAnnotationHandler
+/**
+ * Descendants of this exception are to be thrown by annotation handlers.
+ */
+abstract class ForbiddenRequestException extends \Nette\Application\ForbiddenRequestException
 {
-
-	/**
-	 * @param \Arachne\Verifier\IRule $rule
-	 * @param \Nette\Application\Request $request
-	 * @throws \Arachne\Verifier\ForbiddenRequestException
-	 */
-	public function checkAnnotation(IRule $rule, \Nette\Application\Request $request);
-
 }
