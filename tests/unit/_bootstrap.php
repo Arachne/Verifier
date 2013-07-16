@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 $configurator = new Configurator();
 
 // Enable RobotLoader
-$configurator->setTempDirectory(__DIR__ . '/../temp');
+$configurator->setTempDirectory(__DIR__ . '/../_temp');
 $configurator->createRobotLoader()
 	->addDirectory(__DIR__)
 	->register();
