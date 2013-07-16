@@ -25,6 +25,9 @@ class Verifier extends \Nette\Object
 	/** @var \Nette\DI\Container */
 	protected $container;
 
+	/** @var array<\Arachne\Verifier\IAnnotationHandler> */
+	private $handlers;
+
 	/**
 	 * @param \Doctrine\Common\Annotations\Reader $reader
 	 * @param \Nette\DI\Container $container $container
@@ -35,6 +38,7 @@ class Verifier extends \Nette\Object
 		$this->reader = $reader;
 		$this->container = $container;
 		$this->presenterFactory = $presenterFactory;
+		$this->handlers = [];
 	}
 
 	/**
@@ -52,17 +56,16 @@ class Verifier extends \Nette\Object
 			throw new InvalidArgumentException('Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.');
 		}
 
-		static $handlers = [];
 		if ($requirements !== NULL) {
 			foreach ($requirements->rules as $rule) {
 				$class = $rule->getHandlerClass();
-				if (!isset($handlers[$class])) {
-					$handlers[$class] = $this->container->getByType($class);
-					if (!$handlers[$class] instanceof IAnnotationHandler) {
-						throw new InvalidStateException('Class \'' . get_class($handlers[$class]) . '\' does not implement \Arachne\Verifier\IAnnotationHandler interface.');
+				if (!isset($this->handlers[$class])) {
+					$this->handlers[$class] = $this->container->getByType($class);
+					if (!$this->handlers[$class] instanceof IAnnotationHandler) {
+						throw new InvalidStateException('Class \'' . get_class($this->handlers[$class]) . '\' does not implement \Arachne\Verifier\IAnnotationHandler interface.');
 					}
 				}
-				$handlers[$class]->checkAnnotation($rule, $request);
+				$this->handlers[$class]->checkAnnotation($rule, $request);
 			}
 		}
 	}
