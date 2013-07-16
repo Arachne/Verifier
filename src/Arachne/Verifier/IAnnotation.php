@@ -10,7 +10,7 @@
 
 namespace Arachne\Verifier;
 
-interface ICondition
+interface IAnnotation
 {
 
 	/**

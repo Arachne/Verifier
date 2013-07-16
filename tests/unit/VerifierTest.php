@@ -93,8 +93,8 @@ final class VerifierTest extends BaseTest
 
 	private function createAnnotationMatcher()
 	{
-		return Mockery::on(function ($condition) {
-			return $condition instanceof \Tests\TestAnnotation;
+		return Mockery::on(function ($annotation) {
+			return $annotation instanceof \Tests\TestAnnotation;
 		});
 	}
 
