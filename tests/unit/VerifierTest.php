@@ -19,41 +19,19 @@ final class VerifierTest extends BaseTest
 	protected function _before()
 	{
 		parent::_before();
-		$this->presenterFactory = Mockery::mock('Nette\Application\IPresenterFactory');
 		$reader = new \Doctrine\Common\Annotations\AnnotationReader();
 		$this->container = Mockery::mock('Nette\DI\Container');
+		$this->presenterFactory = Mockery::mock('Nette\Application\IPresenterFactory');
 		$this->verifier = new \Arachne\Verifier\Verifier($reader, $this->container, $this->presenterFactory);
-	}
-
-	/**
-	 * @param \Nette\Application\Request $request
-	 * @param int $annotationCount
-	 */
-	private function setupContainerMock(\Nette\Application\Request $request, $annotationCount)
-	{
-		$this->container
-				->shouldReceive('getByType')
-				->with('TestHandler')
-				->once()
-				->andReturnUsing(function () use ($request, $annotationCount) {
-					$ruleCheck = function ($rule) {
-						return $rule instanceof \Tests\TestAnnotation;
-					};
-					return Mockery::mock('Arachne\Verifier\IAnnotationHandler')
-							->shouldReceive('checkAnnotation')
-							->times($annotationCount)
-							->with(Mockery::on($ruleCheck), $request)
-							->andReturnNull()
-							->getMock();
-				});
 	}
 
 	public function testCheckAnnotationsOnClass()
 	{
 		$reflection = new \ReflectionClass('Tests\TestPresenter');
-		$request = new \Nette\Application\Request('', 'GET', []);
+		$request = new \Nette\Application\Request('Test', 'GET', []);
 
-		$this->setupContainerMock($request, 1);
+		$handler = $this->createHandlerMock($request, 1);
+		$this->setupContainerMock($handler);
 
 		$this->assertNull($this->verifier->checkAnnotations($reflection, $request));
 	}
@@ -61,9 +39,10 @@ final class VerifierTest extends BaseTest
 	public function testCheckAnnotationsOnMethod()
 	{
 		$reflection = new \ReflectionMethod('Tests\TestPresenter', 'actionAction');
-		$request = new \Nette\Application\Request('', 'GET', []);
+		$request = new \Nette\Application\Request('Test', 'GET', []);
 
-		$this->setupContainerMock($request, 2);
+		$handler = $this->createHandlerMock($request, 2);
+		$this->setupContainerMock($handler);
 
 		$this->assertNull($this->verifier->checkAnnotations($reflection, $request));
 	}
@@ -75,13 +54,83 @@ final class VerifierTest extends BaseTest
 	public function testCheckAnnotationsOnProperty()
 	{
 		$reflection = new \ReflectionProperty('Tests\TestPresenter', 'property');
-		$request = new \Nette\Application\Request('', 'GET', []);
+		$request = new \Nette\Application\Request('Test', 'GET', []);
+		$this->verifier->checkAnnotations($reflection, $request);
+	}
 
+	public function testIsLinkAvailableTrue()
+	{
+		$request = new \Nette\Application\Request('Test', 'GET', [
+			\Nette\Application\UI\Presenter::ACTION_KEY => 'action',
+			\Nette\Application\UI\Presenter::SIGNAL_KEY => 'signal',
+		]);
+
+		$handler = $this->createHandlerMock($request, 4);
+		$this->setupContainerMock($handler);
+		$this->setupPresenterFactoryMock();
+
+		$this->assertTrue($this->verifier->isLinkAvailable($request));
+	}
+
+	public function testIsLinkAvailableFalse()
+	{
+		$request = new \Nette\Application\Request('Test', 'GET', [
+			\Nette\Application\UI\Presenter::ACTION_KEY => 'view',
+		]);
+
+		$handler = Mockery::mock('Arachne\Verifier\IAnnotationHandler')
+				->shouldReceive('checkAnnotation')
+				->once()
+				->with($this->createAnnotationMatcher(), $request)
+				->andThrow('Tests\TestException')
+				->getMock();
+
+		$this->setupContainerMock($handler);
+		$this->setupPresenterFactoryMock();
+
+		$this->assertFalse($this->verifier->isLinkAvailable($request));
+	}
+
+	private function createAnnotationMatcher()
+	{
+		return Mockery::on(function ($condition) {
+			return $condition instanceof \Tests\TestAnnotation;
+		});
+	}
+
+	/**
+	 * @param \Nette\Application\Request $request
+	 * @param int $times
+	 */
+	private function createHandlerMock(\Nette\Application\Request $request, $times)
+	{
+		return Mockery::mock('Arachne\Verifier\IAnnotationHandler')
+				->shouldReceive('checkAnnotation')
+				->times($times)
+				->with($this->createAnnotationMatcher(), $request)
+				->andReturnNull()
+				->getMock();
+	}
+
+	/**
+	 * @param \Arachne\Verifier\IAnnotationHandler $handler
+	 */
+	private function setupContainerMock(\Arachne\Verifier\IAnnotationHandler $handler)
+	{
 		$this->container
 				->shouldReceive('getByType')
-				->never();
+				->with('TestHandler')
+				->once()
+				->andReturn($handler);
+	}
 
-		$this->verifier->checkAnnotations($reflection, $request);
+	private function setupPresenterFactoryMock()
+	{
+		$this->presenterFactory
+				->shouldReceive('getPresenterClass')
+				->with('Test')
+				->once()
+				->andReturn('Tests\TestPresenter');
 	}
 
 }

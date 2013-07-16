@@ -14,10 +14,10 @@ interface IAnnotationHandler
 {
 
 	/**
-	 * @param \Arachne\Verifier\IRule $rule
+	 * @param \Arachne\Verifier\ICondition $condition
 	 * @param \Nette\Application\Request $request
 	 * @throws \Arachne\Verifier\ForbiddenRequestException
 	 */
-	public function checkAnnotation(IRule $rule, \Nette\Application\Request $request);
+	public function checkAnnotation(ICondition $condition, \Nette\Application\Request $request);
 
 }

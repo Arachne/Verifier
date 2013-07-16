@@ -57,15 +57,15 @@ class Verifier extends \Nette\Object
 		}
 
 		if ($requirements !== NULL) {
-			foreach ($requirements->rules as $rule) {
-				$class = $rule->getHandlerClass();
+			foreach ($requirements->conditions as $condition) {
+				$class = $condition->getHandlerClass();
 				if (!isset($this->handlers[$class])) {
 					$this->handlers[$class] = $this->container->getByType($class);
 					if (!$this->handlers[$class] instanceof IAnnotationHandler) {
 						throw new InvalidStateException('Class \'' . get_class($this->handlers[$class]) . '\' does not implement \Arachne\Verifier\IAnnotationHandler interface.');
 					}
 				}
-				$this->handlers[$class]->checkAnnotation($rule, $request);
+				$this->handlers[$class]->checkAnnotation($condition, $request);
 			}
 		}
 	}

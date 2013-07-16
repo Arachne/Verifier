@@ -17,7 +17,7 @@ namespace Arachne\Verifier;
 class Requirements extends \Nette\Object
 {
 
-	/** @var array<\Arachne\Verifier\IRule> */
-	public $rules;
+	/** @var array<\Arachne\Verifier\ICondition> */
+	public $conditions;
 
 }

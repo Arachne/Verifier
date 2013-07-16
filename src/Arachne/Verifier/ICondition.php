@@ -10,11 +10,11 @@
 
 namespace Arachne\Verifier;
 
-interface IRule
+interface ICondition
 {
 
 	/**
-	 * @return string Handler class name
+	 * @return string
 	 */
 	public function getHandlerClass();
 

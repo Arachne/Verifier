@@ -27,4 +27,18 @@ class TestPresenter extends \Nette\Application\UI\Presenter
 	{
 	}
 
+	/**
+	 * @Requirements(@TestAnnotation)
+	 */
+	public function renderView()
+	{
+	}
+
+	/**
+	 * @Requirements(@TestAnnotation)
+	 */
+	public function handleSignal()
+	{
+	}
+
 }
