@@ -64,9 +64,20 @@ You need three things:
 
 For examples see Arachne/SecurityAnnotations package.
 
-Let's say you have some annotation App\MyAnnotation and a handler App\MyAnnotation Handler. See what you can do with them in the examples below.
+Let's say you have some annotation App\MyAnnotation and a handler App\MyAnnotationHandler. See what you can do with them in the examples below.
+
+### Configuration
+
+You have to register the handler as a service in your config.neon.
+
+```yml
+services:
+	- App\MyAnnotationHandler
+```
 
 ### Presenter
+
+In presenters you can now use these annotations to restrict access to presenter or action.
 
 ```php
 use Arachne\Verifier\Requirements;
