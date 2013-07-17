@@ -18,7 +18,6 @@ final class VerifierTest extends BaseTest
 
 	protected function _before()
 	{
-		parent::_before();
 		$reader = new \Doctrine\Common\Annotations\AnnotationReader();
 		$this->container = Mockery::mock('Nette\DI\Container');
 		$this->presenterFactory = Mockery::mock('Nette\Application\IPresenterFactory');
