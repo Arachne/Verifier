@@ -25,7 +25,7 @@ class VerifierExtension extends \Nette\DI\CompilerExtension
 
 		if ($builder->hasDefinition('nette.latte')) {
 			$builder->getDefinition('nette.latte')
-				->addSetup('Arachne\Verifier\Latte\VerifierMacros::install(?->getCompiler())', [ '@self' ]);
+				->addSetup('Arachne\Verifier\Latte\VerifierMacros::install(?->getCompiler())', array('@self'));
 		}
 	}
 

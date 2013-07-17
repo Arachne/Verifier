@@ -23,6 +23,8 @@ extensions:
 
 Please see documentation how to configure [Kdyby/Annotations](https://github.com/Kdyby/Annotations/blob/master/docs/en/index.md).
 
+### PHP 5.4
+
 Finally add the Arachne\Verifier\Application\TVerifierPresenter trait to your BasePresenter. You also probably want to overwrite the checkRequirements method, catch the exceptions thrown by Verifier and show some user-friendly flash messages.
 
 ```php
@@ -46,6 +48,10 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter
 
 }
 ```
+
+### PHP 5.3
+
+If you don't use PHP 5.4, just copy the trait's methods to your BasePresenter and modify the checkRequirements method.
 
 
 Usage

@@ -38,7 +38,7 @@ class Verifier extends \Nette\Object
 		$this->reader = $reader;
 		$this->container = $container;
 		$this->presenterFactory = $presenterFactory;
-		$this->handlers = [];
+		$this->handlers = array();
 	}
 
 	/**
