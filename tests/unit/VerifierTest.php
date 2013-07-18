@@ -37,7 +37,7 @@ final class VerifierTest extends BaseTest
 
 	public function testCheckAnnotationsOnMethod()
 	{
-		$reflection = new \ReflectionMethod('Tests\TestPresenter', 'actionAction');
+		$reflection = new \ReflectionMethod('Tests\TestPresenter', 'renderView');
 		$request = new \Nette\Application\Request('Test', 'GET', []);
 
 		$handler = $this->createHandlerMock($request, 2);

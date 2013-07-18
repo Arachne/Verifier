@@ -32,7 +32,7 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter
 {
 
 	use \Arachne\Verifier\Application\TVerifierPresenter;
-	
+
 	/**
 	 * @param \Nette\Reflection\ClassType|\Nette\Reflection\Method $element
 	 */
@@ -92,7 +92,7 @@ class ArticlePresenter extends BasePresenter
 	/**
 	 * @Requirements({
 	 * 		@MyAnnotation("some argument"),
-	 * 		@MyAnnotation("different argument")	 
+	 * 		@MyAnnotation("different argument"),
 	 * })
 	 */
 	public function actionEdit($id)
@@ -103,13 +103,13 @@ class ArticlePresenter extends BasePresenter
 }
 ```
 
-These annotations also work for render* methods and handle* methods. Pleas note that render* method's annotation is NOT checked if the action* method with the same action name (the * part) exists.
+These annotations also work for render* and handle* methods. Support for createComponent* methods is WIP at the moment.
 
 ### Template
 
 In template you can use the `n:ifVerified` macro to check whether the action is available or not. The `n:href` macro without argument will automatically take the argument of the closest `n:ifVerified` macro so you don't need to write the argument twice.
 
 ```html
-{* This link will not be shown if the action is not available. *} 
+{* This link will not be shown if the action is not available. *}
 <a n:ifVerified="Article:edit $id" n:href>Link</a>
 ```

@@ -87,13 +87,14 @@ class Verifier extends \Nette\Object
 			// Action requirements
 			$action = $parameters[\Nette\Application\UI\Presenter::ACTION_KEY];
 			$method = 'action' . $action;
-			$reflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
-			if (!$reflection) {
-				$method = 'render' . $action;
-				$reflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
+			$actionReflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
+			if ($actionReflection) {
+				$this->checkAnnotations($actionReflection, $request);
 			}
-			if ($reflection) {
-				$this->checkAnnotations($reflection, $request);
+			$method = 'render' . $action;
+			$viewReflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
+			if ($viewReflection) {
+				$this->checkAnnotations($viewReflection, $request);
 			}
 
 			// Signal requirements
