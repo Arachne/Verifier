@@ -25,7 +25,7 @@ Please see documentation how to configure [Kdyby/Annotations](https://github.com
 
 ### PHP 5.4
 
-Finally add the Arachne\Verifier\Application\TVerifierPresenter trait to your BasePresenter. You also probably want to overwrite the checkRequirements method, catch the exceptions thrown by Verifier and show some user-friendly flash messages.
+Finally add the Arachne\Verifier\Application\TVerifierPresenter trait to your BasePresenter.
 
 ```php
 abstract class BasePresenter extends \Nette\Application\UI\Presenter
@@ -33,25 +33,12 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter
 
 	use \Arachne\Verifier\Application\TVerifierPresenter;
 
-	/**
-	 * @param \Nette\Reflection\ClassType|\Nette\Reflection\Method $element
-	 */
-	public function checkRequirements($reflection)
-	{
-		try {
-			$this->verifier->checkAnnotations($reflection, $this->getRequest());
-		} catch (\Arachne\Verifier\ForbiddenRequestException $e) {
-			$this->flashMessage('This action is not allowed.', 'error');
-			$this->redirect('Homepage:');
-		}
-	}
-
 }
 ```
 
 ### PHP 5.3
 
-If you don't use PHP 5.4, just copy the trait's methods to your BasePresenter and modify the checkRequirements method.
+If you don't use PHP 5.4, just copy the trait's methods to your BasePresenter.
 
 
 Usage
