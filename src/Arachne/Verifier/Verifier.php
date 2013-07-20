@@ -100,7 +100,7 @@ class Verifier extends \Nette\Object
 			// Signal requirements
 			if (isset($parameters[\Nette\Application\UI\Presenter::SIGNAL_KEY])) {
 				$signal = $parameters[\Nette\Application\UI\Presenter::SIGNAL_KEY];
-				$method = 'handle' . ucfirst($signal);
+				$method = 'handle' . $signal;
 				if ($presenterReflection->hasCallableMethod($method)) {
 					$reflection = $presenterReflection->getMethod($method);
 					$this->checkAnnotations($reflection, $request);
