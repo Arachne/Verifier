@@ -23,7 +23,7 @@ class VerifierMacros extends \Nette\Latte\Macros\MacroSet
 		$me->addMacro('href', NULL, NULL, function (\Nette\Latte\MacroNode $node, \Nette\Latte\PhpWriter $writer) {
 			$word = $node->tokenizer->fetchWord();
 			if ($word) {
-				return ' ?> href="<?php ' . $writer->write('echo %escape(%modify($_presenter->link(' . $writer->formatWord($word) . ', %node.array?)))') . ' ?>"<?php ';
+				return ' ?> href="<?php ' . $writer->write('echo %escape(%modify($_control->link(' . $writer->formatWord($word) . ', %node.array?)))') . ' ?>"<?php ';
 			}
 			return ' ?> href="<?php ' . $writer->write('echo %escape(%modify($_l->verifiedLink))') . ' ?>"<?php ';
 		});
