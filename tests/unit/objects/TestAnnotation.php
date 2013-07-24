@@ -4,7 +4,7 @@ namespace Tests;
 
 /**
  * @Annotation
- * @Target({"ANNOTATION"})
+ * @Target({"CLASS", "METHOD"})
  */
 class TestAnnotation extends \Nette\Object implements \Arachne\Verifier\IAnnotation
 {

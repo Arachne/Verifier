@@ -49,24 +49,25 @@ class Verifier extends \Nette\Object
 	public function checkAnnotations(\Reflector $reflection, \Nette\Application\Request $request)
 	{
 		if ($reflection instanceof \ReflectionMethod) {
-			$requirements = $this->reader->getMethodAnnotation($reflection, 'Arachne\Verifier\Requirements');
+			$annotations = $this->reader->getMethodAnnotations($reflection);
 		} elseif ($reflection instanceof \ReflectionClass) {
-			$requirements = $this->reader->getClassAnnotation($reflection, 'Arachne\Verifier\Requirements');
+			$annotations = $this->reader->getClassAnnotations($reflection);
 		} else {
 			throw new InvalidArgumentException('Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.');
 		}
 
-		if ($requirements !== NULL) {
-			foreach ($requirements->annotations as $annotation) {
-				$class = $annotation->getHandlerClass();
-				if (!isset($this->handlers[$class])) {
-					$this->handlers[$class] = $this->container->getByType($class);
-					if (!$this->handlers[$class] instanceof IAnnotationHandler) {
-						throw new InvalidStateException('Class \'' . get_class($this->handlers[$class]) . '\' does not implement \Arachne\Verifier\IAnnotationHandler interface.');
-					}
-				}
-				$this->handlers[$class]->checkAnnotation($annotation, $request);
+		foreach ($annotations as $annotation) {
+			if (!$annotation instanceof IAnnotation) {
+				continue;
 			}
+			$class = $annotation->getHandlerClass();
+			if (!isset($this->handlers[$class])) {
+				$this->handlers[$class] = $this->container->getByType($class);
+				if (!$this->handlers[$class] instanceof IAnnotationHandler) {
+					throw new InvalidStateException('Class \'' . get_class($this->handlers[$class]) . '\' does not implement \Arachne\Verifier\IAnnotationHandler interface.');
+				}
+			}
+			$this->handlers[$class]->checkAnnotation($annotation, $request);
 		}
 	}
 

@@ -67,20 +67,17 @@ services:
 In presenters you can now use these annotations to restrict access to presenter or action.
 
 ```php
-use Arachne\Verifier\Requirements;
 use App\MyAnnotation;
 
 /**
- * @Requirements(@MyAnnotation("argument"))
+ * @MyAnnotation("argument")
  */
 class ArticlePresenter extends BasePresenter
 {
 
 	/**
-	 * @Requirements({
-	 * 		@MyAnnotation("some argument"),
-	 * 		@MyAnnotation("different argument"),
-	 * })
+	 * @MyAnnotation("some argument")
+	 * @MyAnnotation("different argument")
 	 */
 	public function actionEdit($id)
 	{

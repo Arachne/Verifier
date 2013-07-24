@@ -5,7 +5,7 @@ namespace Tests;
 use Arachne\Verifier\Requirements;
 
 /**
- * @Requirements(@TestAnnotation)
+ * @TestAnnotation
  */
 class TestPresenter extends \Nette\Application\UI\Presenter
 {
@@ -18,35 +18,29 @@ class TestPresenter extends \Nette\Application\UI\Presenter
 	}
 
 	/**
-	 * @Requirements({
-	 *		@TestAnnotation,
-	 * })
+	 * @TestAnnotation
 	 */
 	public function actionAction()
 	{
 	}
 
 	/**
-	 * @Requirements({
-	 *		@TestAnnotation,
-	 * })
+	 * @TestAnnotation
 	 */
 	public function renderAction()
 	{
 	}
 
 	/**
-	 * @Requirements({
-	 *		@TestAnnotation,
-	 *		@TestAnnotation,
-	 * })
+	 * @TestAnnotation
+	 * @TestAnnotation	 
 	 */
 	public function renderView()
 	{
 	}
 
 	/**
-	 * @Requirements(@TestAnnotation)
+	 * @TestAnnotation
 	 */
 	public function handleSignal()
 	{
