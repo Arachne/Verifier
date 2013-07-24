@@ -31,9 +31,9 @@
 	},
 	"repositories": [
 		{
-            "type": "composer",
-            "url": "http://packages.m33.cz"
-        },
+			"type": "composer",
+			"url": "http://packages.m33.cz"
+		},
 		{
 			"type": "vcs",
 			"url": "https://github.com/Kdyby/Annotations.git"
