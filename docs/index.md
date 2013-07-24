@@ -97,3 +97,7 @@ In template you can use the `n:ifVerified` macro to check whether the action is 
 {* This link will not be shown if the action is not available. *}
 <a n:ifVerified="Article:edit $id" n:href>Link</a>
 ```
+
+### Notes
+
+Multiple annotations of the same type won't work correctly if Doctrine\Common\Annotations\IndexedReader is used. Be sure your version of Kdyby/Annotations does not use it!
