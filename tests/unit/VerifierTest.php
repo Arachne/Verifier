@@ -4,7 +4,7 @@ namespace Tests\Arachne\Verifier;
 
 use Mockery;
 
-final class VerifierTest extends BaseTest
+class VerifierTest extends BaseTest
 {
 
 	/** @var \Arachne\Verifier\Verifier */
