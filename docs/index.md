@@ -1,7 +1,7 @@
 Documentation
 =============
 
-This extension is here to provide easy annotation-based verification whether given action is available or not. The most tipical use-case is authorization (see Arachne/SecurityAnnotations) but you can write your own handlers as well.
+This extension is here to provide easy annotation-based verification whether given action is available or not. The most typical use-case is authorization (see Arachne/SecurityAnnotations) but you can write your own handlers as well.
 
 
 Instalation
