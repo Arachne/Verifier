@@ -46,7 +46,7 @@ Usage
 
 You need three things:
 - some annotation class(es) implementing Arachne\Verifier\IAnnotation
-- a handler implementing Arachne\Verifier\IAnnotationHandler
+- a service implementing Arachne\Verifier\IAnnotationHandler
 - an exception extending the abstract Arachne\Verifier\ForbiddenRequestException and throw it from your handler if the action is not allowed
 
 For examples see Arachne/SecurityAnnotations package.
