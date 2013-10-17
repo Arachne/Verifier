@@ -46,7 +46,7 @@ Usage
 
 You need three things:
 - some annotation class(es) implementing Arachne\Verifier\IAnnotation
-- a service implementing Arachne\Verifier\IAnnotationHandler
+- a tagged service implementing Arachne\Verifier\IAnnotationHandler
 - an exception extending the abstract Arachne\Verifier\ForbiddenRequestException and throw it from your handler if the action is not allowed
 
 For examples see Arachne/SecurityAnnotations package.
@@ -55,11 +55,15 @@ Let's say you have some annotation App\MyAnnotation and a handler App\MyAnnotati
 
 ### Configuration
 
-You have to register the handler as a service in your config.neon.
+You have to register the handler as a service in your config.neon, add the arachne.verifier.annotationHandler tag and configure the annotations it handles in tag attributes. Be sure to use the real annotation classes names. An interface or a parent class will not work.
 
 ```yml
 services:
-	- App\MyAnnotationHandler
+	myAnnotationHandler:
+		class: App\MyAnnotationHandler
+		tags:
+			arachne.verifier.annotationHandler:
+				- App\MyAnnotation
 ```
 
 ### Presenter
