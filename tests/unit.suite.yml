@@ -1,6 +1,12 @@
-# Codeception Test Suite Configuration
-
-# suite for unit (internal) tests.
-# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
-
 error_level: "E_ALL"
+
+class_name: UnitSuiteGuy
+
+modules:
+    enabled:
+        - Nette
+    config:
+        Nette:
+            tempDir: tests/_temp
+            robotLoader:
+                - tests/unit
