@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Arachne\Verifier;
+namespace Tests\Unit;
 
 use Codeception\TestCase\Test;
 use Mockery;

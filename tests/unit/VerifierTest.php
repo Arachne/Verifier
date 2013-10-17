@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Arachne\Verifier;
+namespace Tests\Unit;
 
 use Arachne\Verifier\IAnnotationHandler;
 use Arachne\Verifier\InvalidArgumentException;
@@ -13,7 +13,6 @@ use Nette\Application\UI\Presenter;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
-use Tests\TestAnnotation;
 
 class VerifierTest extends BaseTest
 {
