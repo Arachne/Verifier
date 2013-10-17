@@ -87,11 +87,11 @@ class VerifierTest extends BaseTest
 		]);
 
 		$handler = Mockery::mock('Arachne\Verifier\IAnnotationHandler')
-				->shouldReceive('checkAnnotation')
-				->once()
-				->with($this->createAnnotationMatcher(), $request)
-				->andThrow('Tests\Unit\TestException')
-				->getMock();
+			->shouldReceive('checkAnnotation')
+			->once()
+			->with($this->createAnnotationMatcher(), $request)
+			->andThrow('Tests\Unit\TestException')
+			->getMock();
 
 		$this->setupContainerMock($handler);
 		$this->setupPresenterFactoryMock();
@@ -113,11 +113,11 @@ class VerifierTest extends BaseTest
 	private function createHandlerMock(Request $request, $times)
 	{
 		return Mockery::mock('Arachne\Verifier\IAnnotationHandler')
-				->shouldReceive('checkAnnotation')
-				->times($times)
-				->with($this->createAnnotationMatcher(), $request)
-				->andReturnNull()
-				->getMock();
+			->shouldReceive('checkAnnotation')
+			->times($times)
+			->with($this->createAnnotationMatcher(), $request)
+			->andReturnNull()
+			->getMock();
 	}
 
 	/**
@@ -126,19 +126,19 @@ class VerifierTest extends BaseTest
 	private function setupContainerMock(IAnnotationHandler $handler)
 	{
 		$this->container
-				->shouldReceive('getByType')
-				->with('TestHandler')
-				->once()
-				->andReturn($handler);
+			->shouldReceive('getByType')
+			->with('TestHandler')
+			->once()
+			->andReturn($handler);
 	}
 
 	private function setupPresenterFactoryMock()
 	{
 		$this->presenterFactory
-				->shouldReceive('getPresenterClass')
-				->with('Test')
-				->once()
-				->andReturn('Tests\Unit\TestPresenter');
+			->shouldReceive('getPresenterClass')
+			->with('Test')
+			->once()
+			->andReturn('Tests\Unit\TestPresenter');
 	}
 
 }
