@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use Arachne\Verifier\IAnnotationHandler;
-use Arachne\Verifier\InvalidArgumentException;
 use Arachne\Verifier\Verifier;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mockery;
@@ -36,7 +35,7 @@ class VerifierTest extends BaseTest
 
 	public function testCheckAnnotationsOnClass()
 	{
-		$reflection = new ReflectionClass('Tests\TestPresenter');
+		$reflection = new ReflectionClass('Tests\Unit\TestPresenter');
 		$request = new Request('Test', 'GET', []);
 
 		$handler = $this->createHandlerMock($request, 1);
@@ -47,7 +46,7 @@ class VerifierTest extends BaseTest
 
 	public function testCheckAnnotationsOnMethod()
 	{
-		$reflection = new ReflectionMethod('Tests\TestPresenter', 'renderView');
+		$reflection = new ReflectionMethod('Tests\Unit\TestPresenter', 'renderView');
 		$request = new Request('Test', 'GET', []);
 
 		$handler = $this->createHandlerMock($request, 2);
@@ -57,12 +56,12 @@ class VerifierTest extends BaseTest
 	}
 
 	/**
-	 * @expectedException InvalidArgumentException
+	 * @expectedException Arachne\Verifier\InvalidArgumentException
 	 * @expectedExceptionMessage Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.
 	 */
 	public function testCheckAnnotationsOnProperty()
 	{
-		$reflection = new ReflectionProperty('Tests\TestPresenter', 'property');
+		$reflection = new ReflectionProperty('Tests\Unit\TestPresenter', 'property');
 		$request = new Request('Test', 'GET', []);
 		$this->verifier->checkAnnotations($reflection, $request);
 	}
@@ -91,7 +90,7 @@ class VerifierTest extends BaseTest
 				->shouldReceive('checkAnnotation')
 				->once()
 				->with($this->createAnnotationMatcher(), $request)
-				->andThrow('Tests\TestException')
+				->andThrow('Tests\Unit\TestException')
 				->getMock();
 
 		$this->setupContainerMock($handler);
@@ -139,7 +138,7 @@ class VerifierTest extends BaseTest
 				->shouldReceive('getPresenterClass')
 				->with('Test')
 				->once()
-				->andReturn('Tests\TestPresenter');
+				->andReturn('Tests\Unit\TestPresenter');
 	}
 
 }
