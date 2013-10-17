@@ -20,7 +20,7 @@ class VerifierTest extends BaseTest
 	private $verifier;
 
 	/** @var MockInterface */
-	private $container;
+	private $handlerLoader;
 
 	/** @var MockInterface */
 	private $presenterFactory;
@@ -28,9 +28,9 @@ class VerifierTest extends BaseTest
 	protected function _before()
 	{
 		$reader = new AnnotationReader();
-		$this->container = Mockery::mock('Nette\DI\Container');
+		$this->handlerLoader = Mockery::mock('Arachne\Verifier\IAnnotationHandlerLoader');
 		$this->presenterFactory = Mockery::mock('Nette\Application\IPresenterFactory');
-		$this->verifier = new Verifier($reader, $this->container, $this->presenterFactory);
+		$this->verifier = new Verifier($reader, $this->handlerLoader, $this->presenterFactory);
 	}
 
 	public function testCheckAnnotationsOnClass()
@@ -39,7 +39,7 @@ class VerifierTest extends BaseTest
 		$request = new Request('Test', 'GET', []);
 
 		$handler = $this->createHandlerMock($request, 1);
-		$this->setupContainerMock($handler);
+		$this->setupHandlerLoaderMock($handler, 1);
 
 		$this->assertNull($this->verifier->checkAnnotations($reflection, $request));
 	}
@@ -50,7 +50,7 @@ class VerifierTest extends BaseTest
 		$request = new Request('Test', 'GET', []);
 
 		$handler = $this->createHandlerMock($request, 2);
-		$this->setupContainerMock($handler);
+		$this->setupHandlerLoaderMock($handler, 2);
 
 		$this->assertNull($this->verifier->checkAnnotations($reflection, $request));
 	}
@@ -74,7 +74,7 @@ class VerifierTest extends BaseTest
 		]);
 
 		$handler = $this->createHandlerMock($request, 4);
-		$this->setupContainerMock($handler);
+		$this->setupHandlerLoaderMock($handler, 4);
 		$this->setupPresenterFactoryMock();
 
 		$this->assertTrue($this->verifier->isLinkAvailable($request));
@@ -93,7 +93,7 @@ class VerifierTest extends BaseTest
 			->andThrow('Tests\Unit\TestException')
 			->getMock();
 
-		$this->setupContainerMock($handler);
+		$this->setupHandlerLoaderMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
 		$this->assertFalse($this->verifier->isLinkAvailable($request));
@@ -123,12 +123,12 @@ class VerifierTest extends BaseTest
 	/**
 	 * @param IAnnotationHandler $handler
 	 */
-	private function setupContainerMock(IAnnotationHandler $handler)
+	private function setupHandlerLoaderMock(IAnnotationHandler $handler, $limit)
 	{
-		$this->container
-			->shouldReceive('getByType')
-			->with('TestHandler')
-			->once()
+		$this->handlerLoader
+			->shouldReceive('getAnnotationHandler')
+			->with('Tests\Unit\TestAnnotation')
+			->times($limit)
 			->andReturn($handler);
 	}
 

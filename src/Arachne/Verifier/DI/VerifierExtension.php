@@ -18,9 +18,15 @@ use Nette\DI\CompilerExtension;
 class VerifierExtension extends CompilerExtension
 {
 
+	const TAG_HANDLER = 'arachne.verifier.annotationHandler';
+
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
+
+		$builder->addDefinition($this->prefix('annotationHandlerLoader'))
+			->setClass('Arachne\Verifier\IAnnotationHandlerLoader')
+			->setFactory('Arachne\Verifier\DIAnnotationHandlerLoader');
 
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier');
@@ -29,6 +35,21 @@ class VerifierExtension extends CompilerExtension
 			$builder->getDefinition('nette.latte')
 				->addSetup('Arachne\Verifier\Latte\VerifierMacros::install(?->getCompiler())', array('@self'));
 		}
+	}
+
+	public function beforeCompile()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$services = [];
+		foreach ($builder->findByTag(self::TAG_HANDLER) as $name => $types) {
+			foreach ((array) $types as $type) {
+				$services[$type] = $name;
+			}
+		}
+
+		$builder->getDefinition($this->prefix('annotationHandlerLoader'))
+			->setArguments([ $services ]);
 	}
 
 }

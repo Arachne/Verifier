@@ -15,7 +15,6 @@ use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 use Nette\Application\UI\PresenterComponentReflection;
-use Nette\DI\Container;
 use Nette\Object;
 use ReflectionClass;
 use ReflectionMethod;
@@ -27,35 +26,26 @@ use Reflector;
 class Verifier extends Object
 {
 
-	/** @var IPresenterFactory */
-	protected $presenterFactory;
-
 	/** @var Reader */
 	protected $reader;
 
-	/** @var Container */
-	protected $container;
+	/** @var IAnnotationHandlerLoader */
+	protected $handlerLoader;
 
-	/** @var IAnnotationHandler[] */
-	private $handlers;
+	/** @var IPresenterFactory */
+	protected $presenterFactory;
 
-	/**
-	 * @param Reader $reader
-	 * @param Container $container $container
-	 * @param IPresenterFactory $presenterFactory
-	 */
-	public function __construct(Reader $reader, Container $container, IPresenterFactory $presenterFactory)
+	public function __construct(Reader $reader, IAnnotationHandlerLoader $handlerLoader, IPresenterFactory $presenterFactory)
 	{
 		$this->reader = $reader;
-		$this->container = $container;
+		$this->handlerLoader = $handlerLoader;
 		$this->presenterFactory = $presenterFactory;
-		$this->handlers = array();
 	}
 
 	/**
 	 * @param ReflectionClass|ReflectionMethod $annotations
 	 * @param Request $request
-	 * @throws \Arachne\Verifier\ForbiddenRequestException
+	 * @throws ForbiddenRequestException
 	 */
 	public function checkAnnotations(Reflector $reflection, Request $request)
 	{
@@ -71,14 +61,12 @@ class Verifier extends Object
 			if (!$annotation instanceof IAnnotation) {
 				continue;
 			}
-			$class = $annotation->getHandlerClass();
-			if (!isset($this->handlers[$class])) {
-				$this->handlers[$class] = $this->container->getByType($class);
-				if (!$this->handlers[$class] instanceof IAnnotationHandler) {
-					throw new InvalidStateException('Class \'' . get_class($this->handlers[$class]) . '\' does not implement \Arachne\Verifier\IAnnotationHandler interface.');
-				}
+			$type = get_class($annotation);
+			$handler = $this->handlerLoader->getAnnotationHandler($type);
+			if (!$handler) {
+				throw new InvalidStateException("No handler found for '$type' annotation.");
 			}
-			$this->handlers[$class]->checkAnnotation($annotation, $request);
+			$handler->checkAnnotation($annotation, $request);
 		}
 	}
 

@@ -11,10 +11,4 @@ use Nette\Object;
  */
 class TestAnnotation extends Object implements IAnnotation
 {
-
-	public function getHandlerClass()
-	{
-		return 'TestHandler';
-	}
-
 }

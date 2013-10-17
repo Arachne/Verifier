@@ -10,6 +10,16 @@
 
 namespace Arachne\Verifier;
 
-interface IAnnotation
+/**
+ * @author Jáchym Toušek
+ */
+interface IAnnotationHandlerLoader
 {
+
+	/**
+	 * @param string $type
+	 * @return IAnnotationHandler|NULL
+	 */
+	public function getAnnotationHandler($type);
+
 }
