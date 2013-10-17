@@ -10,9 +10,11 @@
 
 namespace Arachne\Verifier;
 
+use Nette\Application\ForbiddenRequestException as BaseForbiddenRequestException;
+
 /**
  * Descendants of this exception are to be thrown by annotation handlers.
  */
-abstract class ForbiddenRequestException extends \Nette\Application\ForbiddenRequestException
+abstract class ForbiddenRequestException extends BaseForbiddenRequestException
 {
 }

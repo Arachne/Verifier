@@ -10,9 +10,11 @@
 
 namespace Arachne\Verifier;
 
+use \InvalidArgumentException as BaseInvalidArgumentException;
+
 /**
  * The exception that is thrown when an argument does not match with the expected value.
  */
-class InvalidArgumentException extends \InvalidArgumentException
+class InvalidArgumentException extends BaseInvalidArgumentException
 {
 }

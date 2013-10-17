@@ -10,10 +10,12 @@
 
 namespace Arachne\Verifier\DI;
 
+use Nette\DI\CompilerExtension;
+
 /**
  * @author Jáchym Toušek
  */
-class VerifierExtension extends \Nette\DI\CompilerExtension
+class VerifierExtension extends CompilerExtension
 {
 
 	public function loadConfiguration()

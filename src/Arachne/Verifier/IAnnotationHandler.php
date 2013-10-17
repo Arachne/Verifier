@@ -10,14 +10,16 @@
 
 namespace Arachne\Verifier;
 
+use Nette\Application\Request;
+
 interface IAnnotationHandler
 {
 
 	/**
-	 * @param \Arachne\Verifier\IAnnotation $annotation
-	 * @param \Nette\Application\Request $request
-	 * @throws \Arachne\Verifier\ForbiddenRequestException
+	 * @param IAnnotation $annotation
+	 * @param Request $request
+	 * @throws ForbiddenRequestException
 	 */
-	public function checkAnnotation(IAnnotation $annotation, \Nette\Application\Request $request);
+	public function checkAnnotation(IAnnotation $annotation, Request $request);
 
 }

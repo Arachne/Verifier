@@ -2,6 +2,8 @@
 
 namespace Tests;
 
-class TestException extends \Arachne\Verifier\ForbiddenRequestException
+use Arachne\Verifier\ForbiddenRequestException;
+
+class TestException extends ForbiddenRequestException
 {
 }

@@ -10,25 +10,29 @@
 
 namespace Arachne\Verifier\Application;
 
+use Arachne\Verifier\Verifier;
+use Nette\Reflection\ClassType;
+use Nette\Reflection\Method;
+
 /**
  * @author Jáchym Toušek
  */
 trait TVerifierPresenter
 {
 
-	/** @var \Arachne\Verifier\Verifier */
+	/** @var Verifier */
 	protected $verifier;
 
 	/**
-	 * @param \Arachne\Verifier\Verifier $verifier
+	 * @param Verifier $verifier
 	 */
-	final public function injectVerifier(\Arachne\Verifier\Verifier $verifier)
+	final public function injectVerifier(Verifier $verifier)
 	{
 		$this->verifier = $verifier;
 	}
 
 	/**
-	 * @param \Nette\Reflection\ClassType|\Nette\Reflection\Method $element
+	 * @param ClassType|Method $element
 	 */
 	public function checkRequirements($reflection)
 	{

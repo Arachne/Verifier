@@ -3,18 +3,20 @@
 namespace Tests;
 
 use Arachne\Verifier\Requirements;
+use Exception;
+use Nette\Application\UI\Presenter;
 
 /**
  * @TestAnnotation
  */
-class TestPresenter extends \Nette\Application\UI\Presenter
+class TestPresenter extends Presenter
 {
 
 	protected $property;
 
 	final public function __construct()
 	{
-		throw new \Exception('This class is there for annotations only.');
+		throw new Exception('This class is there for annotations only.');
 	}
 
 	/**
@@ -33,7 +35,7 @@ class TestPresenter extends \Nette\Application\UI\Presenter
 
 	/**
 	 * @TestAnnotation
-	 * @TestAnnotation	 
+	 * @TestAnnotation
 	 */
 	public function renderView()
 	{

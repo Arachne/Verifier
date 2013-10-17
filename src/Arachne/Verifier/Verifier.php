@@ -10,30 +10,41 @@
 
 namespace Arachne\Verifier;
 
+use Doctrine\Common\Annotations\Reader;
+use Nette\Application\IPresenterFactory;
+use Nette\Application\Request;
+use Nette\Application\UI\Presenter;
+use Nette\Application\UI\PresenterComponentReflection;
+use Nette\DI\Container;
+use Nette\Object;
+use ReflectionClass;
+use ReflectionMethod;
+use Reflector;
+
 /**
  * @author Jáchym Toušek
  */
-class Verifier extends \Nette\Object
+class Verifier extends Object
 {
 
-	/** @var \Nette\Application\IPresenterFactory */
+	/** @var IPresenterFactory */
 	protected $presenterFactory;
 
-	/** @var \Doctrine\Common\Annotations\Reader */
+	/** @var Reader */
 	protected $reader;
 
-	/** @var \Nette\DI\Container */
+	/** @var Container */
 	protected $container;
 
-	/** @var array<\Arachne\Verifier\IAnnotationHandler> */
+	/** @var IAnnotationHandler[] */
 	private $handlers;
 
 	/**
-	 * @param \Doctrine\Common\Annotations\Reader $reader
-	 * @param \Nette\DI\Container $container $container
-	 * @param \Nette\Application\IPresenterFactory $presenterFactory
+	 * @param Reader $reader
+	 * @param Container $container $container
+	 * @param IPresenterFactory $presenterFactory
 	 */
-	public function __construct(\Doctrine\Common\Annotations\Reader $reader, \Nette\DI\Container $container, \Nette\Application\IPresenterFactory $presenterFactory)
+	public function __construct(Reader $reader, Container $container, IPresenterFactory $presenterFactory)
 	{
 		$this->reader = $reader;
 		$this->container = $container;
@@ -42,15 +53,15 @@ class Verifier extends \Nette\Object
 	}
 
 	/**
-	 * @param \ReflectionClass|\ReflectionMethod $annotations
-	 * @param \Nette\Application\Request $request
+	 * @param ReflectionClass|ReflectionMethod $annotations
+	 * @param Request $request
 	 * @throws \Arachne\Verifier\ForbiddenRequestException
 	 */
-	public function checkAnnotations(\Reflector $reflection, \Nette\Application\Request $request)
+	public function checkAnnotations(Reflector $reflection, Request $request)
 	{
-		if ($reflection instanceof \ReflectionMethod) {
+		if ($reflection instanceof ReflectionMethod) {
 			$annotations = $this->reader->getMethodAnnotations($reflection);
-		} elseif ($reflection instanceof \ReflectionClass) {
+		} elseif ($reflection instanceof ReflectionClass) {
 			$annotations = $this->reader->getClassAnnotations($reflection);
 		} else {
 			throw new InvalidArgumentException('Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.');
@@ -72,21 +83,21 @@ class Verifier extends \Nette\Object
 	}
 
 	/**
-	 * @param \Nette\Application\Request $request
+	 * @param Request $request
 	 * @return bool
 	 */
-	public function isLinkAvailable(\Nette\Application\Request $request)
+	public function isLinkAvailable(Request $request)
 	{
 		$presenter = $request->getPresenterName();
 		$parameters = $request->getParameters();
-		$presenterReflection = new \Nette\Application\UI\PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
+		$presenterReflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
 
 		try {
 			// Presenter requirements
 			$this->checkAnnotations($presenterReflection, $request);
 
 			// Action requirements
-			$action = $parameters[\Nette\Application\UI\Presenter::ACTION_KEY];
+			$action = $parameters[Presenter::ACTION_KEY];
 			$method = 'action' . $action;
 			$actionReflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
 			if ($actionReflection) {
@@ -99,8 +110,8 @@ class Verifier extends \Nette\Object
 			}
 
 			// Signal requirements
-			if (isset($parameters[\Nette\Application\UI\Presenter::SIGNAL_KEY])) {
-				$signal = $parameters[\Nette\Application\UI\Presenter::SIGNAL_KEY];
+			if (isset($parameters[Presenter::SIGNAL_KEY])) {
+				$signal = $parameters[Presenter::SIGNAL_KEY];
 				$method = 'handle' . $signal;
 				if ($presenterReflection->hasCallableMethod($method)) {
 					$reflection = $presenterReflection->getMethod($method);
