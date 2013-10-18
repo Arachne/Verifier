@@ -15,6 +15,9 @@ use Nette\Latte\MacroNode;
 use Nette\Latte\Macros\MacroSet;
 use Nette\Latte\PhpWriter;
 
+/**
+ * @author Jáchym Toušek
+ */
 class VerifierMacros extends MacroSet
 {
 

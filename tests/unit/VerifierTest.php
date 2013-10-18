@@ -14,6 +14,9 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
+/**
+ * @author Jáchym Toušek
+ */
 class VerifierTest extends Test
 {
 

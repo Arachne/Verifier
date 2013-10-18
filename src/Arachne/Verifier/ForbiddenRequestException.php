@@ -14,6 +14,8 @@ use Nette\Application\ForbiddenRequestException as BaseForbiddenRequestException
 
 /**
  * Descendants of this exception are to be thrown by annotation handlers.
+ *
+ * @author Jáchym Toušek
  */
 abstract class ForbiddenRequestException extends BaseForbiddenRequestException
 {

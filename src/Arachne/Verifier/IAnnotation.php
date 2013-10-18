@@ -10,6 +10,9 @@
 
 namespace Arachne\Verifier;
 
+/**
+ * @author Jáchym Toušek
+ */
 interface IAnnotation
 {
 }

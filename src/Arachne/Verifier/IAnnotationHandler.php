@@ -12,6 +12,9 @@ namespace Arachne\Verifier;
 
 use Nette\Application\Request;
 
+/**
+ * @author Jáchym Toušek
+ */
 interface IAnnotationHandler
 {
 
