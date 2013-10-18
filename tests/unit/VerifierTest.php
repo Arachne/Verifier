@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Arachne\Verifier\IAnnotationHandler;
 use Arachne\Verifier\Verifier;
+use Codeception\TestCase\Test;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mockery;
 use Mockery\MockInterface;
@@ -13,7 +14,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-class VerifierTest extends BaseTest
+class VerifierTest extends Test
 {
 
 	/** @var Verifier */
