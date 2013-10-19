@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use Arachne\Verifier\ForbiddenRequestException;
+use Arachne\Verifier\Exception\ForbiddenRequestException;
 
 /**
  * @author Jáchym Toušek

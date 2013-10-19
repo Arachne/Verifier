@@ -60,7 +60,7 @@ class VerifierTest extends Test
 	}
 
 	/**
-	 * @expectedException Arachne\Verifier\InvalidArgumentException
+	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
 	 * @expectedExceptionMessage Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.
 	 */
 	public function testCheckAnnotationsOnProperty()
