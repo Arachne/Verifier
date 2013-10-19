@@ -10,6 +10,8 @@
 
 namespace Arachne\Verifier;
 
+use Arachne\Verifier\Exception\ForbiddenRequestException;
+use Arachne\Verifier\Exception\InvalidArgumentException;
 use Doctrine\Common\Annotations\Reader;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
@@ -63,9 +65,6 @@ class Verifier extends Object
 			}
 			$type = get_class($annotation);
 			$handler = $this->handlerLoader->getAnnotationHandler($type);
-			if (!$handler) {
-				throw new InvalidStateException("No handler found for '$type' annotation.");
-			}
 			$handler->checkAnnotation($annotation, $request);
 		}
 	}

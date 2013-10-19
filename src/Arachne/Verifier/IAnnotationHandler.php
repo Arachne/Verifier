@@ -10,6 +10,7 @@
 
 namespace Arachne\Verifier;
 
+use Arachne\Verifier\Exception\ForbiddenRequestException;
 use Nette\Application\Request;
 
 /**

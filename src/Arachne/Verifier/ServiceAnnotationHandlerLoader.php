@@ -10,13 +10,14 @@
 
 namespace Arachne\Verifier;
 
+use Arachne\Verifier\Exception\UnexpectedTypeException;
 use Nette\DI\Container;
 use Nette\Object;
 
 /**
  * @author Jáchym Toušek
  */
-class DIAnnotationHandlerLoader extends Object implements IAnnotationHandlerLoader
+class ServiceAnnotationHandlerLoader extends Object implements IAnnotationHandlerLoader
 {
 
 	/** @var Container */
@@ -36,18 +37,18 @@ class DIAnnotationHandlerLoader extends Object implements IAnnotationHandlerLoad
 
 	/**
 	 * @param string $type
-	 * @return IAnnotationHandler|NULL
+	 * @return IAnnotationHandler
 	 */
 	public function getAnnotationHandler($type)
 	{
 		if (!isset($this->services[$type])) {
-			return NULL;
+			throw new UnexpectedTypeException("No annotation handler found for type '$type'.");
 		}
 		$name = $this->services[$type];
 		if (!isset($this->handlers[$name])) {
 			$service = $this->container->getService($name);
 			if (!$service instanceof IAnnotationHandler) {
-				throw new InvalidStateException("Service '$name' is not an instance of Arachne\Verifier\IAnnotationHandler.");
+				throw new UnexpectedTypeException("Service '$name' is not an instance of Arachne\Verifier\IAnnotationHandler.");
 			}
 			$this->handlers[$name] = $service;
 		}

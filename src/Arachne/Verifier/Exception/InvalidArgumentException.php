@@ -8,15 +8,13 @@
  * For the full copyright and license information, please view the file license.md that was distributed with this source code.
  */
 
-namespace Arachne\Verifier;
-
-use \InvalidArgumentException as BaseInvalidArgumentException;
+namespace Arachne\Verifier\Exception;
 
 /**
  * The exception that is thrown when an argument does not match with the expected value.
  *
  * @author Jáchym Toušek
  */
-class InvalidArgumentException extends BaseInvalidArgumentException
+class InvalidArgumentException extends LogicException
 {
 }
