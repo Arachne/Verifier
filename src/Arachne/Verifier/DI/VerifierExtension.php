@@ -26,7 +26,7 @@ class VerifierExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('annotationHandlerLoader'))
 			->setClass('Arachne\Verifier\IAnnotationHandlerLoader')
-			->setFactory('Arachne\Verifier\DIAnnotationHandlerLoader');
+			->setFactory('Arachne\Verifier\ServiceAnnotationHandlerLoader');
 
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier');
