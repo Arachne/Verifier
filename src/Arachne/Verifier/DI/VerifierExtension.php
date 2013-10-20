@@ -41,7 +41,7 @@ class VerifierExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$services = [];
+		$services = array();
 		foreach ($builder->findByTag(self::TAG_HANDLER) as $name => $types) {
 			foreach ((array) $types as $type) {
 				$services[$type] = $name;
@@ -49,7 +49,7 @@ class VerifierExtension extends CompilerExtension
 		}
 
 		$builder->getDefinition($this->prefix('annotationHandlerLoader'))
-			->setArguments([ $services ]);
+			->setArguments(array($services));
 	}
 
 }
