@@ -63,9 +63,9 @@ class Verifier extends Object
 			if (!$annotation instanceof IAnnotation) {
 				continue;
 			}
-			$type = get_class($annotation);
-			$handler = $this->handlerLoader->getAnnotationHandler($type);
-			$handler->checkAnnotation($annotation, $request);
+			$this->handlerLoader
+				->getAnnotationHandler(get_class($annotation))
+				->checkAnnotation($annotation, $request);
 		}
 	}
 
