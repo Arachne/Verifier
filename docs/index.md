@@ -95,11 +95,11 @@ These annotations also work for render* and handle* methods. Support for createC
 
 ### Template
 
-In template you can use the `n:ifVerified` macro to check whether the action is available or not. The `n:href` macro without argument will automatically take the argument of the closest `n:ifVerified` macro so you don't need to write the argument twice.
+In template you can use the `n:ifLinkVerified` macro to check whether the action is available or not. The `n:href` macro without argument will automatically take the argument of the closest `n:ifLinkVerified` macro so you don't need to write the argument twice.
 
 ```html
 {* This link will not be shown if the action is not available. *}
-<a n:ifVerified="Article:edit $id" n:href>Link</a>
+<a n:ifLinkVerified="Article:edit $id" n:href>Link</a>
 ```
 
 If you do not use `Presenter::INVALID_LINK_EXCEPTION`, the condition will be true for invalid links.
