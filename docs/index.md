@@ -102,6 +102,8 @@ In template you can use the `n:ifVerified` macro to check whether the action is 
 <a n:ifVerified="Article:edit $id" n:href>Link</a>
 ```
 
+If you do not use `Presenter::INVALID_LINK_EXCEPTION`, the condition will be true for invalid links.
+
 ### Notes
 
 Multiple annotations of the same type won't work correctly if Doctrine\Common\Annotations\IndexedReader is used. Be sure your version of Kdyby/Annotations does not use it!

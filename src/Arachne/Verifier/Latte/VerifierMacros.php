@@ -27,7 +27,7 @@ class VerifierMacros extends MacroSet
 	public static function install(Compiler $compiler)
 	{
 		$me = new static($compiler);
-		$me->addMacro('ifVerified', '$_l->verifiedLink = $_presenter->link(%node.word, %node.array?); if ($_presenter->getContext()->getByType(\'Arachne\Verifier\Verifier\')->isLinkAvailable($_presenter->getLastCreatedRequest())):', 'endif');
+		$me->addMacro('ifVerified', '$_l->verifiedLink = $_presenter->link(%node.word, %node.array?); if (!$_presenter->getLastCreatedRequest() || $_presenter->getContext()->getByType(\'Arachne\Verifier\Verifier\')->isLinkAvailable($_presenter->getLastCreatedRequest())):', 'endif');
 		$me->addMacro('href', NULL, NULL, function (MacroNode $node, PhpWriter $writer) {
 			$word = $node->tokenizer->fetchWord();
 			if ($word) {
