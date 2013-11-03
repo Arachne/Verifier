@@ -112,13 +112,13 @@ class VerifierTest extends Test
 
 	/**
 	 * @param Request $request
-	 * @param int $times
+	 * @param int $limit
 	 */
-	private function createHandlerMock(Request $request, $times)
+	private function createHandlerMock(Request $request, $limit)
 	{
 		return Mockery::mock('Arachne\Verifier\IAnnotationHandler')
 			->shouldReceive('checkAnnotation')
-			->times($times)
+			->times($limit)
 			->with($this->createAnnotationMatcher(), $request)
 			->andReturnNull()
 			->getMock();
@@ -126,6 +126,7 @@ class VerifierTest extends Test
 
 	/**
 	 * @param IAnnotationHandler $handler
+	 * @param int $limit
 	 */
 	private function setupHandlerLoaderMock(IAnnotationHandler $handler, $limit)
 	{
