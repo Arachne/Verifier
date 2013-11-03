@@ -1,0 +1,17 @@
+nette:
+	application:
+		mapping:
+			*: Tests\Integration\*Presenter
+
+services:
+	routerFactory: Tests\Integration\RouterFactory
+	router: @routerFactory::create()
+	enabledAnnotationHandler:
+		class: Tests\Integration\EnabledAnnotationHandler
+		tags:
+			arachne.verifier.annotationHandler:
+				- Tests\Integration\Enabled
+
+extensions:
+	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
+	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
