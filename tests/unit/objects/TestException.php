@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use Arachne\Verifier\Exception\ForbiddenRequestException;
+use Nette\Application\BadRequestException;
 
 /**
  * @author Jáchym Toušek
  */
-class TestException extends ForbiddenRequestException
+class TestException extends BadRequestException
 {
 }

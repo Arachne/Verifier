@@ -2,11 +2,15 @@
 
 namespace Tests\Integration;
 
-use Arachne\Verifier\Exception\ForbiddenRequestException;
+use Nette\Application\BadRequestException;
 
 /**
  * @author Jáchym Toušek
  */
-class DisabledException extends ForbiddenRequestException
+class DisabledException extends BadRequestException
 {
+
+	/** @var int */
+	protected $defaultCode = 403;
+
 }

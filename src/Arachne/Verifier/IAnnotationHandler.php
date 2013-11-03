@@ -10,7 +10,7 @@
 
 namespace Arachne\Verifier;
 
-use Arachne\Verifier\Exception\ForbiddenRequestException;
+use Nette\Application\BadRequestException;
 use Nette\Application\Request;
 
 /**
@@ -22,7 +22,7 @@ interface IAnnotationHandler
 	/**
 	 * @param IAnnotation $annotation
 	 * @param Request $request
-	 * @throws ForbiddenRequestException
+	 * @throws BadRequestException
 	 */
 	public function checkAnnotation(IAnnotation $annotation, Request $request);
 

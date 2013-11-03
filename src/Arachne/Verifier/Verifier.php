@@ -10,9 +10,9 @@
 
 namespace Arachne\Verifier;
 
-use Arachne\Verifier\Exception\ForbiddenRequestException;
 use Arachne\Verifier\Exception\InvalidArgumentException;
 use Doctrine\Common\Annotations\Reader;
+use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
@@ -48,7 +48,7 @@ class Verifier extends Object
 	 * Checks whether the given reflection contains any conditions that are not met.
 	 * @param ReflectionClass|ReflectionMethod $annotations
 	 * @param Request $request
-	 * @throws ForbiddenRequestException
+	 * @throws BadRequestException
 	 */
 	public function checkAnnotations(Reflector $reflection, Request $request)
 	{
@@ -108,7 +108,7 @@ class Verifier extends Object
 				}
 			}
 
-		} catch (ForbiddenRequestException $e) {
+		} catch (BadRequestException $e) {
 			return FALSE;
 		}
 
@@ -130,7 +130,7 @@ class Verifier extends Object
 			$method = 'createComponent' . ucfirst($name);
 			$this->checkAnnotations($presenterReflection->getMethod($method), $request);
 
-		} catch (ForbiddenRequestException $e) {
+		} catch (BadRequestException $e) {
 			return FALSE;
 		}
 
