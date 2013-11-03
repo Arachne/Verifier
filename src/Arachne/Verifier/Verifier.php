@@ -115,4 +115,26 @@ class Verifier extends Object
 		return TRUE;
 	}
 
+	/**
+	 * Checks whether the parent component can create the subcomponent with given name.
+	 * @param Request $request
+	 * @param string $name
+	 * @return bool
+	 */
+	public function isComponentVerified(Request $request, $name)
+	{
+		$presenter = $request->getPresenterName();
+		$presenterReflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
+
+		try {
+			$method = 'createComponent' . ucfirst($name);
+			$this->checkAnnotations($presenterReflection->getMethod($method), $request);
+
+		} catch (ForbiddenRequestException $e) {
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
 }

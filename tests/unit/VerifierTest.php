@@ -103,6 +103,34 @@ class VerifierTest extends Test
 		$this->assertFalse($this->verifier->isLinkVerified($request));
 	}
 
+	public function testIsComponentVerifiedTrue()
+	{
+		$request = new Request('Test', 'GET', []);
+
+		$handler = $this->createHandlerMock($request, 1);
+		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupPresenterFactoryMock();
+
+		$this->assertTrue($this->verifier->isComponentVerified($request, 'component'));
+	}
+
+	public function testIsComponentVerifiedFalse()
+	{
+		$request = new Request('Test', 'GET', []);
+
+		$handler = Mockery::mock('Arachne\Verifier\IAnnotationHandler')
+			->shouldReceive('checkAnnotation')
+			->once()
+			->with($this->createAnnotationMatcher(), $request)
+			->andThrow('Tests\Unit\TestException')
+			->getMock();
+
+		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupPresenterFactoryMock();
+
+		$this->assertFalse($this->verifier->isComponentVerified($request, 'component'));
+	}
+
 	private function createAnnotationMatcher()
 	{
 		return Mockery::on(function ($annotation) {

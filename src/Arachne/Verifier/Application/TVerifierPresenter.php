@@ -11,6 +11,7 @@
 namespace Arachne\Verifier\Application;
 
 use Arachne\Verifier\Verifier;
+use Nette\ComponentModel\IComponent;
 use Nette\Reflection\ClassType;
 use Nette\Reflection\Method;
 
@@ -49,6 +50,21 @@ trait TVerifierPresenter
 		if ($this->verifier->isLinkVerified($this->getLastCreatedRequest())) {
 			$this->redirectUrl($link);
 		}
+	}
+
+	/**
+	 * Component factory. Delegates the creation of components to a createComponent<Name> method.
+	 * @param string $name
+	 * @return IComponent|null
+	 */
+	protected function createComponent($name)
+	{
+		$method = 'createComponent' . ucfirst($name);
+		if (method_exists($this, $method)) {
+			$this->checkRequirements($this->getReflection()->getMethod($method));
+		}
+
+		return parent::createComponent($name);
 	}
 
 }

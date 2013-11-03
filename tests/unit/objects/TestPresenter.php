@@ -48,4 +48,11 @@ class TestPresenter extends Presenter
 	{
 	}
 
+	/**
+	 * @TestAnnotation
+	 */
+	public function createComponentComponent()
+	{
+	}
+
 }
