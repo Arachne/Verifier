@@ -45,6 +45,7 @@ class Verifier extends Object
 	}
 
 	/**
+	 * Checks whether the given reflection contains any conditions that are not met.
 	 * @param ReflectionClass|ReflectionMethod $annotations
 	 * @param Request $request
 	 * @throws ForbiddenRequestException
@@ -70,6 +71,7 @@ class Verifier extends Object
 	}
 
 	/**
+	 * Checks whether it is possible to run the given request.
 	 * @param Request $request
 	 * @return bool
 	 */
