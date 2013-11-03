@@ -32,7 +32,7 @@ trait TVerifierPresenter
 	}
 
 	/**
-	 * @param ClassType|Method $element
+	 * @param ClassType|Method $reflection
 	 */
 	public function checkRequirements($reflection)
 	{
