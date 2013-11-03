@@ -70,7 +70,7 @@ class VerifierTest extends Test
 		$this->verifier->checkAnnotations($reflection, $request);
 	}
 
-	public function testIsLinkAvailableTrue()
+	public function testIsLinkVerifiedTrue()
 	{
 		$request = new Request('Test', 'GET', [
 			Presenter::ACTION_KEY => 'action',
@@ -81,10 +81,10 @@ class VerifierTest extends Test
 		$this->setupHandlerLoaderMock($handler, 4);
 		$this->setupPresenterFactoryMock();
 
-		$this->assertTrue($this->verifier->isLinkAvailable($request));
+		$this->assertTrue($this->verifier->isLinkVerified($request));
 	}
 
-	public function testIsLinkAvailableFalse()
+	public function testIsLinkVerifiedFalse()
 	{
 		$request = new Request('Test', 'GET', [
 			Presenter::ACTION_KEY => 'view',
@@ -100,7 +100,7 @@ class VerifierTest extends Test
 		$this->setupHandlerLoaderMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
-		$this->assertFalse($this->verifier->isLinkAvailable($request));
+		$this->assertFalse($this->verifier->isLinkVerified($request));
 	}
 
 	private function createAnnotationMatcher()

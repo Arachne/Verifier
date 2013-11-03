@@ -73,7 +73,7 @@ class Verifier extends Object
 	 * @param Request $request
 	 * @return bool
 	 */
-	public function isLinkAvailable(Request $request)
+	public function isLinkVerified(Request $request)
 	{
 		$presenter = $request->getPresenterName();
 		$parameters = $request->getParameters();

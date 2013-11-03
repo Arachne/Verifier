@@ -46,7 +46,7 @@ trait TVerifierPresenter
 	protected function redirectVerified($destination, $parameters = [])
 	{
 		$link = $this->link($destination, $parameters);
-		if ($this->verifier->isLinkAvailable($this->getLastCreatedRequest())) {
+		if ($this->verifier->isLinkVerified($this->getLastCreatedRequest())) {
 			$this->redirectUrl($link);
 		}
 	}
