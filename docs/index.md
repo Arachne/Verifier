@@ -117,7 +117,3 @@ There is also the `n:ifComponentVerified` macro to check whether the component i
 	{control menu}
 {/ifComponentVerified}
 ```
-
-### Notes
-
-Multiple annotations of the same type won't work correctly if Doctrine\Common\Annotations\IndexedReader is used. Be sure your version of Kdyby/Annotations does not use it!
