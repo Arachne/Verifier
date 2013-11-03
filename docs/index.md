@@ -68,7 +68,7 @@ services:
 
 ### Presenter
 
-In presenters you can now use these annotations to restrict access to presenter or action.
+In presenters you can now use these annotations to restrict access to the whole presenter or separately to its actions, views, signals and components.
 
 ```php
 use App\MyAnnotation;
@@ -88,21 +88,35 @@ class ArticlePresenter extends BasePresenter
 		// ...
 	}
 
+	/**
+	 * @MyAnnotation("argument")
+	 */
+	public function createComponentMenu()
+	{
+		// ...
+	}
+
 }
 ```
 
-These annotations also work for render* and handle* methods. Support for createComponent* methods is WIP at the moment.
+Note that this will only work in presenters. Annotations in component classes are not supported.
 
 ### Template
 
-In template you can use the `n:ifLinkVerified` macro to check whether the action is available or not. The `n:href` macro without argument will automatically take the argument of the closest `n:ifLinkVerified` macro so you don't need to write the argument twice.
+In template you can use the `n:ifLinkVerified` macro to check whether the link is available. The `n:href` macro without argument will automatically take the argument of the closest `n:ifLinkVerified` macro so you don't need to write the argument twice. If you do not use `Presenter::INVALID_LINK_EXCEPTION`, the condition will be true for invalid links.
 
 ```html
 {* This link will not be shown if the action is not available. *}
 <a n:ifLinkVerified="Article:edit $id" n:href>Link</a>
 ```
 
-If you do not use `Presenter::INVALID_LINK_EXCEPTION`, the condition will be true for invalid links.
+There is also the `n:ifComponentVerified` macro to check whether the component is available.
+```html
+{* The component will only be shown if it is available. *}
+{ifComponentVerified menu}
+	{control menu}
+{/ifComponentVerified}
+```
 
 ### Notes
 
