@@ -1,11 +1,9 @@
-Documentation
-=============
+# Documentation
 
 This extension is here to provide easy annotation-based verification whether given action is available or not. The most typical use-case is authorization (see Arachne/SecurityAnnotations) but you can write your own handlers as well.
 
 
-Instalation
------------
+## Installation
 
 The best way to install Arachne/Verifier is using [Composer](http://getcomposer.org/):
 
@@ -41,21 +39,19 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter
 If you don't use PHP 5.4, just copy the trait's methods to your BasePresenter.
 
 
-Usage
------
+## Usage
 
-You need three things:
+You need two things:
 - some annotation class(es) implementing Arachne\Verifier\IAnnotation
 - a tagged service implementing Arachne\Verifier\IAnnotationHandler
-- an exception extending the abstract Arachne\Verifier\ForbiddenRequestException and throw it from your handler if the action is not allowed
 
-For examples see Arachne/SecurityAnnotations package.
+These will usually be provided by some other extensions. **For examples see Arachne/SecurityAnnotations and Arachne/ComponentsProtection.**
 
-Let's say you have some annotation App\MyAnnotation and a handler App\MyAnnotationHandler. See what you can do with them in the examples below.
+If you want to add your own annotations, see the Configuration section below. Otherwise feel free to skip it.
 
 ### Configuration
 
-You have to register the handler as a service in your config.neon, add the arachne.verifier.annotationHandler tag and configure the annotations it handles in tag attributes. Be sure to use the real annotation classes names. An interface or a parent class will not work.
+Let's say you have some annotation App\MyAnnotation and a handler App\MyAnnotationHandler. You have to register the handler as a service in your config.neon, add the arachne.verifier.annotationHandler tag and configure the annotation it handles in tag attributes. *Be sure to use the real annotation classes names. An interface or a parent class will not work.*
 
 ```yml
 services:
@@ -111,6 +107,7 @@ In template you can use the `n:ifLinkVerified` macro to check whether the link i
 ```
 
 There is also the `n:ifComponentVerified` macro to check whether the component is available.
+
 ```html
 {* The component will only be shown if it is available. *}
 {ifComponentVerified menu}
