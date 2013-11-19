@@ -101,6 +101,8 @@ Note that this will only work in presenters. Annotations in component classes ar
 
 In template you can use the `n:ifLinkVerified` macro to check whether the link is available. The `n:href` macro without argument will automatically take the argument of the closest `n:ifLinkVerified` macro so you don't need to write the argument twice. If you do not use `Presenter::INVALID_LINK_EXCEPTION`, the condition will be true for invalid links.
 
+**Warning**: This macro always uses presenter when creating the link. Therefore in components use it instead of the `{plink ...}` macro but never instead of the `{link ...}` macro when calling a component signal.
+
 ```html
 {* This link will not be shown if the action is not available. *}
 <a n:ifLinkVerified="Article:edit $id" n:href>Link</a>
