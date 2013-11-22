@@ -15,6 +15,14 @@ class ComponentsTest extends Test
 		$this->codeGuy->dontSee('footer');
 	}
 
+	public function testLinkMacroInComponent()
+	{
+		$this->codeGuy->amOnPage('/article/');
+		$this->codeGuy->seeResponseCodeIs(200);
+		$this->codeGuy->see('Component link');
+		$this->codeGuy->seeLink('Component link', '/article/');
+	}
+
 	public function testComponentNotAllowed()
 	{
 		$this->codeGuy->amOnPage('/article/component-not-enabled');
