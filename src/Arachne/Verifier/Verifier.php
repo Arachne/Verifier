@@ -137,12 +137,12 @@ class Verifier extends Object
 
 	/**
 	 * Checks whether the parent component can create the subcomponent with given name.
+	 * @param string $name	 
 	 * @param Request $request
 	 * @param PresenterComponent $parent
-	 * @param string $name
 	 * @return bool
 	 */
-	public function isComponentVerified(Request $request, PresenterComponent $parent, $name)
+	public function isComponentVerified($name, Request $request, PresenterComponent $parent)
 	{
 		$reflection = new PresenterComponentReflection($parent);
 

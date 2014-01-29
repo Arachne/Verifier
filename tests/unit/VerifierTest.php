@@ -132,7 +132,7 @@ class VerifierTest extends Test
 		$parent = new TestPresenter();
 		$parent->setParent($parent, 'Test');
 
-		$this->assertTrue($this->verifier->isComponentVerified($request, $parent, 'component'));
+		$this->assertTrue($this->verifier->isComponentVerified('component', $request, $parent));
 	}
 
 	public function testIsComponentVerifiedFalse()
@@ -149,7 +149,7 @@ class VerifierTest extends Test
 		$this->setupHandlerLoaderMock($handler, 1);
 		$parent = new TestPresenter();
 
-		$this->assertFalse($this->verifier->isComponentVerified($request, $parent, 'component'));
+		$this->assertFalse($this->verifier->isComponentVerified('component', $request, $parent));
 	}
 
 	public function testIsComponentSignalVerifiedTrue()
