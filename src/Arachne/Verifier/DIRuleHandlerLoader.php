@@ -17,7 +17,7 @@ use Nette\Object;
 /**
  * @author Jáchym Toušek
  */
-class ServiceAnnotationHandlerLoader extends Object implements IAnnotationHandlerLoader
+class DIRuleHandlerLoader extends Object implements IRuleHandlerLoader
 {
 
 	/** @var Container */
@@ -26,7 +26,7 @@ class ServiceAnnotationHandlerLoader extends Object implements IAnnotationHandle
 	/** @var string[] */
 	private $services;
 
-	/** @var IAnnotationHandler[] */
+	/** @var IRuleHandler[] */
 	private $handlers;
 
 	public function __construct($services, Container $container)
@@ -37,18 +37,18 @@ class ServiceAnnotationHandlerLoader extends Object implements IAnnotationHandle
 
 	/**
 	 * @param string $type
-	 * @return IAnnotationHandler
+	 * @return IRuleHandler
 	 */
-	public function getAnnotationHandler($type)
+	public function getRuleHandler($type)
 	{
 		if (!isset($this->services[$type])) {
-			throw new UnexpectedTypeException("No annotation handler found for type '$type'.");
+			throw new UnexpectedTypeException("No rule handler found for type '$type'.");
 		}
 		$name = $this->services[$type];
 		if (!isset($this->handlers[$name])) {
 			$service = $this->container->getService($name);
-			if (!$service instanceof IAnnotationHandler) {
-				throw new UnexpectedTypeException("Service '$name' is not an instance of Arachne\Verifier\IAnnotationHandler.");
+			if (!$service instanceof IRuleHandler) {
+				throw new UnexpectedTypeException("Service '$name' is not an instance of Arachne\Verifier\IRuleHandler.");
 			}
 			$this->handlers[$name] = $service;
 		}

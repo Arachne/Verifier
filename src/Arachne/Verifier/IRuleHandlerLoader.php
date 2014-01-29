@@ -13,13 +13,13 @@ namespace Arachne\Verifier;
 /**
  * @author Jáchym Toušek
  */
-interface IAnnotationHandlerLoader
+interface IRuleHandlerLoader
 {
 
 	/**
 	 * @param string $type
-	 * @return IAnnotationHandler
+	 * @return IRuleHandler
 	 */
-	public function getAnnotationHandler($type);
+	public function getRuleHandler($type);
 
 }

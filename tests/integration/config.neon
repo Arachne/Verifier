@@ -7,12 +7,12 @@ nette:
 services:
 	routerFactory: Tests\Integration\RouterFactory
 	router: @routerFactory::create()
-	enabledAnnotationHandler:
-		class: Tests\Integration\EnabledAnnotationHandler
+	enabledRuleHandler:
+		class: Tests\Integration\EnabledRuleHandler
 		tags:
-			arachne.verifier.annotationHandler:
+			arachne.verifier.ruleHandler:
 				- Tests\Integration\Enabled
 
 extensions:
-	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
+	kdyby.rules: Kdyby\Annotations\DI\AnnotationsExtension
 	arachne.verifier: Arachne\Verifier\DI\VerifierExtension

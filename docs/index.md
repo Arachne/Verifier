@@ -1,6 +1,6 @@
 # Documentation
 
-This extension is here to provide easy annotation-based verification whether given action is available or not. The most typical use-case is authorization (see Arachne/SecurityAnnotations) but you can write your own handlers as well.
+This extension is here to provide easy annotation-based verification whether given action is available or not. The most typical use-case is authorization (see Arachne/SecurityRules) but you can write your own handlers as well.
 
 
 ## Installation
@@ -11,7 +11,7 @@ The best way to install Arachne/Verifier is using [Composer](http://getcomposer.
 $ composer require arachne/verifier
 ```
 
-Now you need to register Arachne/Verifier and Kdyby/Annotations extensions using your [neon](http://ne-on.org/) config file.
+Now you need to register Arachne/Verifier and Kdyby/Rules extensions using your [neon](http://ne-on.org/) config file.
 
 ```yml
 extensions:
@@ -19,7 +19,7 @@ extensions:
 	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
 ```
 
-Please see documentation how to configure [Kdyby/Annotations](https://github.com/Kdyby/Annotations/blob/master/docs/en/index.md).
+Please see documentation how to configure [Kdyby/Rules](https://github.com/Kdyby/Rules/blob/master/docs/en/index.md).
 
 ### PHP 5.4
 
@@ -49,42 +49,42 @@ If you don't use PHP 5.4, just copy all methods from the traits to your BasePres
 ## Usage
 
 You need two things:
-- some annotation class(es) implementing Arachne\Verifier\IAnnotation
-- a tagged service implementing Arachne\Verifier\IAnnotationHandler
+- some rule class(es) implementing Arachne\Verifier\IRule
+- a tagged service implementing Arachne\Verifier\IRuleHandler
 
-These will usually be provided by some other extensions. **For examples see Arachne/SecurityAnnotations and Arachne/ComponentsProtection.**
+These will usually be provided by some other extensions. **For examples see Arachne/SecurityRules and Arachne/ComponentsProtection.**
 
-If you want to add your own annotations, see the Configuration section below. Otherwise feel free to skip it.
+If you want to add your own rules, see the Configuration section below. Otherwise feel free to skip it.
 
 ### Configuration
 
-Let's say you have some annotation App\MyAnnotation and a handler App\MyAnnotationHandler. You need to register the handler as a service in your config.neon, add the arachne.verifier.annotationHandler tag and configure the annotation it handles in tag attributes. *Be sure to use the real annotation classes names. An interface or a parent class will not work.*
+Let's say you have some rule App\MyRule and a handler App\MyRuleHandler. You need to register the handler as a service in your config.neon, add the arachne.verifier.ruleHandler tag and configure the rule it handles in tag attributes. *Be sure to use the real rule classes names. An interface or a parent class will not work.*
 
 ```yml
 services:
-	myAnnotationHandler:
-		class: App\MyAnnotationHandler
+	myRuleHandler:
+		class: App\MyRuleHandler
 		tags:
-			arachne.verifier.annotationHandler:
-				- App\MyAnnotation
+			arachne.verifier.ruleHandler:
+				- App\MyRule
 ```
 
 ### Presenter
 
-In presenters you can now use these annotations to restrict access to the whole presenter or separately to its actions, views, signals and components.
+In presenters you can now use these rules to restrict access to the whole presenter or separately to its actions, views, signals and components.
 
 ```php
-use App\MyAnnotation;
+use App\MyRule;
 
 /**
- * @MyAnnotation("argument")
+ * @MyRule("argument")
  */
 class ArticlePresenter extends BasePresenter
 {
 
 	/**
-	 * @MyAnnotation("some argument")
-	 * @MyAnnotation("different argument")
+	 * @MyRule("some argument")
+	 * @MyRule("different argument")
 	 */
 	public function actionEdit($id)
 	{
@@ -92,7 +92,7 @@ class ArticlePresenter extends BasePresenter
 	}
 
 	/**
-	 * @MyAnnotation("argument")
+	 * @MyRule("argument")
 	 */
 	public function createComponentMenu()
 	{

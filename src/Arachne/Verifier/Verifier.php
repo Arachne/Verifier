@@ -32,13 +32,13 @@ class Verifier extends Object
 	/** @var Reader */
 	protected $reader;
 
-	/** @var IAnnotationHandlerLoader */
+	/** @var IRuleHandlerLoader */
 	protected $handlerLoader;
 
 	/** @var IPresenterFactory */
 	protected $presenterFactory;
 
-	public function __construct(Reader $reader, IAnnotationHandlerLoader $handlerLoader, IPresenterFactory $presenterFactory)
+	public function __construct(Reader $reader, IRuleHandlerLoader $handlerLoader, IPresenterFactory $presenterFactory)
 	{
 		$this->reader = $reader;
 		$this->handlerLoader = $handlerLoader;
@@ -47,28 +47,28 @@ class Verifier extends Object
 
 	/**
 	 * Checks whether the given reflection contains any conditions that are not met.
-	 * @param ReflectionClass|ReflectionMethod $annotations
+	 * @param ReflectionClass|ReflectionMethod $rules
 	 * @param Request $request
 	 * @param string $component
 	 * @throws BadRequestException
 	 */
-	public function checkAnnotations(Reflector $reflection, Request $request, $component = NULL)
+	public function checkRules(Reflector $reflection, Request $request, $component = NULL)
 	{
 		if ($reflection instanceof ReflectionMethod) {
-			$annotations = $this->reader->getMethodAnnotations($reflection);
+			$rules = $this->reader->getMethodAnnotations($reflection);
 		} elseif ($reflection instanceof ReflectionClass) {
-			$annotations = $this->reader->getClassAnnotations($reflection);
+			$rules = $this->reader->getClassAnnotations($reflection);
 		} else {
 			throw new InvalidArgumentException('Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.');
 		}
 
-		foreach ($annotations as $annotation) {
-			if (!$annotation instanceof IAnnotation) {
+		foreach ($rules as $rule) {
+			if (!$rule instanceof IRule) {
 				continue;
 			}
 			$this->handlerLoader
-				->getAnnotationHandler(get_class($annotation))
-				->checkAnnotation($annotation, $request, $component);
+				->getRuleHandler(get_class($rule))
+				->checkRule($rule, $request, $component);
 		}
 	}
 
@@ -107,7 +107,7 @@ class Verifier extends Object
 				// Signal requirements
 				$method = 'handle' . $signal;
 				if ($reflection->hasCallableMethod($method)) {
-					$this->checkAnnotations($reflection->getMethod($method), $request, $component->getParent() === $component ? NULL : $component->getName());
+					$this->checkRules($reflection->getMethod($method), $request, $component->getParent() === $component ? NULL : $component->getName());
 				}
 
 			} else {
@@ -115,17 +115,17 @@ class Verifier extends Object
 				$reflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
 
 				// Presenter requirements
-				$this->checkAnnotations($reflection, $request);
+				$this->checkRules($reflection, $request);
 
 				// Action requirements
 				$action = $parameters[Presenter::ACTION_KEY];
 				$method = 'action' . $action;
 				if ($reflection->hasCallableMethod($method)) {
-					$this->checkAnnotations($reflection->getMethod($method), $request);
+					$this->checkRules($reflection->getMethod($method), $request);
 				}
 				$method = 'render' . $action;
 				if ($reflection->hasCallableMethod($method)) {
-					$this->checkAnnotations($reflection->getMethod($method), $request);
+					$this->checkRules($reflection->getMethod($method), $request);
 				}
 			}
 		} catch (BadRequestException $e) {
@@ -150,9 +150,9 @@ class Verifier extends Object
 			$method = 'createComponent' . ucfirst($name);
 			if ($reflection->hasMethod($method)) {
 				$factory = $reflection->getMethod($method);
-				$this->checkAnnotations($factory, $request, $parent->getParent() === $parent ? NULL : $parent->getName());
+				$this->checkRules($factory, $request, $parent->getParent() === $parent ? NULL : $parent->getName());
 
-				// TODO: find component class based on @return annotation using arachne/class-resolver and check it's class-level annotations
+				// TODO: find component class based on @return rule using arachne/class-resolver and check it's class-level rules
 				// component name should be $component->getName() . '-' . $name this time
 			}
 

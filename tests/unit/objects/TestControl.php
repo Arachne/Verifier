@@ -7,20 +7,20 @@ use Nette\Application\UI\Control;
 /**
  * @author Jáchym Toušek
  *
- * @TestAnnotation
+ * @TestRule
  */
 class TestControl extends Control
 {
 
 	/**
-	 * @TestAnnotation
+	 * @TestRule
 	 */
 	public function handleSignal()
 	{
 	}
 
 	/**
-	 * @TestAnnotation
+	 * @TestRule
 	 */
 	public function createComponentComponent()
 	{

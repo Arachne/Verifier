@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use Arachne\Verifier\IAnnotationHandler;
+use Arachne\Verifier\IRuleHandler;
 use Arachne\Verifier\Verifier;
 use Codeception\TestCase\Test;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -32,12 +32,12 @@ class VerifierTest extends Test
 	protected function _before()
 	{
 		$reader = new AnnotationReader();
-		$this->handlerLoader = Mockery::mock('Arachne\Verifier\IAnnotationHandlerLoader');
+		$this->handlerLoader = Mockery::mock('Arachne\Verifier\IRuleHandlerLoader');
 		$this->presenterFactory = Mockery::mock('Nette\Application\IPresenterFactory');
 		$this->verifier = new Verifier($reader, $this->handlerLoader, $this->presenterFactory);
 	}
 
-	public function testCheckAnnotationsOnClass()
+	public function testCheckRulesOnClass()
 	{
 		$reflection = new ReflectionClass('Tests\Unit\TestPresenter');
 		$request = new Request('Test', 'GET', []);
@@ -45,10 +45,10 @@ class VerifierTest extends Test
 		$handler = $this->createHandlerMock($request, 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 
-		$this->assertNull($this->verifier->checkAnnotations($reflection, $request));
+		$this->assertNull($this->verifier->checkRules($reflection, $request));
 	}
 
-	public function testCheckAnnotationsOnMethod()
+	public function testCheckRulesOnMethod()
 	{
 		$reflection = new ReflectionMethod('Tests\Unit\TestPresenter', 'renderView');
 		$request = new Request('Test', 'GET', []);
@@ -56,18 +56,18 @@ class VerifierTest extends Test
 		$handler = $this->createHandlerMock($request, 2);
 		$this->setupHandlerLoaderMock($handler, 2);
 
-		$this->assertNull($this->verifier->checkAnnotations($reflection, $request));
+		$this->assertNull($this->verifier->checkRules($reflection, $request));
 	}
 
 	/**
 	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
 	 * @expectedExceptionMessage Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.
 	 */
-	public function testCheckAnnotationsOnProperty()
+	public function testCheckRulesOnProperty()
 	{
 		$reflection = new ReflectionProperty('Tests\Unit\TestPresenter', 'property');
 		$request = new Request('Test', 'GET', []);
-		$this->verifier->checkAnnotations($reflection, $request);
+		$this->verifier->checkRules($reflection, $request);
 	}
 
 	public function testIsLinkVerifiedTrue()
@@ -89,10 +89,10 @@ class VerifierTest extends Test
 			Presenter::ACTION_KEY => 'view',
 		]);
 
-		$handler = Mockery::mock('Arachne\Verifier\IAnnotationHandler')
-			->shouldReceive('checkAnnotation')
+		$handler = Mockery::mock('Arachne\Verifier\IRuleHandler')
+			->shouldReceive('checkRule')
 			->once()
-			->with($this->createAnnotationMatcher(), $request, NULL)
+			->with($this->createRuleMatcher(), $request, NULL)
 			->andThrow('Tests\Unit\TestException')
 			->getMock();
 
@@ -139,10 +139,10 @@ class VerifierTest extends Test
 	{
 		$request = new Request('Test', 'GET', []);
 
-		$handler = Mockery::mock('Arachne\Verifier\IAnnotationHandler')
-			->shouldReceive('checkAnnotation')
+		$handler = Mockery::mock('Arachne\Verifier\IRuleHandler')
+			->shouldReceive('checkRule')
 			->once()
-			->with($this->createAnnotationMatcher(), $request, NULL)
+			->with($this->createRuleMatcher(), $request, NULL)
 			->andThrow('Tests\Unit\TestException')
 			->getMock();
 
@@ -182,10 +182,10 @@ class VerifierTest extends Test
 		$this->verifier->isLinkVerified($request, $component);
 	}
 
-	private function createAnnotationMatcher()
+	private function createRuleMatcher()
 	{
-		return Mockery::on(function ($annotation) {
-			return $annotation instanceof TestAnnotation;
+		return Mockery::on(function ($rule) {
+			return $rule instanceof TestRule;
 		});
 	}
 
@@ -196,23 +196,23 @@ class VerifierTest extends Test
 	 */
 	private function createHandlerMock(Request $request, $limit, $component = NULL)
 	{
-		return Mockery::mock('Arachne\Verifier\IAnnotationHandler')
-			->shouldReceive('checkAnnotation')
+		return Mockery::mock('Arachne\Verifier\IRuleHandler')
+			->shouldReceive('checkRule')
 			->times($limit)
-			->with($this->createAnnotationMatcher(), $request, $component)
+			->with($this->createRuleMatcher(), $request, $component)
 			->andReturnNull()
 			->getMock();
 	}
 
 	/**
-	 * @param IAnnotationHandler $handler
+	 * @param IRuleHandler $handler
 	 * @param int $limit
 	 */
-	private function setupHandlerLoaderMock(IAnnotationHandler $handler, $limit)
+	private function setupHandlerLoaderMock(IRuleHandler $handler, $limit)
 	{
 		$this->handlerLoader
-			->shouldReceive('getAnnotationHandler')
-			->with('Tests\Unit\TestAnnotation')
+			->shouldReceive('getRuleHandler')
+			->with('Tests\Unit\TestRule')
 			->times($limit)
 			->andReturn($handler);
 	}

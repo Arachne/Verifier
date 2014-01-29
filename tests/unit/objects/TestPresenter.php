@@ -7,7 +7,7 @@ use Nette\Application\UI\Presenter;
 /**
  * @author Jáchym Toušek
  *
- * @TestAnnotation
+ * @TestRule
  */
 class TestPresenter extends Presenter
 {
@@ -15,36 +15,36 @@ class TestPresenter extends Presenter
 	protected $property;
 
 	/**
-	 * @TestAnnotation
+	 * @TestRule
 	 */
 	public function actionAction()
 	{
 	}
 
 	/**
-	 * @TestAnnotation
+	 * @TestRule
 	 */
 	public function renderAction()
 	{
 	}
 
 	/**
-	 * @TestAnnotation
-	 * @TestAnnotation
+	 * @TestRule
+	 * @TestRule
 	 */
 	public function renderView()
 	{
 	}
 
 	/**
-	 * @TestAnnotation
+	 * @TestRule
 	 */
 	public function handleSignal()
 	{
 	}
 
 	/**
-	 * @TestAnnotation
+	 * @TestRule
 	 */
 	public function createComponentComponent()
 	{

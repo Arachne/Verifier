@@ -18,15 +18,15 @@ use Nette\DI\CompilerExtension;
 class VerifierExtension extends CompilerExtension
 {
 
-	const TAG_HANDLER = 'arachne.verifier.annotationHandler';
+	const TAG_HANDLER = 'arachne.verifier.ruleHandler';
 
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('annotationHandlerLoader'))
-			->setClass('Arachne\Verifier\IAnnotationHandlerLoader')
-			->setFactory('Arachne\Verifier\ServiceAnnotationHandlerLoader');
+		$builder->addDefinition($this->prefix('ruleHandlerLoader'))
+			->setClass('Arachne\Verifier\IRuleHandlerLoader')
+			->setFactory('Arachne\Verifier\DIRuleHandlerLoader');
 
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier');
@@ -48,7 +48,7 @@ class VerifierExtension extends CompilerExtension
 			}
 		}
 
-		$builder->getDefinition($this->prefix('annotationHandlerLoader'))
+		$builder->getDefinition($this->prefix('ruleHandlerLoader'))
 			->setArguments(array($services));
 	}
 

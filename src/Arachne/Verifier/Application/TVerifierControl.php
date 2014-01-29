@@ -25,7 +25,7 @@ trait TVerifierControl
 	 */
 	public function checkRequirements($reflection)
 	{
-		$this->getPresenter()->getVerifier()->checkAnnotations($reflection, $this->getPresenter()->getRequest(), $this->getName());
+		$this->getPresenter()->getVerifier()->checkRules($reflection, $this->getPresenter()->getRequest(), $this->getName());
 	}
 
 	/**

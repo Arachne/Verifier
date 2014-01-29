@@ -2,43 +2,43 @@
 
 namespace Tests\Integration;
 
-use Arachne\Verifier\IAnnotation;
-use Arachne\Verifier\IAnnotationHandler;
+use Arachne\Verifier\IRule;
+use Arachne\Verifier\IRuleHandler;
 use Nette\Application\Request;
 use Nette\Object;
 
 /**
  * @author Jáchym Toušek
  */
-class EnabledAnnotationHandler extends Object implements IAnnotationHandler
+class EnabledRuleHandler extends Object implements IRuleHandler
 {
 
 	/**
-	 * @param IAnnotation $annotation
+	 * @param IRule $rule
 	 * @param Request $request
 	 * @param string $component
 	 * @throws DisabledException
 	 */
-	public function checkAnnotation(IAnnotation $annotation, Request $request, $component = NULL)
+	public function checkRule(IRule $rule, Request $request, $component = NULL)
 	{
-		if ($annotation instanceof Enabled) {
-			$this->checkAnnotationEnabled($annotation, $request, $component);
+		if ($rule instanceof Enabled) {
+			$this->checkRuleEnabled($rule, $request, $component);
 		} else {
-			throw new \InvalidArgumentException('Unknown annotation \'' . get_class($annotation) . '\' given.');
+			throw new \InvalidArgumentException('Unknown rule \'' . get_class($rule) . '\' given.');
 		}
 	}
 
 	/**
-	 * @param Allowed $annotation
+	 * @param Allowed $rule
 	 * @throws DisabledException
 	 */
-	protected function checkAnnotationEnabled(Enabled $annotation, Request $request, $component = NULL)
+	protected function checkRuleEnabled(Enabled $rule, Request $request, $component = NULL)
 	{
-		if (is_string($annotation->value)) {
+		if (is_string($rule->value)) {
 			$parameters = $request->getParameters();
-			$enabled = (bool) $parameters[$component . '-' . ltrim($annotation->value, '$')];
+			$enabled = (bool) $parameters[$component . '-' . ltrim($rule->value, '$')];
 		} else {
-			$enabled = $annotation->value;
+			$enabled = $rule->value;
 		}
 		if (!$enabled) {
 			throw new DisabledException("This action is not enabled.");

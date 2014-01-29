@@ -39,7 +39,7 @@ trait TVerifierPresenter
 	 */
 	public function checkRequirements($reflection)
 	{
-		$this->verifier->checkAnnotations($reflection, $this->getRequest());
+		$this->verifier->checkRules($reflection, $this->getRequest());
 	}
 
 	/**

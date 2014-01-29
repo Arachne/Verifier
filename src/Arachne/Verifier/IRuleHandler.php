@@ -16,15 +16,15 @@ use Nette\Application\Request;
 /**
  * @author Jáchym Toušek
  */
-interface IAnnotationHandler
+interface IRuleHandler
 {
 
 	/**
-	 * @param IAnnotation $annotation
+	 * @param IRule $rule
 	 * @param Request $request
 	 * @param string $component
 	 * @throws BadRequestException
 	 */
-	public function checkAnnotation(IAnnotation $annotation, Request $request, $component = NULL);
+	public function checkRule(IRule $rule, Request $request, $component = NULL);
 
 }
