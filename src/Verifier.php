@@ -11,7 +11,6 @@
 namespace Arachne\Verifier;
 
 use Arachne\Verifier\Exception\InvalidArgumentException;
-use Doctrine\Common\Annotations\Reader;
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
@@ -29,8 +28,8 @@ use Reflector;
 class Verifier extends Object
 {
 
-	/** @var Reader */
-	protected $reader;
+	/** @var IRuleProvider[] */
+	protected $ruleProviders;
 
 	/** @var IRuleHandlerLoader */
 	protected $handlerLoader;
@@ -38,9 +37,9 @@ class Verifier extends Object
 	/** @var IPresenterFactory */
 	protected $presenterFactory;
 
-	public function __construct(Reader $reader, IRuleHandlerLoader $handlerLoader, IPresenterFactory $presenterFactory)
+	public function __construct(array $ruleProviders, IRuleHandlerLoader $handlerLoader, IPresenterFactory $presenterFactory)
 	{
-		$this->reader = $reader;
+		$this->ruleProviders = $ruleProviders;
 		$this->handlerLoader = $handlerLoader;
 		$this->presenterFactory = $presenterFactory;
 	}
@@ -54,12 +53,13 @@ class Verifier extends Object
 	 */
 	public function checkRules(Reflector $reflection, Request $request, $component = NULL)
 	{
-		if ($reflection instanceof ReflectionMethod) {
-			$rules = $this->reader->getMethodAnnotations($reflection);
-		} elseif ($reflection instanceof ReflectionClass) {
-			$rules = $this->reader->getClassAnnotations($reflection);
+		if ($reflection instanceof ReflectionMethod || $reflection instanceof ReflectionClass) {
+			$rules = array();
+			foreach ($this->ruleProviders as $provider) {
+				$rules += $provider->getRules($reflection, $request, $component);
+			}
 		} else {
-			throw new InvalidArgumentException('Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.');
+			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod or ReflectionClass.');
 		}
 
 		foreach ($rules as $rule) {
@@ -137,7 +137,7 @@ class Verifier extends Object
 
 	/**
 	 * Checks whether the parent component can create the subcomponent with given name.
-	 * @param string $name	 
+	 * @param string $name
 	 * @param Request $request
 	 * @param PresenterComponent $parent
 	 * @return bool

@@ -19,6 +19,7 @@ class VerifierExtension extends CompilerExtension
 {
 
 	const TAG_HANDLER = 'arachne.verifier.ruleHandler';
+	const TAG_RULE_PROVIDER = 'arachne.verifier.ruleProvider';
 
 	public function loadConfiguration()
 	{
@@ -30,6 +31,12 @@ class VerifierExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier');
+
+		$builder->addDefinition($this->prefix('annotationsRuleProvider'))
+			->setClass('Arachne\Verifier\IRuleProvider')
+			->setFactory('Arachne\Verifier\AnnotationsRuleProvider')
+			->addTag(self::TAG_RULE_PROVIDER)
+			->setAutowired(FALSE);
 
 		if ($builder->hasDefinition('nette.latte')) {
 			$builder->getDefinition('nette.latte')
@@ -49,6 +56,14 @@ class VerifierExtension extends CompilerExtension
 		}
 
 		$builder->getDefinition($this->prefix('ruleHandlerLoader'))
+			->setArguments(array($services));
+
+		$services = array();
+		foreach ($builder->findByTag(self::TAG_RULE_PROVIDER) as $name => $_) {
+			$services[] = '@' . $name;
+		}
+
+		$builder->getDefinition($this->prefix('verifier'))
 			->setArguments(array($services));
 	}
 

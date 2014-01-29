@@ -5,14 +5,12 @@ namespace Tests\Unit;
 use Arachne\Verifier\IRuleHandler;
 use Arachne\Verifier\Verifier;
 use Codeception\TestCase\Test;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Mockery;
+use Mockery\Matcher\MatcherAbstract;
 use Mockery\MockInterface;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
+use Reflector;
 
 /**
  * @author Jáchym Toušek
@@ -24,6 +22,9 @@ class VerifierTest extends Test
 	private $verifier;
 
 	/** @var MockInterface */
+	private $ruleProvider;
+
+	/** @var MockInterface */
 	private $handlerLoader;
 
 	/** @var MockInterface */
@@ -31,52 +32,56 @@ class VerifierTest extends Test
 
 	protected function _before()
 	{
-		$reader = new AnnotationReader();
+		$this->ruleProvider = Mockery::mock('Arachne\Verifier\IRuleProvider');
 		$this->handlerLoader = Mockery::mock('Arachne\Verifier\IRuleHandlerLoader');
 		$this->presenterFactory = Mockery::mock('Nette\Application\IPresenterFactory');
-		$this->verifier = new Verifier($reader, $this->handlerLoader, $this->presenterFactory);
+		$this->verifier = new Verifier([ $this->ruleProvider ], $this->handlerLoader, $this->presenterFactory);
 	}
 
 	public function testCheckRulesOnClass()
 	{
-		$reflection = new ReflectionClass('Tests\Unit\TestPresenter');
-		$request = new Request('Test', 'GET', []);
-
+		$reflection = Mockery::mock('ReflectionClass');
+		$request = Mockery::mock('Nette\Application\Request');
 		$handler = $this->createHandlerMock($request, 1);
+
+		$this->setupRuleProviderMock($reflection, $request, 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 
-		$this->assertNull($this->verifier->checkRules($reflection, $request));
+		$this->verifier->checkRules($reflection, $request);
 	}
 
 	public function testCheckRulesOnMethod()
 	{
-		$reflection = new ReflectionMethod('Tests\Unit\TestPresenter', 'renderView');
-		$request = new Request('Test', 'GET', []);
+		$reflection = Mockery::mock('ReflectionMethod');
+		$request = Mockery::mock('Nette\Application\Request');
+		$handler = $this->createHandlerMock($request, 1);
 
-		$handler = $this->createHandlerMock($request, 2);
-		$this->setupHandlerLoaderMock($handler, 2);
+		$this->setupRuleProviderMock($reflection, $request, 1);
+		$this->setupHandlerLoaderMock($handler, 1);
 
-		$this->assertNull($this->verifier->checkRules($reflection, $request));
+		$this->verifier->checkRules($reflection, $request);
 	}
 
 	/**
 	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
-	 * @expectedExceptionMessage Reflection must be an instance of either \ReflectionMethod or \ReflectionClass.
+	 * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod or ReflectionClass.
 	 */
 	public function testCheckRulesOnProperty()
 	{
-		$reflection = new ReflectionProperty('Tests\Unit\TestPresenter', 'property');
-		$request = new Request('Test', 'GET', []);
+		$reflection = Mockery::mock('Reflector');
+		$request = Mockery::mock('Nette\Application\Request');
 		$this->verifier->checkRules($reflection, $request);
 	}
 
 	public function testIsLinkVerifiedTrue()
 	{
-		$request = new Request('Test', 'GET', [
+		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'action',
 		]);
-
 		$handler = $this->createHandlerMock($request, 3);
+
+		$this->setupRuleProviderMock(Mockery::type('ReflectionMethod'), $request, 2);
+		$this->setupRuleProviderMock(Mockery::type('ReflectionClass'), $request, 1);
 		$this->setupHandlerLoaderMock($handler, 3);
 		$this->setupPresenterFactoryMock();
 
@@ -85,17 +90,17 @@ class VerifierTest extends Test
 
 	public function testIsLinkVerifiedFalse()
 	{
-		$request = new Request('Test', 'GET', [
+		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'view',
 		]);
-
 		$handler = Mockery::mock('Arachne\Verifier\IRuleHandler')
 			->shouldReceive('checkRule')
 			->once()
-			->with($this->createRuleMatcher(), $request, NULL)
+			->with(Mockery::type('Tests\Unit\TestRule'), $request, NULL)
 			->andThrow('Tests\Unit\TestException')
 			->getMock();
 
+		$this->setupRuleProviderMock(Mockery::type('ReflectionClass'), $request, 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
@@ -104,14 +109,16 @@ class VerifierTest extends Test
 
 	public function testIsLinkVerifiedSignal()
 	{
-		$request = new Request('Test', 'GET', [
+		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'action',
 			Presenter::SIGNAL_KEY => 'signal',
 		]);
-
 		$handler = $this->createHandlerMock($request, 1, 'test-component');
+
+		$this->setupRuleProviderMock(Mockery::type('ReflectionMethod'), $request, 1, 'test-component');
 		$this->setupHandlerLoaderMock($handler, 1);
 		$this->setupPresenterFactoryMock();
+
 		$component = Mockery::mock('Nette\Application\UI\PresenterComponent')
 			->shouldReceive('getName')
 			->once()
@@ -125,10 +132,12 @@ class VerifierTest extends Test
 
 	public function testIsComponentVerifiedTrue()
 	{
-		$request = new Request('Test', 'GET', []);
-
+		$request = Mockery::mock('Nette\Application\Request');
 		$handler = $this->createHandlerMock($request, 1);
+
+		$this->setupRuleProviderMock(Mockery::type('ReflectionMethod'), $request, 1);
 		$this->setupHandlerLoaderMock($handler, 1);
+
 		$parent = new TestPresenter();
 		$parent->setParent($parent, 'Test');
 
@@ -137,16 +146,17 @@ class VerifierTest extends Test
 
 	public function testIsComponentVerifiedFalse()
 	{
-		$request = new Request('Test', 'GET', []);
-
+		$request = Mockery::mock('Nette\Application\Request');
 		$handler = Mockery::mock('Arachne\Verifier\IRuleHandler')
 			->shouldReceive('checkRule')
 			->once()
-			->with($this->createRuleMatcher(), $request, NULL)
+			->with(Mockery::type('Tests\Unit\TestRule'), $request, NULL)
 			->andThrow('Tests\Unit\TestException')
 			->getMock();
 
+		$this->setupRuleProviderMock(Mockery::type('ReflectionMethod'), $request, 1);
 		$this->setupHandlerLoaderMock($handler, 1);
+
 		$parent = new TestPresenter();
 
 		$this->assertFalse($this->verifier->isComponentVerified('component', $request, $parent));
@@ -154,13 +164,15 @@ class VerifierTest extends Test
 
 	public function testIsComponentSignalVerifiedTrue()
 	{
-		$request = new Request('Test', 'GET', [
+		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'action',
 			Presenter::SIGNAL_KEY => 'component-signal',
-		]);
-
+		], FALSE);
 		$handler = $this->createHandlerMock($request, 1, 'component');
+
+		$this->setupRuleProviderMock(Mockery::type('ReflectionMethod'), $request, 1, 'component');
 		$this->setupHandlerLoaderMock($handler, 1);
+
 		$component = new TestControl(NULL, 'component');
 
 		$this->assertTrue($this->verifier->isLinkVerified($request, $component));
@@ -172,36 +184,49 @@ class VerifierTest extends Test
 	 */
 	public function testWrongSignalReceiver()
 	{
-		$request = new Request('Test', 'GET', [
+		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'action',
 			Presenter::SIGNAL_KEY => 'component-signal',
-		]);
+		], FALSE);
 
 		$component = new TestControl(NULL, 'test-component');
 
 		$this->verifier->isLinkVerified($request, $component);
 	}
 
-	private function createRuleMatcher()
-	{
-		return Mockery::on(function ($rule) {
-			return $rule instanceof TestRule;
-		});
-	}
-
 	/**
 	 * @param Request $request
 	 * @param int $limit
 	 * @param string $component
+	 * @return IRuleHandler
 	 */
 	private function createHandlerMock(Request $request, $limit, $component = NULL)
 	{
 		return Mockery::mock('Arachne\Verifier\IRuleHandler')
 			->shouldReceive('checkRule')
 			->times($limit)
-			->with($this->createRuleMatcher(), $request, $component)
+			->with(Mockery::type('Tests\Unit\TestRule'), $request, $component)
 			->andReturnNull()
 			->getMock();
+	}
+
+	/**
+	 * @param array $parameters
+	 * @param bool $presenter
+	 * @return Request
+	 */
+	private function createRequestMock(array $parameters, $presenter = TRUE)
+	{
+		$request = Mockery::mock('Nette\Application\Request');
+		$request->shouldReceive('getParameters')
+			->once()
+			->andReturn($parameters);
+		if ($presenter) {
+			$request->shouldReceive('getPresenterName')
+				->once()
+				->andReturn('Test');
+		}
+		return $request;
 	}
 
 	/**
@@ -215,6 +240,20 @@ class VerifierTest extends Test
 			->with('Tests\Unit\TestRule')
 			->times($limit)
 			->andReturn($handler);
+	}
+
+	/**
+	 * @param Reflector|MatcherAbstract $matcher
+	 * @param Request $request
+	 * @param int $limit
+	 */
+	private function setupRuleProviderMock($matcher, Request $request, $limit, $component = '')
+	{
+		$this->ruleProvider
+			->shouldReceive('getRules')
+			->times($limit)
+			->with($matcher, $request, $component)
+			->andReturn([ new TestRule() ]);
 	}
 
 	private function setupPresenterFactoryMock()
