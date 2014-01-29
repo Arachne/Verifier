@@ -23,7 +23,7 @@ Please see documentation how to configure [Kdyby/Annotations](https://github.com
 
 ### PHP 5.4
 
-Finally add the Arachne\Verifier\Application\TVerifierPresenter trait to your BasePresenter.
+Finally add Arachne\Verifier\Application\TVerifierPresenter trait to your BasePresenter and Arachne\Verifier\Application\TVerifierComponent trait to your BaseControl.
 
 ```php
 abstract class BasePresenter extends \Nette\Application\UI\Presenter
@@ -32,11 +32,18 @@ abstract class BasePresenter extends \Nette\Application\UI\Presenter
 	use \Arachne\Verifier\Application\TVerifierPresenter;
 
 }
+
+abstract class BaseControl extends \Nette\Application\UI\Control
+{
+
+	use \Arachne\Verifier\Application\TVerifierControl;
+
+}
 ```
 
 ### PHP 5.3
 
-If you don't use PHP 5.4, just copy the trait's methods to your BasePresenter.
+If you don't use PHP 5.4, just copy all methods from the traits to your BasePresenter and BaseControl.
 
 
 ## Usage
@@ -51,7 +58,7 @@ If you want to add your own annotations, see the Configuration section below. Ot
 
 ### Configuration
 
-Let's say you have some annotation App\MyAnnotation and a handler App\MyAnnotationHandler. You have to register the handler as a service in your config.neon, add the arachne.verifier.annotationHandler tag and configure the annotation it handles in tag attributes. *Be sure to use the real annotation classes names. An interface or a parent class will not work.*
+Let's say you have some annotation App\MyAnnotation and a handler App\MyAnnotationHandler. You need to register the handler as a service in your config.neon, add the arachne.verifier.annotationHandler tag and configure the annotation it handles in tag attributes. *Be sure to use the real annotation classes names. An interface or a parent class will not work.*
 
 ```yml
 services:
@@ -95,18 +102,24 @@ class ArticlePresenter extends BasePresenter
 }
 ```
 
-Note that this will only work in presenters. Annotations in component classes are not supported.
+Note that class-level annotations in components are not supported.
 
 ### Template
 
-In template you can use the `n:ifLinkVerified` macro to check whether the link is available. The `n:href` macro without argument will automatically take the argument of the closest `n:ifLinkVerified` macro so you don't need to write the argument twice. If you do not use `Presenter::INVALID_LINK_EXCEPTION`, the condition will be true for invalid links.
+#### Links
 
-**Warning**: This macro always uses presenter when creating the link. Therefore in components use it instead of the `{plink ...}` macro but never instead of the `{link ...}` macro when calling a component signal.
+In template you can use the `n:ifLinkVerified` macro to check whether the link is available.
 
 ```html
 {* This link will not be shown if the action is not available. *}
 <a n:ifLinkVerified="Article:edit $id" n:href>Link</a>
 ```
+
+In components you might need the `n:ifPresenterLinkVerified` macro as well. The difference is the same as between `{link ...}` and `{plink ...}` macros.
+
+The `n:href` macro without argument will automatically take the argument of the last execuded `n:ifLinkVerified` or `n:ifPresenterLinkVerified` macro so you don't need to write the argument twice. If you do not use `Presenter::INVALID_LINK_EXCEPTION`, the condition will be true for invalid links.
+
+#### Components
 
 There is also the `n:ifComponentVerified` macro to check whether the component is available.
 

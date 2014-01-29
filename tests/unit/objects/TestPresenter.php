@@ -14,11 +14,6 @@ class TestPresenter extends Presenter
 
 	protected $property;
 
-	final public function __construct()
-	{
-		throw new \Exception('This class is there for annotations only.');
-	}
-
 	/**
 	 * @TestAnnotation
 	 */

@@ -74,14 +74,13 @@ class VerifierTest extends Test
 	{
 		$request = new Request('Test', 'GET', [
 			Presenter::ACTION_KEY => 'action',
-			Presenter::SIGNAL_KEY => 'signal',
 		]);
 
-		$handler = $this->createHandlerMock($request, 4);
-		$this->setupHandlerLoaderMock($handler, 4);
+		$handler = $this->createHandlerMock($request, 3);
+		$this->setupHandlerLoaderMock($handler, 3);
 		$this->setupPresenterFactoryMock();
 
-		$this->assertTrue($this->verifier->isLinkVerified($request));
+		$this->assertTrue($this->verifier->isLinkVerified($request, Mockery::mock('Nette\Application\UI\PresenterComponent')));
 	}
 
 	public function testIsLinkVerifiedFalse()
@@ -93,14 +92,35 @@ class VerifierTest extends Test
 		$handler = Mockery::mock('Arachne\Verifier\IAnnotationHandler')
 			->shouldReceive('checkAnnotation')
 			->once()
-			->with($this->createAnnotationMatcher(), $request)
+			->with($this->createAnnotationMatcher(), $request, NULL)
 			->andThrow('Tests\Unit\TestException')
 			->getMock();
 
 		$this->setupHandlerLoaderMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
-		$this->assertFalse($this->verifier->isLinkVerified($request));
+		$this->assertFalse($this->verifier->isLinkVerified($request, Mockery::mock('Nette\Application\UI\PresenterComponent')));
+	}
+
+	public function testIsLinkVerifiedSignal()
+	{
+		$request = new Request('Test', 'GET', [
+			Presenter::ACTION_KEY => 'action',
+			Presenter::SIGNAL_KEY => 'signal',
+		]);
+
+		$handler = $this->createHandlerMock($request, 1, 'test-component');
+		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupPresenterFactoryMock();
+		$component = Mockery::mock('Nette\Application\UI\PresenterComponent')
+			->shouldReceive('getName')
+			->once()
+			->andReturn('test-component')
+			->shouldReceive('getParent')
+			->once()
+			->getMock();
+
+		$this->assertTrue($this->verifier->isLinkVerified($request, $component));
 	}
 
 	public function testIsComponentVerifiedTrue()
@@ -109,9 +129,10 @@ class VerifierTest extends Test
 
 		$handler = $this->createHandlerMock($request, 1);
 		$this->setupHandlerLoaderMock($handler, 1);
-		$this->setupPresenterFactoryMock();
+		$parent = new TestPresenter();
+		$parent->setParent($parent, 'Test');
 
-		$this->assertTrue($this->verifier->isComponentVerified($request, 'component'));
+		$this->assertTrue($this->verifier->isComponentVerified($request, $parent, 'component'));
 	}
 
 	public function testIsComponentVerifiedFalse()
@@ -121,14 +142,44 @@ class VerifierTest extends Test
 		$handler = Mockery::mock('Arachne\Verifier\IAnnotationHandler')
 			->shouldReceive('checkAnnotation')
 			->once()
-			->with($this->createAnnotationMatcher(), $request)
+			->with($this->createAnnotationMatcher(), $request, NULL)
 			->andThrow('Tests\Unit\TestException')
 			->getMock();
 
 		$this->setupHandlerLoaderMock($handler, 1);
-		$this->setupPresenterFactoryMock();
+		$parent = new TestPresenter();
 
-		$this->assertFalse($this->verifier->isComponentVerified($request, 'component'));
+		$this->assertFalse($this->verifier->isComponentVerified($request, $parent, 'component'));
+	}
+
+	public function testIsComponentSignalVerifiedTrue()
+	{
+		$request = new Request('Test', 'GET', [
+			Presenter::ACTION_KEY => 'action',
+			Presenter::SIGNAL_KEY => 'component-signal',
+		]);
+
+		$handler = $this->createHandlerMock($request, 1, 'component');
+		$this->setupHandlerLoaderMock($handler, 1);
+		$component = new TestControl(NULL, 'component');
+
+		$this->assertTrue($this->verifier->isLinkVerified($request, $component));
+	}
+
+	/**
+	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
+	 * @expectedExceptionMessage Wrong signal receiver, expected 'component' component but 'test-component' was given.
+	 */
+	public function testWrongSignalReceiver()
+	{
+		$request = new Request('Test', 'GET', [
+			Presenter::ACTION_KEY => 'action',
+			Presenter::SIGNAL_KEY => 'component-signal',
+		]);
+
+		$component = new TestControl(NULL, 'test-component');
+
+		$this->verifier->isLinkVerified($request, $component);
 	}
 
 	private function createAnnotationMatcher()
@@ -141,13 +192,14 @@ class VerifierTest extends Test
 	/**
 	 * @param Request $request
 	 * @param int $limit
+	 * @param string $component
 	 */
-	private function createHandlerMock(Request $request, $limit)
+	private function createHandlerMock(Request $request, $limit, $component = NULL)
 	{
 		return Mockery::mock('Arachne\Verifier\IAnnotationHandler')
 			->shouldReceive('checkAnnotation')
 			->times($limit)
-			->with($this->createAnnotationMatcher(), $request)
+			->with($this->createAnnotationMatcher(), $request, $component)
 			->andReturnNull()
 			->getMock();
 	}

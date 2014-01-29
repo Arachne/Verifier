@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the Arachne
+ * This file is part of the Arachne Verifier extenstion
  *
  * Copyright (c) Jáchym Toušek (enumag@gmail.com)
  *
@@ -10,44 +10,35 @@
 
 namespace Arachne\Verifier\Application;
 
-use Arachne\Verifier\Verifier;
-use Nette\ComponentModel\IComponent;
 use Nette\Reflection\ClassType;
 use Nette\Reflection\Method;
 
 /**
  * @author Jáchym Toušek
+ * @todo injectVerifier method and check if it was injected in attached method
  */
-trait TVerifierPresenter
+trait TVerifierControl
 {
 
-	use TVerifierControl;
-
-	/** @var Verifier */
-	protected $verifier;
-
 	/**
-	 * @param Verifier $verifier
-	 */
-	final public function injectVerifier(Verifier $verifier)
-	{
-		$this->verifier = $verifier;
-	}
-
-	/**
-	 * @param ClassType|Method $reflection
+	 * @param ClassType|Method $element
 	 */
 	public function checkRequirements($reflection)
 	{
-		$this->verifier->checkAnnotations($reflection, $this->getRequest());
+		$this->getPresenter()->getVerifier()->checkAnnotations($reflection, $this->getPresenter()->getRequest(), $this->getName());
 	}
 
 	/**
-	 * @return Verifier
+	 * @todo Remove this method or add canCreateComponent and verifiedLink methods and move all three to a separate trait TVerifierHelpers
+	 * @param string $destination
+	 * @param mixed[] $parameters
 	 */
-	public function getVerifier()
+	protected function redirectVerified($destination, $parameters = [])
 	{
-		return $this->verifier;
+		$link = $this->link($destination, $parameters);
+		if ($this->getPresenter()->getVerifier()->isLinkVerified($this->getLastCreatedRequest(), $this)) {
+			$this->redirectUrl($link);
+		}
 	}
 
 	/**

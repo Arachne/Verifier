@@ -14,7 +14,6 @@ use Nette\Object;
 class Enabled extends Object implements IAnnotation
 {
 
-	/** @var bool */
 	public $value;
 
 }

@@ -16,6 +16,7 @@ use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
+use Nette\Application\UI\PresenterComponent;
 use Nette\Application\UI\PresenterComponentReflection;
 use Nette\Object;
 use ReflectionClass;
@@ -48,9 +49,10 @@ class Verifier extends Object
 	 * Checks whether the given reflection contains any conditions that are not met.
 	 * @param ReflectionClass|ReflectionMethod $annotations
 	 * @param Request $request
+	 * @param string $component
 	 * @throws BadRequestException
 	 */
-	public function checkAnnotations(Reflector $reflection, Request $request)
+	public function checkAnnotations(Reflector $reflection, Request $request, $component = NULL)
 	{
 		if ($reflection instanceof ReflectionMethod) {
 			$annotations = $this->reader->getMethodAnnotations($reflection);
@@ -66,48 +68,66 @@ class Verifier extends Object
 			}
 			$this->handlerLoader
 				->getAnnotationHandler(get_class($annotation))
-				->checkAnnotation($annotation, $request);
+				->checkAnnotation($annotation, $request, $component);
 		}
 	}
 
 	/**
 	 * Checks whether it is possible to run the given request.
 	 * @param Request $request
+	 * @param PresenterComponent $component
 	 * @return bool
 	 */
-	public function isLinkVerified(Request $request)
+	public function isLinkVerified(Request $request, PresenterComponent $component)
 	{
-		$presenter = $request->getPresenterName();
-		$parameters = $request->getParameters();
-		$presenterReflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
-
 		try {
-			// Presenter requirements
-			$this->checkAnnotations($presenterReflection, $request);
-
-			// Action requirements
-			$action = $parameters[Presenter::ACTION_KEY];
-			$method = 'action' . $action;
-			$actionReflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
-			if ($actionReflection) {
-				$this->checkAnnotations($actionReflection, $request);
-			}
-			$method = 'render' . $action;
-			$viewReflection = $presenterReflection->hasCallableMethod($method) ? $presenterReflection->getMethod($method) : NULL;
-			if ($viewReflection) {
-				$this->checkAnnotations($viewReflection, $request);
-			}
-
-			// Signal requirements
+			$parameters = $request->getParameters();
 			if (isset($parameters[Presenter::SIGNAL_KEY])) {
-				$signal = $parameters[Presenter::SIGNAL_KEY];
+				// No need to check anything else, the requirements for presenter,
+				// action and component had to be met for the current request.
+				$signalId = $parameters[Presenter::SIGNAL_KEY];
+				if (!is_string($signalId)) {
+					throw new InvalidArgumentException('Signal name is not a string.');
+				}
+				$pos = strrpos($signalId, '-');
+				if ($pos) {
+					// signal for a component
+					if ($component->getName() !== substr($signalId, 0, $pos)) {
+						throw new InvalidArgumentException("Wrong signal receiver, expected '" . substr($signalId, 0, $pos) . "' component but '{$component->getName()}' was given.");
+					}
+					$reflection = new PresenterComponentReflection($component);
+					$signal = substr($signalId, $pos + 1);
+				} else {
+					// signal for presenter
+					$presenter = $request->getPresenterName();
+					$reflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
+					$signal = $signalId;
+				}
+
+				// Signal requirements
 				$method = 'handle' . $signal;
-				if ($presenterReflection->hasCallableMethod($method)) {
-					$reflection = $presenterReflection->getMethod($method);
-					$this->checkAnnotations($reflection, $request);
+				if ($reflection->hasCallableMethod($method)) {
+					$this->checkAnnotations($reflection->getMethod($method), $request, $component->getParent() === $component ? NULL : $component->getName());
+				}
+
+			} else {
+				$presenter = $request->getPresenterName();
+				$reflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
+
+				// Presenter requirements
+				$this->checkAnnotations($reflection, $request);
+
+				// Action requirements
+				$action = $parameters[Presenter::ACTION_KEY];
+				$method = 'action' . $action;
+				if ($reflection->hasCallableMethod($method)) {
+					$this->checkAnnotations($reflection->getMethod($method), $request);
+				}
+				$method = 'render' . $action;
+				if ($reflection->hasCallableMethod($method)) {
+					$this->checkAnnotations($reflection->getMethod($method), $request);
 				}
 			}
-
 		} catch (BadRequestException $e) {
 			return FALSE;
 		}
@@ -118,17 +138,23 @@ class Verifier extends Object
 	/**
 	 * Checks whether the parent component can create the subcomponent with given name.
 	 * @param Request $request
+	 * @param PresenterComponent $parent
 	 * @param string $name
 	 * @return bool
 	 */
-	public function isComponentVerified(Request $request, $name)
+	public function isComponentVerified(Request $request, PresenterComponent $parent, $name)
 	{
-		$presenter = $request->getPresenterName();
-		$presenterReflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
+		$reflection = new PresenterComponentReflection($parent);
 
 		try {
 			$method = 'createComponent' . ucfirst($name);
-			$this->checkAnnotations($presenterReflection->getMethod($method), $request);
+			if ($reflection->hasMethod($method)) {
+				$factory = $reflection->getMethod($method);
+				$this->checkAnnotations($factory, $request, $parent->getParent() === $parent ? NULL : $parent->getName());
+
+				// TODO: find component class based on @return annotation using arachne/class-resolver and check it's class-level annotations
+				// component name should be $component->getName() . '-' . $name this time
+			}
 
 		} catch (BadRequestException $e) {
 			return FALSE;

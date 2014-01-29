@@ -22,8 +22,9 @@ interface IAnnotationHandler
 	/**
 	 * @param IAnnotation $annotation
 	 * @param Request $request
+	 * @param string $component
 	 * @throws BadRequestException
 	 */
-	public function checkAnnotation(IAnnotation $annotation, Request $request);
+	public function checkAnnotation(IAnnotation $annotation, Request $request, $component = NULL);
 
 }

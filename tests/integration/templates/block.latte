@@ -1,5 +1,17 @@
 <h1>{$control->getName()}</h1>
 
-<a n:ifLinkVerified="default" n:href>
+<a n:ifPresenterLinkVerified="default" n:href>
 	Component link
 </a>
+
+<a n:ifLinkVerified="signal!, TRUE" n:href>
+	Component signal link true
+</a>
+
+<a n:ifLinkVerified="signal!, FALSE" n:href>
+	Component signal link false
+</a>
+
+{ifset $message}
+	{$message}
+{/ifset}
