@@ -56,6 +56,15 @@ class ArticlePresenter extends Presenter
 
 	/**
 	 * @Enabled(TRUE)
+	 * @param int $id	 
+	 */
+	public function actionRedirect($id)
+	{
+		$this->redirectVerified(301, 'delete', $id);
+	}
+
+	/**
+	 * @Enabled(TRUE)
 	 * @return BlockControl
 	 */
 	protected function createComponentHeader()

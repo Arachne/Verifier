@@ -24,6 +24,13 @@ class LinksTest extends Test
 		$this->codeGuy->seeResponseCodeIs(302);
 	}
 
+	public function testRedirectCustomCode()
+	{
+		$this->codeGuy->amOnPage('/article/redirect/1');
+		// Cannot check header Location for URL because it's not supported for CLI SAPI.
+		$this->codeGuy->seeResponseCodeIs(301);
+	}
+
 	public function testRedirectNotAllowed()
 	{
 		$this->codeGuy->amOnPage('/article/modify/1');

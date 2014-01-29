@@ -30,14 +30,25 @@ trait TVerifierControl
 
 	/**
 	 * @todo Remove this method or add canCreateComponent and verifiedLink methods and move all three to a separate trait TVerifierHelpers
+	 * @param int $code
 	 * @param string $destination
 	 * @param mixed[] $parameters
 	 */
-	protected function redirectVerified($destination, $parameters = [])
+	protected function redirectVerified($code, $destination = NULL, $args = [])
 	{
-		$link = $this->link($destination, $parameters);
+		if (!is_numeric($code)) { // first parameter is optional
+			$args = $destination;
+			$destination = $code;
+			$code = NULL;
+		}
+
+		if (!is_array($args)) {
+			$args = array_slice(func_get_args(), is_numeric($code) ? 2 : 1);
+		}
+
+		$link = $this->link($destination, $args);
 		if ($this->getPresenter()->getVerifier()->isLinkVerified($this->getLastCreatedRequest(), $this)) {
-			$this->redirectUrl($link);
+			$this->redirectUrl($link, $code);
 		}
 	}
 
