@@ -2,6 +2,7 @@ nette:
 	application:
 		mapping:
 			*: Tests\Integration\*Presenter
+		catchExceptions: true
 
 services:
 	routerFactory: Tests\Integration\RouterFactory
