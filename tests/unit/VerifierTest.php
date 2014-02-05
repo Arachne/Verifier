@@ -125,6 +125,7 @@ class VerifierTest extends Test
 			->andReturn('test-component')
 			->shouldReceive('getParent')
 			->once()
+			->andReturn(Mockery::mock('Nette\Application\UI\PresenterComponent'))
 			->getMock();
 
 		$this->assertTrue($this->verifier->isLinkVerified($request, $component));
@@ -174,6 +175,9 @@ class VerifierTest extends Test
 		$this->setupHandlerLoaderMock($handler, 1);
 
 		$component = new TestControl(NULL, 'component');
+		$parent = Mockery::mock('Nette\Application\UI\PresenterComponent')
+			->shouldDeferMissing();
+		$component->setParent($parent);
 
 		$this->assertTrue($this->verifier->isLinkVerified($request, $component));
 	}

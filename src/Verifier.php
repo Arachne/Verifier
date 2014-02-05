@@ -107,7 +107,7 @@ class Verifier extends Object
 				// Signal requirements
 				$method = 'handle' . $signal;
 				if ($reflection->hasCallableMethod($method)) {
-					$this->checkRules($reflection->getMethod($method), $request, $component->getParent() === $component ? NULL : $component->getName());
+					$this->checkRules($reflection->getMethod($method), $request, $component->getParent() ? $component->getName() : NULL);
 				}
 
 			} else {
