@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use Nette\Application\IRouter;
 use Nette\Application\Routers\Route;
 use Nette\Application\Routers\RouteList;
 
@@ -12,7 +13,7 @@ class RouterFactory extends \Nette\Object
 {
 
 	/**
-	 * @return \Nette\Application\IRouter
+	 * @return IRouter
 	 */
 	public function create()
 	{
