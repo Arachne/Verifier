@@ -1,0 +1,18 @@
+nette:
+	application:
+		mapping:
+			*: Arachne\Tests\Verifier\Integration\Classes\*Presenter
+		catchExceptions: true
+
+services:
+	routerFactory: Arachne\Tests\Verifier\Integration\Classes\RouterFactory
+	router: @routerFactory::create()
+	enabledRuleHandler:
+		class: Arachne\Tests\Verifier\Integration\Classes\EnabledRuleHandler
+		tags:
+			arachne.verifier.ruleHandler:
+				- Arachne\Tests\Verifier\Integration\Classes\Enabled
+
+extensions:
+	kdyby.rules: Kdyby\Annotations\DI\AnnotationsExtension
+	arachne.verifier: Arachne\Verifier\DI\VerifierExtension

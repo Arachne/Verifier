@@ -27,7 +27,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Arachne\\Verifier\\": "src/"
+			"Arachne\\Verifier\\": "src/",
+			"Arachne\\Tests\\Verifier\\": "tests/"
 		}
 	}
 }

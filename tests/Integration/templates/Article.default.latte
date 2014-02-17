@@ -1,0 +1,15 @@
+{ifComponentVerified header}
+	{control header}
+{/ifComponentVerified}
+
+<a n:ifLinkVerified="Article:edit 1" n:href>
+	Checked link
+</a>
+
+<a n:href="Article:edit 1">
+	Normal link
+</a>
+
+{ifComponentVerified footer}
+	{control footer}
+{/ifComponentVerified}
