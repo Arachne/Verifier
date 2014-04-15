@@ -56,7 +56,7 @@ class ArticlePresenter extends Presenter
 
 	/**
 	 * @Enabled(TRUE)
-	 * @param int $id	 
+	 * @param int $id
 	 */
 	public function actionRedirect($id)
 	{
