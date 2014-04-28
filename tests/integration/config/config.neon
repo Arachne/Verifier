@@ -1,3 +1,7 @@
+extensions:
+	kdyby.rules: Kdyby\Annotations\DI\AnnotationsExtension
+	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
+
 nette:
 	application:
 		mapping:
@@ -12,7 +16,3 @@ services:
 		tags:
 			arachne.verifier.ruleHandler:
 				- Tests\Integration\Classes\Enabled
-
-extensions:
-	kdyby.rules: Kdyby\Annotations\DI\AnnotationsExtension
-	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
