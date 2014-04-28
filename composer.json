@@ -27,8 +27,13 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Arachne\\Verifier\\": "src/",
-			"Arachne\\Tests\\Verifier\\": "tests/"
+			"Arachne\\Verifier\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\Unit\\": "tests/unit/src",
+			"Tests\\Integration\\": "tests/integration/src"
 		}
 	}
 }
