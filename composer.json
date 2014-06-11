@@ -20,10 +20,10 @@
 		"php": ">=5.5.0",
 		"squizlabs/php_codesniffer": "~1.4",
 		"mockery/mockery": "~0.9",
-		"codeception/codeception": "~1.8",
+		"codeception/codeception": "~2.0.0",
 		"codeception/mockery-module": "dev-master",
 		"arachne/coding-style": "~0.1.0",
-		"arachne/codeception": "~0.2.0"
+		"arachne/codeception": "dev-master"
 	},
 	"autoload": {
 		"psr-4": {
