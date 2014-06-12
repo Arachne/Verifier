@@ -38,9 +38,9 @@ class VerifierExtension extends CompilerExtension
 			->addTag(self::TAG_RULE_PROVIDER)
 			->setAutowired(FALSE);
 
-		if ($builder->hasDefinition('nette.latte')) {
-			$builder->getDefinition('nette.latte')
-				->addSetup('Arachne\Verifier\Latte\VerifierMacros::install(?->getCompiler())', array('@self'));
+		if ($builder->hasDefinition('nette.latteFactory')) {
+			$builder->getDefinition('nette.latteFactory')
+				->addSetup('?->onCompile[] = function($engine) { Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', array('@self'));
 		}
 	}
 

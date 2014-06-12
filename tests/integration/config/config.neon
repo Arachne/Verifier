@@ -1,12 +1,13 @@
 extensions:
-	kdyby.rules: Kdyby\Annotations\DI\AnnotationsExtension
+	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
 	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
+	enumag.application: Enumag\Application\DI\ApplicationExtension
 
 nette:
 	application:
 		mapping:
 			*: Tests\Integration\Classes\*Presenter
-		catchExceptions: true
+		catchExceptions: null
 
 services:
 	routerFactory: Tests\Integration\Classes\RouterFactory
