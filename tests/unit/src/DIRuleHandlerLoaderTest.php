@@ -2,10 +2,12 @@
 
 namespace Tests\Unit;
 
+use Arachne\Verifier\IRuleHandler;
 use Arachne\Verifier\DIRuleHandlerLoader;
 use Codeception\TestCase\Test;
 use Mockery;
 use Mockery\MockInterface;
+use Nette\DI\Container;
 
 /**
  * @author Jáchym Toušek
@@ -21,7 +23,7 @@ class DIRuleHandlerLoaderTest extends Test
 
 	protected function _before()
 	{
-		$this->container = Mockery::mock('Nette\DI\Container');
+		$this->container = Mockery::mock(Container::class);
 		$this->handlerLoader = new DIRuleHandlerLoader([
 			'Type1' => 'type1Handler',
 		], $this->container);
@@ -29,7 +31,7 @@ class DIRuleHandlerLoaderTest extends Test
 
 	public function testHandler()
 	{
-		$mock = Mockery::mock('Arachne\Verifier\IRuleHandler');
+		$mock = Mockery::mock(IRuleHandler::class);
 		$this->container
 			->shouldReceive('getService')
 			->once()
