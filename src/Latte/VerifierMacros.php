@@ -31,9 +31,13 @@ class VerifierMacros extends MacroSet
 		$me->addMacro('ifLinkVerified', '$_l->verifiedLink = $_control->link(%node.word, %node.array?); if (!$_presenter->getLastCreatedRequest() || $_presenter->getContext()->getByType(\'Arachne\Verifier\Verifier\')->isLinkVerified($_presenter->getLastCreatedRequest(), $_control)):', 'endif');
 		$me->addMacro('ifPresenterLinkVerified', '$_l->verifiedLink = $_presenter->link(%node.word, %node.array?); if (!$_presenter->getLastCreatedRequest() || $_presenter->getContext()->getByType(\'Arachne\Verifier\Verifier\')->isLinkVerified($_presenter->getLastCreatedRequest(), $_presenter)):', 'endif');
 		$me->addMacro('href', NULL, NULL, function (MacroNode $node, PhpWriter $writer) use ($me) {
-			$node->modifiers = preg_replace('#\|safeurl\s*(?=\||\z)#i', '', $node->modifiers);
 			$word = $node->tokenizer->fetchWord();
-			$link = $word ? '$_control->link(' . $writer->formatWord($word) . ', %node.array?)' : '$_l->verifiedLink';
+			if ($word) {
+				$link = '$_control->link(' . $writer->formatWord($word) . ', %node.array?)';
+			} else {
+				$node->modifiers .= '|safeurl';
+				$link = '$_l->verifiedLink';
+			}
 			return ' ?> href="<?php ' . $writer->using($node, $me->getCompiler())->write('echo %escape(%modify(' . $link . '))') . ' ?>"<?php ';
 		});
 	}
