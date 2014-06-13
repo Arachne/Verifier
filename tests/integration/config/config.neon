@@ -5,9 +5,9 @@ extensions:
 
 nette:
 	application:
+		catchExceptions: null
 		mapping:
 			*: Tests\Integration\Classes\*Presenter
-		catchExceptions: null
 
 services:
 	routerFactory: Tests\Integration\Classes\RouterFactory
