@@ -4,6 +4,9 @@ namespace Tests\Integration;
 
 use Codeception\TestCase\Test;
 
+/**
+ * @author Jáchym Toušek
+ */
 class LinksTest extends Test
 {
 
