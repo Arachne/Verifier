@@ -10,8 +10,8 @@
 
 namespace Arachne\Verifier\Application;
 
-use Nette\Reflection\ClassType;
-use Nette\Reflection\Method;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * @author Jáchym Toušek
@@ -21,7 +21,7 @@ trait TVerifierControl
 {
 
 	/**
-	 * @param ClassType|Method $element
+	 * @param ReflectionClass|ReflectionMethod $element
 	 */
 	public function checkRequirements($reflection)
 	{

@@ -12,8 +12,8 @@ namespace Arachne\Verifier\Application;
 
 use Arachne\Verifier\Verifier;
 use Nette\ComponentModel\IComponent;
-use Nette\Reflection\ClassType;
-use Nette\Reflection\Method;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * @author Jáchym Toušek
@@ -35,7 +35,7 @@ trait TVerifierPresenter
 	}
 
 	/**
-	 * @param ClassType|Method $reflection
+	 * @param ReflectionClass|ReflectionMethod $element
 	 */
 	public function checkRequirements($reflection)
 	{
