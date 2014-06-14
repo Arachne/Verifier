@@ -50,19 +50,4 @@ trait TVerifierPresenter
 		return $this->verifier;
 	}
 
-	/**
-	 * Component factory. Delegates the creation of components to a createComponent<Name> method.
-	 * @param string $name
-	 * @return IComponent|null
-	 */
-	protected function createComponent($name)
-	{
-		$method = 'createComponent' . ucfirst($name);
-		if (method_exists($this, $method)) {
-			$this->checkRequirements($this->getReflection()->getMethod($method));
-		}
-
-		return parent::createComponent($name);
-	}
-
 }
