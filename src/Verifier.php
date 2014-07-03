@@ -152,7 +152,7 @@ class Verifier extends Object
 				$factory = $reflection->getMethod($method);
 				$this->checkRules($factory, $request, $parent->getParent() === $parent ? NULL : $parent->getName());
 
-				// TODO: find component class based on @return rule using arachne/class-resolver and check it's class-level rules
+				// TODO: find component class based on @return rule and check it's class-level rules
 				// component name should be $component->getName() . '-' . $name this time
 			}
 
