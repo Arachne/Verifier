@@ -54,7 +54,7 @@ class VerifierTest extends Test
 		$request = Mockery::mock(Request::class);
 		$handler = $this->createHandlerMock($request, 1);
 
-		$this->setupRuleProviderMock($reflection, $request, 1);
+		$this->setupRuleProviderMock($reflection, 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 
 		$this->verifier->checkRules($reflection, $request);
@@ -66,7 +66,7 @@ class VerifierTest extends Test
 		$request = Mockery::mock(Request::class);
 		$handler = $this->createHandlerMock($request, 1);
 
-		$this->setupRuleProviderMock($reflection, $request, 1);
+		$this->setupRuleProviderMock($reflection, 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 
 		$this->verifier->checkRules($reflection, $request);
@@ -90,8 +90,8 @@ class VerifierTest extends Test
 		]);
 		$handler = $this->createHandlerMock($request, 3);
 
-		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), $request, 2);
-		$this->setupRuleProviderMock(Mockery::type(ReflectionClass::class), $request, 1);
+		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 2);
+		$this->setupRuleProviderMock(Mockery::type(ReflectionClass::class), 1);
 		$this->setupHandlerLoaderMock($handler, 3);
 		$this->setupPresenterFactoryMock();
 
@@ -110,7 +110,7 @@ class VerifierTest extends Test
 			->andThrow(TestException::class)
 			->getMock();
 
-		$this->setupRuleProviderMock(Mockery::type(ReflectionClass::class), $request, 1);
+		$this->setupRuleProviderMock(Mockery::type(ReflectionClass::class), 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
@@ -125,7 +125,7 @@ class VerifierTest extends Test
 		]);
 		$handler = $this->createHandlerMock($request, 1, 'test-component');
 
-		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), $request, 1, 'test-component');
+		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
@@ -146,7 +146,7 @@ class VerifierTest extends Test
 		$request = Mockery::mock(Request::class);
 		$handler = $this->createHandlerMock($request, 1);
 
-		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), $request, 1);
+		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 
 		$parent = new TestPresenter();
@@ -165,7 +165,7 @@ class VerifierTest extends Test
 			->andThrow(TestException::class)
 			->getMock();
 
-		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), $request, 1);
+		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 
 		$parent = new TestPresenter();
@@ -181,7 +181,7 @@ class VerifierTest extends Test
 		], FALSE);
 		$handler = $this->createHandlerMock($request, 1, 'component');
 
-		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), $request, 1, 'component');
+		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 
 		$component = new TestControl(NULL, 'component');
@@ -258,15 +258,14 @@ class VerifierTest extends Test
 
 	/**
 	 * @param Reflector|MatcherAbstract $matcher
-	 * @param Request $request
 	 * @param int $limit
 	 */
-	private function setupRuleProviderMock($matcher, Request $request, $limit, $component = '')
+	private function setupRuleProviderMock($matcher, $limit)
 	{
 		$this->ruleProvider
 			->shouldReceive('getRules')
 			->times($limit)
-			->with($matcher, $request, $component)
+			->with($matcher)
 			->andReturn([ new TestRule() ]);
 	}
 

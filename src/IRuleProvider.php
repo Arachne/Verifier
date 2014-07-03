@@ -21,10 +21,8 @@ interface IRuleProvider
 
 	/**
 	 * @param ReflectionClass|ReflectionMethod $rules
-	 * @param Request $request
-	 * @param string $component
 	 * @return IRule[]
 	 */
-	public function getRules(Reflector $reflection, Request $request, $component = NULL);
+	public function getRules(Reflector $reflection);
 
 }

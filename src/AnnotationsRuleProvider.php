@@ -34,11 +34,9 @@ class AnnotationsRuleProvider extends Object implements IRuleProvider
 
 	/**
 	 * @param ReflectionClass|ReflectionMethod $rules
-	 * @param Request $request
-	 * @param string $component
 	 * @return IRule[]
 	 */
-	public function getRules(Reflector $reflection, Request $request, $component = NULL)
+	public function getRules(Reflector $reflection)
 	{
 		if ($reflection instanceof ReflectionMethod) {
 			$rules = $this->reader->getMethodAnnotations($reflection);

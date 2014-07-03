@@ -56,7 +56,7 @@ class Verifier extends Object
 		if ($reflection instanceof ReflectionMethod || $reflection instanceof ReflectionClass) {
 			$rules = array();
 			foreach ($this->ruleProviders as $provider) {
-				$rules += $provider->getRules($reflection, $request, $component);
+				$rules += $provider->getRules($reflection);
 			}
 		} else {
 			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod or ReflectionClass.');

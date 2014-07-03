@@ -6,7 +6,6 @@ use Arachne\Verifier\AnnotationsRuleProvider;
 use Codeception\TestCase\Test;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mockery;
-use Nette\Application\Request;
 use ReflectionClass;
 use ReflectionMethod;
 use Reflector;
@@ -31,15 +30,13 @@ class AnnotationsRuleProviderTest extends Test
 	public function testClassAnnotations()
 	{
 		$reflection = new ReflectionClass(TestPresenter::class);
-		$request = Mockery::mock(Request::class);
-		$this->assertEquals([ new TestRule() ], $this->provider->getRules($reflection, $request));
+		$this->assertEquals([ new TestRule() ], $this->provider->getRules($reflection));
 	}
 
 	public function testMethodAnnotations()
 	{
 		$reflection = new ReflectionMethod(TestPresenter::class, 'renderView');
-		$request = Mockery::mock(Request::class);
-		$this->assertEquals([ new TestRule(), new TestRule() ], $this->provider->getRules($reflection, $request));
+		$this->assertEquals([ new TestRule(), new TestRule() ], $this->provider->getRules($reflection));
 	}
 
 	/**
@@ -49,8 +46,7 @@ class AnnotationsRuleProviderTest extends Test
 	public function testInvalidReflection()
 	{
 		$reflection = Mockery::mock(Reflector::class);
-		$request = Mockery::mock(Request::class);
-		$this->provider->getRules($reflection, $request);
+		$this->provider->getRules($reflection);
 	}
 
 }
