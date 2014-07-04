@@ -48,13 +48,11 @@ class Verifier extends Object
 	}
 
 	/**
-	 * Checks whether the given reflection contains any conditions that are not met.
+	 * Returns rules that are required for given reflection.
 	 * @param ReflectionClass|ReflectionMethod $rules
-	 * @param Request $request
-	 * @param string $component
-	 * @throws BadRequestException
+	 * @return IRule[]
 	 */
-	public function checkRules(Reflector $reflection, Request $request, $component = NULL)
+	public function getRules(Reflector $reflection)
 	{
 		if (!$reflection instanceof ReflectionMethod && !$reflection instanceof ReflectionClass) {
 			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod or ReflectionClass.');
@@ -69,7 +67,19 @@ class Verifier extends Object
 			$this->cache[$key] = $rules;
 		}
 
-		foreach ($this->cache[$key] as $rule) {
+		return $this->cache[$key];
+	}
+
+	/**
+	 * Checks whether the given rules are met.
+	 * @param ReflectionClass|ReflectionMethod $rules
+	 * @param Request $request
+	 * @param string $component
+	 * @throws BadRequestException
+	 */
+	public function checkRules(array $rules, Request $request, $component = NULL)
+	{
+		foreach ($rules as $rule) {
 			if (!$rule instanceof IRule) {
 				continue;
 			}
@@ -77,6 +87,19 @@ class Verifier extends Object
 				->getRuleHandler(get_class($rule))
 				->checkRule($rule, $request, $component);
 		}
+	}
+
+	/**
+	 * Checks whether all rules of the given reflection are met.
+	 * @param ReflectionClass|ReflectionMethod $rules
+	 * @param Request $request
+	 * @param string $component
+	 * @throws BadRequestException
+	 */
+	public function checkReflection(Reflector $reflection, Request $request, $component = NULL)
+	{
+		$rules = $this->getRules($reflection);
+		$this->checkRules($rules, $request, $component);
 	}
 
 	/**
@@ -114,7 +137,7 @@ class Verifier extends Object
 				// Signal requirements
 				$method = 'handle' . $signal;
 				if ($reflection->hasCallableMethod($method)) {
-					$this->checkRules($reflection->getMethod($method), $request, $component->getParent() ? $component->getName() : NULL);
+					$this->checkReflection($reflection->getMethod($method), $request, $component->getParent() ? $component->getName() : NULL);
 				}
 
 			} else {
@@ -122,17 +145,18 @@ class Verifier extends Object
 				$reflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
 
 				// Presenter requirements
-				$this->checkRules($reflection, $request);
+				$this->checkReflection($reflection, $request);
 
 				// Action requirements
 				$action = $parameters[Presenter::ACTION_KEY];
 				$method = 'action' . $action;
 				if ($reflection->hasCallableMethod($method)) {
-					$this->checkRules($reflection->getMethod($method), $request);
+					$this->checkReflection($reflection->getMethod($method), $request);
 				}
+				
 				$method = 'render' . $action;
 				if ($reflection->hasCallableMethod($method)) {
-					$this->checkRules($reflection->getMethod($method), $request);
+					$this->checkReflection($reflection->getMethod($method), $request);
 				}
 			}
 		} catch (BadRequestException $e) {
@@ -157,7 +181,7 @@ class Verifier extends Object
 			$method = 'createComponent' . ucfirst($name);
 			if ($reflection->hasMethod($method)) {
 				$factory = $reflection->getMethod($method);
-				$this->checkRules($factory, $request, $parent->getParent() === $parent ? NULL : $parent->getName());
+				$this->checkReflection($factory, $request, $parent->getParent() === $parent ? NULL : $parent->getName());
 
 				// TODO: find component class based on @return rule and check it's class-level rules
 				// component name should be $component->getName() . '-' . $name this time

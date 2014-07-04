@@ -61,8 +61,8 @@ class VerifierTest extends Test
 		$this->setupRuleProviderMock($reflection, 1);
 		$this->setupHandlerLoaderMock($handler, 2);
 
-		$this->verifier->checkRules($reflection, $request);
-		$this->verifier->checkRules($reflection, $request);
+		$this->verifier->checkReflection($reflection, $request);
+		$this->verifier->checkReflection($reflection, $request);
 	}
 
 	public function testCheckRulesOnMethod()
@@ -85,8 +85,8 @@ class VerifierTest extends Test
 		$this->setupRuleProviderMock($reflection, 1);
 		$this->setupHandlerLoaderMock($handler, 2);
 
-		$this->verifier->checkRules($reflection, $request);
-		$this->verifier->checkRules($reflection, $request);
+		$this->verifier->checkReflection($reflection, $request);
+		$this->verifier->checkReflection($reflection, $request);
 	}
 
 	/**
@@ -97,7 +97,7 @@ class VerifierTest extends Test
 	{
 		$reflection = Mockery::mock(Reflector::class);
 		$request = Mockery::mock(Request::class);
-		$this->verifier->checkRules($reflection, $request);
+		$this->verifier->checkReflection($reflection, $request);
 	}
 
 	public function testIsLinkVerifiedTrue()
