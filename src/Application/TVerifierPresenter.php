@@ -10,6 +10,7 @@
 
 namespace Arachne\Verifier\Application;
 
+use Arachne\Verifier\Exception\NotSupportedException;
 use Arachne\Verifier\Verifier;
 use Nette\ComponentModel\IComponent;
 use ReflectionClass;
@@ -39,7 +40,11 @@ trait TVerifierPresenter
 	 */
 	public function checkRequirements($reflection)
 	{
-		$this->verifier->checkReflection($reflection, $this->getRequest());
+		$rules = $this->verifier->getRules($reflection);
+		if (!empty($rules) && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
+			throw new NotSupportedException('Rules for render methods are not supported. Define the rules for action method instead.');
+		}
+		$this->verifier->checkRules($rules, $this->getRequest());
 	}
 
 	/**

@@ -65,6 +65,13 @@ class ArticlePresenter extends Presenter
 
 	/**
 	 * @Enabled(TRUE)
+	 */
+	public function renderView()
+	{
+	}
+
+	/**
+	 * @Enabled(TRUE)
 	 * @return BlockControl
 	 */
 	protected function createComponentHeader()

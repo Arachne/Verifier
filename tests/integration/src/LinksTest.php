@@ -48,4 +48,13 @@ class LinksTest extends Test
 		$this->guy->seeResponseCodeIs(403);
 	}
 
+	/**
+	 * @expectedException Arachne\Verifier\Exception\NotSupportedException
+	 * @ExpectedExceptionMessage Rules for render methods are not supported. Define the rules for action method instead.	 
+	 */
+	public function testRenderMethod()
+	{
+		$this->guy->amOnPage('/article/view');
+	}
+
 }

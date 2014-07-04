@@ -71,7 +71,7 @@ services:
 
 ### Presenter
 
-In presenters you can now use these rules to restrict access to the whole presenter or separately to its actions, views, signals and components.
+In presenters you can now use these rules to restrict access to the whole presenter or separately to its actions, signals and components. Note that rules for views are NOT supported.
 
 ```php
 use App\MyRule;

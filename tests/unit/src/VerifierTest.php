@@ -105,11 +105,11 @@ class VerifierTest extends Test
 		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'action',
 		]);
-		$handler = $this->createHandlerMock($request, 3);
+		$handler = $this->createHandlerMock($request, 2);
 
-		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 2);
+		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
 		$this->setupRuleProviderMock(Mockery::type(ReflectionClass::class), 1);
-		$this->setupHandlerLoaderMock($handler, 3);
+		$this->setupHandlerLoaderMock($handler, 2);
 		$this->setupPresenterFactoryMock();
 
 		$this->assertTrue($this->verifier->isLinkVerified($request, Mockery::mock(PresenterComponent::class)));

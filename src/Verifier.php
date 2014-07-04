@@ -150,11 +150,6 @@ class Verifier extends Object
 				if ($reflection->hasCallableMethod($method)) {
 					$this->checkReflection($reflection->getMethod($method), $request);
 				}
-				
-				$method = 'render' . $action;
-				if ($reflection->hasCallableMethod($method)) {
-					$this->checkReflection($reflection->getMethod($method), $request);
-				}
 			}
 		} catch (BadRequestException $e) {
 			return FALSE;
