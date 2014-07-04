@@ -50,7 +50,7 @@ class LinksTest extends Test
 
 	/**
 	 * @expectedException Arachne\Verifier\Exception\NotSupportedException
-	 * @ExpectedExceptionMessage Rules for render methods are not supported. Define the rules for action method instead.	 
+	 * @expectedExceptionMessage Rules for render methods are not supported. Define the rules for action method instead.	 
 	 */
 	public function testRenderMethod()
 	{

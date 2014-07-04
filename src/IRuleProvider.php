@@ -10,7 +10,6 @@
 
 namespace Arachne\Verifier;
 
-use Nette\Application\Request;
 use Reflector;
 
 /**
@@ -20,7 +19,7 @@ interface IRuleProvider
 {
 
 	/**
-	 * @param ReflectionClass|ReflectionMethod $rules
+	 * @param ReflectionClass|ReflectionMethod $reflection
 	 * @return IRule[]
 	 */
 	public function getRules(Reflector $reflection);
