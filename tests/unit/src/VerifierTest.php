@@ -51,24 +51,41 @@ class VerifierTest extends Test
 	public function testCheckRulesOnClass()
 	{
 		$reflection = Mockery::mock(ReflectionClass::class);
+		$reflection
+			->shouldReceive('getName')
+			->twice()
+			->andReturn('class');
 		$request = Mockery::mock(Request::class);
-		$handler = $this->createHandlerMock($request, 1);
+		$handler = $this->createHandlerMock($request, 2);
 
 		$this->setupRuleProviderMock($reflection, 1);
-		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupHandlerLoaderMock($handler, 2);
 
+		$this->verifier->checkRules($reflection, $request);
 		$this->verifier->checkRules($reflection, $request);
 	}
 
 	public function testCheckRulesOnMethod()
 	{
 		$reflection = Mockery::mock(ReflectionMethod::class);
+		$classReflection = Mockery::mock(ReflectionClass::class);
+		$classReflection->shouldReceive('getName')
+			->twice()
+			->andReturn('class');
+		$reflection
+			->shouldReceive('getName')
+			->twice()
+			->andReturn('method')
+			->shouldReceive('getDeclaringClass')
+			->twice()
+			->andReturn($classReflection);
 		$request = Mockery::mock(Request::class);
-		$handler = $this->createHandlerMock($request, 1);
+		$handler = $this->createHandlerMock($request, 2);
 
 		$this->setupRuleProviderMock($reflection, 1);
-		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupHandlerLoaderMock($handler, 2);
 
+		$this->verifier->checkRules($reflection, $request);
 		$this->verifier->checkRules($reflection, $request);
 	}
 

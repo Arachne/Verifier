@@ -37,6 +37,9 @@ class Verifier extends Object
 	/** @var IPresenterFactory */
 	protected $presenterFactory;
 
+	/** @var IRule[][] */
+	private $cache;
+
 	public function __construct(array $ruleProviders, IRuleHandlerLoader $handlerLoader, IPresenterFactory $presenterFactory)
 	{
 		$this->ruleProviders = $ruleProviders;
@@ -53,16 +56,20 @@ class Verifier extends Object
 	 */
 	public function checkRules(Reflector $reflection, Request $request, $component = NULL)
 	{
-		if ($reflection instanceof ReflectionMethod || $reflection instanceof ReflectionClass) {
+		if (!$reflection instanceof ReflectionMethod && !$reflection instanceof ReflectionClass) {
+			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod or ReflectionClass.');
+		}
+
+		$key = ($reflection instanceof ReflectionMethod ? $reflection->getDeclaringClass()->getName() . '::' : '') . $reflection->getName();
+		if (!isset($this->cache[$key])) {
 			$rules = array();
 			foreach ($this->ruleProviders as $provider) {
 				$rules += $provider->getRules($reflection);
 			}
-		} else {
-			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod or ReflectionClass.');
+			$this->cache[$key] = $rules;
 		}
 
-		foreach ($rules as $rule) {
+		foreach ($this->cache[$key] as $rule) {
 			if (!$rule instanceof IRule) {
 				continue;
 			}
