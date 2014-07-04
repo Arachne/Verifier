@@ -63,10 +63,26 @@ class ArticlePresenter extends Presenter
 		$this->redirectVerified(301, 'delete', $id);
 	}
 
+	public function actionView()
+	{
+	}
+
 	/**
 	 * @Enabled(TRUE)
 	 */
 	public function renderView()
+	{
+	}
+
+	public function actionSafeurl()
+	{
+	}
+
+	public function actionComponentNotEnabled()
+	{
+	}
+
+	public function renderUndefinedAction()
 	{
 	}
 

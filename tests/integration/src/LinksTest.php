@@ -3,6 +3,9 @@
 namespace Tests\Integration;
 
 use Codeception\TestCase\Test;
+use Nette\Application\IPresenterFactory;
+use Nette\Application\Request;
+use Nette\Application\UI\Presenter;
 
 /**
  * @author Jáchym Toušek
@@ -55,6 +58,22 @@ class LinksTest extends Test
 	public function testRenderMethod()
 	{
 		$this->guy->amOnPage('/article/view');
+	}
+
+	/**
+	 * @expectedException Nette\Application\BadRequestException
+	 * @expectedExceptionCode 404
+	 * @expectedExceptionMessage Action 'Tests\Integration\Classes\ArticlePresenter::actionUndefinedAction' does not exist.
+	 */
+	public function testUndefinedAction()
+	{
+		$request = new Request('Article', 'GET', [
+			Presenter::ACTION_KEY => 'UndefinedAction',
+		]);
+		$this->guy
+			->grabService(IPresenterFactory::class)
+			->createPresenter('Article')
+			->run($request);
 	}
 
 }

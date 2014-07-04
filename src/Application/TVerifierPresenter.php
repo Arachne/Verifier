@@ -12,6 +12,7 @@ namespace Arachne\Verifier\Application;
 
 use Arachne\Verifier\Exception\NotSupportedException;
 use Arachne\Verifier\Verifier;
+use Nette\Application\BadRequestException;
 use Nette\ComponentModel\IComponent;
 use ReflectionClass;
 use ReflectionMethod;
@@ -53,6 +54,22 @@ trait TVerifierPresenter
 	public function getVerifier()
 	{
 		return $this->verifier;
+	}
+
+	/**
+	 * Ensures that the action method exists.
+	 * @param string
+	 * @param array
+	 * @return bool
+	 */
+	protected function tryCall($method, array $params)
+	{
+		$called = parent::tryCall($method, $params);
+		if (!$called && substr($method, 0, 6) === 'action') {
+			$class = get_class($this);
+			throw new BadRequestException("Action '$class::$method' does not exist.");
+		}
+		return $called;
 	}
 
 }
