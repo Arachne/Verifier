@@ -48,55 +48,65 @@ class VerifierTest extends Test
 		$this->verifier = new Verifier([ $this->ruleProvider ], $this->handlerLoader, $this->presenterFactory);
 	}
 
-	public function testCheckRulesOnClass()
+	public function testGetRulesOnClass()
 	{
-		$reflection = Mockery::mock(ReflectionClass::class);
-		$reflection
-			->shouldReceive('getName')
-			->twice()
-			->andReturn('class');
-		$request = Mockery::mock(Request::class);
-		$handler = $this->createHandlerMock($request, 2);
-
+		$reflection = $this->createClassReflection(1);
 		$this->setupRuleProviderMock($reflection, 1);
-		$this->setupHandlerLoaderMock($handler, 2);
 
-		$this->verifier->checkReflection($reflection, $request);
-		$this->verifier->checkReflection($reflection, $request);
+		$this->assertEquals([ new TestRule() ], $this->verifier->getRules($reflection));
 	}
 
-	public function testCheckRulesOnMethod()
+	public function testGetRulesOnMethod()
 	{
-		$reflection = Mockery::mock(ReflectionMethod::class);
-		$classReflection = Mockery::mock(ReflectionClass::class);
-		$classReflection->shouldReceive('getName')
-			->twice()
-			->andReturn('class');
-		$reflection
-			->shouldReceive('getName')
-			->twice()
-			->andReturn('method')
-			->shouldReceive('getDeclaringClass')
-			->twice()
-			->andReturn($classReflection);
-		$request = Mockery::mock(Request::class);
-		$handler = $this->createHandlerMock($request, 2);
-
+		$reflection = $this->createMethodReflection(1);
 		$this->setupRuleProviderMock($reflection, 1);
-		$this->setupHandlerLoaderMock($handler, 2);
 
-		$this->verifier->checkReflection($reflection, $request);
-		$this->verifier->checkReflection($reflection, $request);
+		$this->assertEquals([ new TestRule() ], $this->verifier->getRules($reflection));
 	}
 
 	/**
 	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
 	 * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod or ReflectionClass.
 	 */
-	public function testCheckRulesOnProperty()
+	public function testGetRulesOnProperty()
 	{
 		$reflection = Mockery::mock(Reflector::class);
+		$this->verifier->getRules($reflection);
+	}
+
+	public function testCheckRules()
+	{
 		$request = Mockery::mock(Request::class);
+		$handler = $this->createHandlerMock($request, 2);
+
+		$this->setupHandlerLoaderMock($handler, 2);
+
+		$this->verifier->checkRules([ new TestRule(), new TestRule() ], $request);
+	}
+
+	public function testCheckReflectionOnClass()
+	{
+		$reflection = $this->createClassReflection(2);
+		$request = Mockery::mock(Request::class);
+		$handler = $this->createHandlerMock($request, 2);
+
+		$this->setupRuleProviderMock($reflection, 1);
+		$this->setupHandlerLoaderMock($handler, 2);
+
+		$this->verifier->checkReflection($reflection, $request);
+		$this->verifier->checkReflection($reflection, $request);
+	}
+
+	public function testCheckReflectionOnMethod()
+	{
+		$reflection = $this->createMethodReflection(2);
+		$request = Mockery::mock(Request::class);
+		$handler = $this->createHandlerMock($request, 2);
+
+		$this->setupRuleProviderMock($reflection, 1);
+		$this->setupHandlerLoaderMock($handler, 2);
+
+		$this->verifier->checkReflection($reflection, $request);
 		$this->verifier->checkReflection($reflection, $request);
 	}
 
@@ -223,6 +233,35 @@ class VerifierTest extends Test
 		$component = new TestControl(NULL, 'test-component');
 
 		$this->verifier->isLinkVerified($request, $component);
+	}
+
+	/**
+	 * @param int $limit	
+	 * @return ReflectionClass
+	 */
+	private function createClassReflection($limit)
+	{
+		return Mockery::mock(ReflectionClass::class)
+			->shouldReceive('getName')
+			->times($limit)
+			->andReturn('class')
+			->getMock();
+	}
+
+	/**
+	 * @param int $limit	
+	 * @return ReflectionMethod
+	 */
+	private function createMethodReflection($limit)
+	{
+		return Mockery::mock(ReflectionMethod::class)
+			->shouldReceive('getName')
+			->times($limit)
+			->andReturn('method')
+			->shouldReceive('getDeclaringClass')
+			->times($limit)
+			->andReturn($this->createClassReflection($limit))
+			->getMock();
 	}
 
 	/**
