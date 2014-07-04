@@ -80,9 +80,6 @@ class Verifier extends Object
 	public function checkRules(array $rules, Request $request, $component = NULL)
 	{
 		foreach ($rules as $rule) {
-			if (!$rule instanceof IRule) {
-				continue;
-			}
 			$this->handlerLoader
 				->getRuleHandler(get_class($rule))
 				->checkRule($rule, $request, $component);
