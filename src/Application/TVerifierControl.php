@@ -36,7 +36,8 @@ trait TVerifierControl
 	 */
 	protected function redirectVerified($code, $destination = NULL, $args = [])
 	{
-		if (!is_numeric($code)) { // first parameter is optional
+		// first parameter is optional
+		if (!is_numeric($code)) {
 			$args = $destination;
 			$destination = $code;
 			$code = NULL;
