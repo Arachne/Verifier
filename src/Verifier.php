@@ -119,13 +119,15 @@ class Verifier extends Object
 				$pos = strrpos($signalId, '-');
 				if ($pos) {
 					// signal for a component
-					if ($component->getName() !== substr($signalId, 0, $pos)) {
-						throw new InvalidArgumentException("Wrong signal receiver, expected '" . substr($signalId, 0, $pos) . "' component but '{$component->getName()}' was given.");
+					$name = $component->getUniqueId();
+					if ($name !== substr($signalId, 0, $pos)) {
+						throw new InvalidArgumentException("Wrong signal receiver, expected '" . substr($signalId, 0, $pos) . "' component but '$name' was given.");
 					}
 					$reflection = new PresenterComponentReflection($component);
 					$signal = substr($signalId, $pos + 1);
 				} else {
 					// signal for presenter
+					$name = NULL;
 					$presenter = $request->getPresenterName();
 					$reflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
 					$signal = $signalId;
@@ -134,7 +136,7 @@ class Verifier extends Object
 				// Signal requirements
 				$method = 'handle' . $signal;
 				if ($reflection->hasCallableMethod($method)) {
-					$this->checkReflection($reflection->getMethod($method), $request, $component->getParent() ? $component->getName() : NULL);
+					$this->checkReflection($reflection->getMethod($method), $request, $name);
 				}
 
 			} else {
@@ -173,7 +175,7 @@ class Verifier extends Object
 			$method = 'createComponent' . ucfirst($name);
 			if ($reflection->hasMethod($method)) {
 				$factory = $reflection->getMethod($method);
-				$this->checkReflection($factory, $request, $parent->getParent() === $parent ? NULL : $parent->getName());
+				$this->checkReflection($factory, $request, $parent->getParent() ? $parent->getUniqueId() : NULL);
 
 				// TODO: find component class based on @return rule and check it's class-level rules
 				// component name should be $component->getName() . '-' . $name this time

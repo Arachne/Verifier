@@ -150,20 +150,13 @@ class VerifierTest extends Test
 			Presenter::ACTION_KEY => 'action',
 			Presenter::SIGNAL_KEY => 'signal',
 		]);
-		$handler = $this->createHandlerMock($request, 1, 'test-component');
+		$handler = $this->createHandlerMock($request, 1);
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
 		$this->setupHandlerLoaderMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
-		$component = Mockery::mock(PresenterComponent::class)
-			->shouldReceive('getName')
-			->once()
-			->andReturn('test-component')
-			->shouldReceive('getParent')
-			->once()
-			->andReturn(Mockery::mock(PresenterComponent::class))
-			->getMock();
+		$component = Mockery::mock(PresenterComponent::class);
 
 		$this->assertTrue($this->verifier->isLinkVerified($request, $component));
 	}
@@ -177,7 +170,7 @@ class VerifierTest extends Test
 		$this->setupHandlerLoaderMock($handler, 1);
 
 		$parent = new TestPresenter();
-		$parent->setParent($parent, 'Test');
+		$parent->setParent(NULL, 'Test');
 
 		$this->assertTrue($this->verifier->isComponentVerified('component', $request, $parent));
 	}
@@ -212,7 +205,7 @@ class VerifierTest extends Test
 		$this->setupHandlerLoaderMock($handler, 1);
 
 		$component = new TestControl(NULL, 'component');
-		$parent = Mockery::mock(PresenterComponent::class)
+		$parent = Mockery::mock(Presenter::class)
 			->shouldDeferMissing();
 		$component->setParent($parent);
 
@@ -230,7 +223,11 @@ class VerifierTest extends Test
 			Presenter::SIGNAL_KEY => 'component-signal',
 		], FALSE);
 
-		$component = new TestControl(NULL, 'test-component');
+		$component = Mockery::mock(PresenterComponent::class)
+			->shouldReceive('getUniqueId')
+			->once()
+			->andReturn('test-component')
+			->getMock();
 
 		$this->verifier->isLinkVerified($request, $component);
 	}
