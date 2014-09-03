@@ -13,7 +13,6 @@ namespace Arachne\Verifier\Application;
 use Arachne\Verifier\Exception\NotSupportedException;
 use Arachne\Verifier\Verifier;
 use Nette\Application\BadRequestException;
-use Nette\ComponentModel\IComponent;
 use ReflectionClass;
 use ReflectionMethod;
 
