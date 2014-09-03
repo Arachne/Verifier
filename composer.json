@@ -12,22 +12,22 @@
 	],
 	"require": {
 		"php": ">=5.3.0",
-		"nette/di": "~2.2.0",
-		"nette/application": "~2.2.0",
-		"doctrine/annotations": "~1.1.0",
-		"kdyby/annotations": "dev-master",
-		"kdyby/doctrine-cache": "dev-master"
+		"nette/di": "~2.2",
+		"nette/application": "~2.2",
+		"doctrine/annotations": "~1.1",
+		"kdyby/annotations": "~2.1",
+		"kdyby/doctrine-cache": "~2.3"
 	},
 	"require-dev": {
 		"php": ">=5.5.0",
-		"nette/nette": "~2.2.0",
-		"enumag/application": "dev-master",
+		"nette/nette": "~2.2",
+		"enumag/application": "~0.2",
 		"squizlabs/php_codesniffer": "~1.4",
 		"mockery/mockery": "~0.9",
-		"codeception/codeception": "~2.0.0",
-		"codeception/mockery-module": "dev-master",
-		"arachne/coding-style": "~0.2.0",
-		"arachne/codeception": "dev-master"
+		"codeception/codeception": "~2.0",
+		"codeception/mockery-module": "~0.2",
+		"arachne/coding-style": "~0.2",
+		"arachne/codeception": "~0.3"
 	},
 	"autoload": {
 		"psr-4": {
