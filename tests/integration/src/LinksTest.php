@@ -23,14 +23,14 @@ class LinksTest extends Test
 	public function testRedirect()
 	{
 		$this->guy->amOnPage('/article/remove/1');
-		// Cannot check header Location for URL because it's not supported for CLI SAPI.
+		$this->guy->seeRedirectTo('/article/delete/1');
 		$this->guy->seeResponseCodeIs(302);
 	}
 
 	public function testRedirectCustomCode()
 	{
 		$this->guy->amOnPage('/article/redirect/1');
-		// Cannot check header Location for URL because it's not supported for CLI SAPI.
+		$this->guy->seeRedirectTo('/article/delete/1');
 		$this->guy->seeResponseCodeIs(301);
 	}
 
