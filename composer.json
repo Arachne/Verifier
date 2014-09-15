@@ -14,8 +14,7 @@
 		"nette/di": "~2.2",
 		"nette/application": "~2.2",
 		"doctrine/annotations": "~1.1",
-		"kdyby/annotations": "~2.1",
-		"kdyby/doctrine-cache": "~2.3"
+		"kdyby/annotations": "~2.1"
 	},
 	"require-dev": {
 		"php": ">=5.5.0",
