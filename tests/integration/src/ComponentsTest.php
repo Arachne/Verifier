@@ -16,6 +16,7 @@ class ComponentsTest extends Test
 		$this->guy->seeResponseCodeIs(200);
 		$this->guy->see('header');
 		$this->guy->dontSee('footer');
+		$this->guy->see('fallback');
 	}
 
 	public function testLinkMacroInComponent()
