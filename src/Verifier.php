@@ -11,6 +11,7 @@
 namespace Arachne\Verifier;
 
 use Arachne\Verifier\Exception\InvalidArgumentException;
+use Arachne\Verifier\Exception\UnexpectedTypeException;
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
@@ -18,6 +19,7 @@ use Nette\Application\UI\Presenter;
 use Nette\Application\UI\PresenterComponent;
 use Nette\Application\UI\PresenterComponentReflection;
 use Nette\Object;
+use Nette\Utils\Callback;
 use ReflectionClass;
 use ReflectionMethod;
 use Reflector;
@@ -31,8 +33,8 @@ class Verifier extends Object
 	/** @var IRuleProvider[] */
 	protected $ruleProviders;
 
-	/** @var IRuleHandlerLoader */
-	protected $handlerLoader;
+	/** @var callable */
+	protected $handlerResolver;
 
 	/** @var IPresenterFactory */
 	protected $presenterFactory;
@@ -40,16 +42,16 @@ class Verifier extends Object
 	/** @var IRule[][] */
 	private $cache;
 
-	public function __construct(array $ruleProviders, IRuleHandlerLoader $handlerLoader, IPresenterFactory $presenterFactory)
+	public function __construct(array $ruleProviders, callable $handlerResolver, IPresenterFactory $presenterFactory)
 	{
 		$this->ruleProviders = $ruleProviders;
-		$this->handlerLoader = $handlerLoader;
+		$this->handlerResolver = $handlerResolver;
 		$this->presenterFactory = $presenterFactory;
 	}
 
 	/**
 	 * Returns rules that are required for given reflection.
-	 * @param ReflectionClass|ReflectionMethod $rules
+	 * @param ReflectionClass|ReflectionMethod $reflection
 	 * @return IRule[]
 	 */
 	public function getRules(Reflector $reflection)
@@ -72,7 +74,7 @@ class Verifier extends Object
 
 	/**
 	 * Checks whether the given rules are met.
-	 * @param ReflectionClass|ReflectionMethod $rules
+	 * @param array $rules
 	 * @param Request $request
 	 * @param string $component
 	 * @throws BadRequestException
@@ -80,15 +82,18 @@ class Verifier extends Object
 	public function checkRules(array $rules, Request $request, $component = NULL)
 	{
 		foreach ($rules as $rule) {
-			$this->handlerLoader
-				->getRuleHandler(get_class($rule))
-				->checkRule($rule, $request, $component);
+			$class = get_class($rule);
+			$handler = Callback::invoke($this->handlerResolver, $class);
+			if (!$handler instanceof IRuleHandler) {
+				throw new UnexpectedTypeException("No rule handler found for type '$class'.");
+			}
+			$handler->checkRule($rule, $request, $component);
 		}
 	}
 
 	/**
 	 * Checks whether all rules of the given reflection are met.
-	 * @param ReflectionClass|ReflectionMethod $rules
+	 * @param ReflectionClass|ReflectionMethod $reflection
 	 * @param Request $request
 	 * @param string $component
 	 * @throws BadRequestException

@@ -22,7 +22,7 @@ class TestPresenter extends Presenter
 	}
 
 	/**
-	 * This should be ignored.	
+	 * This should be ignored.
 	 * @TestRule
 	 */
 	public function renderAction()

@@ -25,10 +25,6 @@ class VerifierExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('ruleHandlerLoader'))
-			->setClass('Arachne\Verifier\IRuleHandlerLoader')
-			->setFactory('Arachne\Verifier\DIRuleHandlerLoader');
-
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier');
 
@@ -36,6 +32,10 @@ class VerifierExtension extends CompilerExtension
 			->setClass('Arachne\Verifier\IRuleProvider')
 			->setFactory('Arachne\Verifier\AnnotationsRuleProvider')
 			->addTag(self::TAG_RULE_PROVIDER)
+			->setAutowired(FALSE);
+
+		$builder->addDefinition($this->prefix('handlerResolverFactory'))
+			->setFactory('Arachne\DI\Resolver\TagResolverFactory', array('tag' => self::TAG_HANDLER))
 			->setAutowired(FALSE);
 
 		if ($builder->hasDefinition('nette.latteFactory')) {
@@ -49,22 +49,15 @@ class VerifierExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$services = array();
-		foreach ($builder->findByTag(self::TAG_HANDLER) as $name => $types) {
-			foreach ((array) $types as $type) {
-				$services[$type] = $name;
-			}
-		}
-
-		$builder->getDefinition($this->prefix('ruleHandlerLoader'))
-			->setArguments(array($services));
-
-		$services = array();
 		foreach ($builder->findByTag(self::TAG_RULE_PROVIDER) as $name => $_) {
 			$services[] = '@' . $name;
 		}
 
 		$builder->getDefinition($this->prefix('verifier'))
-			->setArguments(array($services));
+			->setArguments(array(
+				$services,
+				new \Nette\DI\Statement('?->create()', array($this->prefix('@handlerResolverFactory'))),
+			));
 	}
 
 }

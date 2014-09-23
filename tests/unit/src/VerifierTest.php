@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use Arachne\Verifier\IRuleHandler;
-use Arachne\Verifier\IRuleHandlerLoader;
 use Arachne\Verifier\IRuleProvider;
 use Arachne\Verifier\Verifier;
 use Codeception\TestCase\Test;
@@ -17,6 +16,7 @@ use Nette\Application\UI\PresenterComponent;
 use ReflectionClass;
 use ReflectionMethod;
 use Reflector;
+use Tests\Unit\Classes\InvalidRule;
 use Tests\Unit\Classes\TestControl;
 use Tests\Unit\Classes\TestException;
 use Tests\Unit\Classes\TestPresenter;
@@ -35,7 +35,7 @@ class VerifierTest extends Test
 	private $ruleProvider;
 
 	/** @var MockInterface */
-	private $handlerLoader;
+	private $handlerResolver;
 
 	/** @var MockInterface */
 	private $presenterFactory;
@@ -43,9 +43,12 @@ class VerifierTest extends Test
 	protected function _before()
 	{
 		$this->ruleProvider = Mockery::mock(IRuleProvider::class);
-		$this->handlerLoader = Mockery::mock(IRuleHandlerLoader::class);
+		$this->handlerResolver = Mockery::mock();
 		$this->presenterFactory = Mockery::mock(IPresenterFactory::class);
-		$this->verifier = new Verifier([ $this->ruleProvider ], $this->handlerLoader, $this->presenterFactory);
+		$resolver = function ($name) {
+			return $this->handlerResolver->resolve($name);
+		};
+		$this->verifier = new Verifier([ $this->ruleProvider ], $resolver, $this->presenterFactory);
 	}
 
 	public function testGetRulesOnClass()
@@ -79,7 +82,7 @@ class VerifierTest extends Test
 		$request = Mockery::mock(Request::class);
 		$handler = $this->createHandlerMock($request, 2);
 
-		$this->setupHandlerLoaderMock($handler, 2);
+		$this->setupHandlerResolverMock($handler, 2);
 
 		$this->verifier->checkRules([ new TestRule(), new TestRule() ], $request);
 	}
@@ -91,7 +94,7 @@ class VerifierTest extends Test
 		$handler = $this->createHandlerMock($request, 2);
 
 		$this->setupRuleProviderMock($reflection, 1);
-		$this->setupHandlerLoaderMock($handler, 2);
+		$this->setupHandlerResolverMock($handler, 2);
 
 		$this->verifier->checkReflection($reflection, $request);
 		$this->verifier->checkReflection($reflection, $request);
@@ -104,7 +107,7 @@ class VerifierTest extends Test
 		$handler = $this->createHandlerMock($request, 2);
 
 		$this->setupRuleProviderMock($reflection, 1);
-		$this->setupHandlerLoaderMock($handler, 2);
+		$this->setupHandlerResolverMock($handler, 2);
 
 		$this->verifier->checkReflection($reflection, $request);
 		$this->verifier->checkReflection($reflection, $request);
@@ -119,7 +122,7 @@ class VerifierTest extends Test
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
 		$this->setupRuleProviderMock(Mockery::type(ReflectionClass::class), 1);
-		$this->setupHandlerLoaderMock($handler, 2);
+		$this->setupHandlerResolverMock($handler, 2);
 		$this->setupPresenterFactoryMock();
 
 		$this->assertTrue($this->verifier->isLinkVerified($request, Mockery::mock(PresenterComponent::class)));
@@ -138,7 +141,7 @@ class VerifierTest extends Test
 			->getMock();
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionClass::class), 1);
-		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupHandlerResolverMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
 		$this->assertFalse($this->verifier->isLinkVerified($request, Mockery::mock(PresenterComponent::class)));
@@ -153,7 +156,7 @@ class VerifierTest extends Test
 		$handler = $this->createHandlerMock($request, 1);
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
-		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupHandlerResolverMock($handler, 1);
 		$this->setupPresenterFactoryMock();
 
 		$component = Mockery::mock(PresenterComponent::class);
@@ -167,7 +170,7 @@ class VerifierTest extends Test
 		$handler = $this->createHandlerMock($request, 1);
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
-		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupHandlerResolverMock($handler, 1);
 
 		$parent = new TestPresenter();
 		$parent->setParent(NULL, 'Test');
@@ -186,7 +189,7 @@ class VerifierTest extends Test
 			->getMock();
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
-		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupHandlerResolverMock($handler, 1);
 
 		$parent = new TestPresenter();
 
@@ -202,7 +205,7 @@ class VerifierTest extends Test
 		$handler = $this->createHandlerMock($request, 1, 'component');
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
-		$this->setupHandlerLoaderMock($handler, 1);
+		$this->setupHandlerResolverMock($handler, 1);
 
 		$component = new TestControl(NULL, 'component');
 		$parent = Mockery::mock(Presenter::class)
@@ -233,7 +236,33 @@ class VerifierTest extends Test
 	}
 
 	/**
-	 * @param int $limit	
+	 * @expectedException Arachne\Verifier\Exception\UnexpectedTypeException
+	 */
+	public function testInvalidRule()
+	{
+		$request = $this->createRequestMock([
+			Presenter::ACTION_KEY => 'invalid',
+		], TRUE);
+
+		$this->setupPresenterFactoryMock();
+		$this->ruleProvider
+			->shouldReceive('getRules')
+			->times(1)
+			->with(Mockery::type(ReflectionClass::class))
+			->andReturn([ new InvalidRule() ]);
+		$this->handlerResolver
+			->shouldReceive('resolve')
+			->with(InvalidRule::class)
+			->times(1)
+			->andReturn();
+
+		$component = Mockery::mock(PresenterComponent::class);
+
+		$this->verifier->isLinkVerified($request, $component);
+	}
+
+	/**
+	 * @param int $limit
 	 * @return ReflectionClass
 	 */
 	private function createClassReflection($limit)
@@ -246,7 +275,7 @@ class VerifierTest extends Test
 	}
 
 	/**
-	 * @param int $limit	
+	 * @param int $limit
 	 * @return ReflectionMethod
 	 */
 	private function createMethodReflection($limit)
@@ -300,10 +329,10 @@ class VerifierTest extends Test
 	 * @param IRuleHandler $handler
 	 * @param int $limit
 	 */
-	private function setupHandlerLoaderMock(IRuleHandler $handler, $limit)
+	private function setupHandlerResolverMock(IRuleHandler $handler, $limit)
 	{
-		$this->handlerLoader
-			->shouldReceive('getRuleHandler')
+		$this->handlerResolver
+			->shouldReceive('resolve')
 			->with(TestRule::class)
 			->times($limit)
 			->andReturn($handler);
