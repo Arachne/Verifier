@@ -11,6 +11,7 @@
 namespace Arachne\Verifier\DI;
 
 use Nette\DI\CompilerExtension;
+use Nette\DI\Statement;
 
 /**
  * @author Jáchym Toušek
@@ -40,7 +41,7 @@ class VerifierExtension extends CompilerExtension
 
 		if ($builder->hasDefinition('nette.latteFactory')) {
 			$builder->getDefinition('nette.latteFactory')
-				->addSetup('?->onCompile[] = function($engine) { Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', array('@self'));
+				->addSetup('?->onCompile[] = function($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', array('@self'));
 		}
 	}
 
@@ -55,8 +56,8 @@ class VerifierExtension extends CompilerExtension
 
 		$builder->getDefinition($this->prefix('verifier'))
 			->setArguments(array(
-				$services,
-				new \Nette\DI\Statement('?->create()', array($this->prefix('@handlerResolverFactory'))),
+				'ruleProviders' => $services,
+				'handlerResolver' => new Statement('?->create()', array($this->prefix('@handlerResolverFactory'))),
 			));
 	}
 

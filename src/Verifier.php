@@ -74,7 +74,7 @@ class Verifier extends Object
 
 	/**
 	 * Checks whether the given rules are met.
-	 * @param array $rules
+	 * @param IRule[] $rules
 	 * @param Request $request
 	 * @param string $component
 	 * @throws BadRequestException
