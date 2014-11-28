@@ -34,7 +34,7 @@ trait TVerifierControl
 	 * @param string $destination
 	 * @param mixed[] $parameters
 	 */
-	protected function redirectVerified($code, $destination = NULL, $args = [])
+	public function redirectVerified($code, $destination = NULL, $args = [])
 	{
 		// first parameter is optional
 		if (!is_numeric($code)) {

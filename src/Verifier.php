@@ -31,13 +31,13 @@ class Verifier extends Object
 {
 
 	/** @var IRuleProvider[] */
-	protected $ruleProviders;
+	private $ruleProviders;
 
 	/** @var callable */
-	protected $handlerResolver;
+	private $handlerResolver;
 
 	/** @var IPresenterFactory */
-	protected $presenterFactory;
+	private $presenterFactory;
 
 	/** @var IRule[][] */
 	private $cache;

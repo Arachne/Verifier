@@ -25,7 +25,7 @@ class AnnotationsRuleProvider extends Object implements IRuleProvider
 {
 
 	/** @var Reader */
-	protected $reader;
+	private $reader;
 
 	public function __construct(Reader $reader)
 	{

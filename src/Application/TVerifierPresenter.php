@@ -25,7 +25,7 @@ trait TVerifierPresenter
 	use TVerifierControl;
 
 	/** @var Verifier */
-	protected $verifier;
+	private $verifier;
 
 	/**
 	 * @param Verifier $verifier
