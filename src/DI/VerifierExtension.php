@@ -29,14 +29,14 @@ class VerifierExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier');
 
+		$builder->addDefinition($this->prefix('handlerResolverFactory'))
+			->setFactory('Arachne\DI\Resolver\TagResolverFactory', array('tag' => self::TAG_HANDLER))
+			->setAutowired(FALSE);
+
 		$builder->addDefinition($this->prefix('annotationsRuleProvider'))
 			->setClass('Arachne\Verifier\RuleProviderInterface')
 			->setFactory('Arachne\Verifier\Annotations\AnnotationsRuleProvider')
 			->addTag(self::TAG_RULE_PROVIDER)
-			->setAutowired(FALSE);
-
-		$builder->addDefinition($this->prefix('handlerResolverFactory'))
-			->setFactory('Arachne\DI\Resolver\TagResolverFactory', array('tag' => self::TAG_HANDLER))
 			->setAutowired(FALSE);
 
 		if ($builder->hasDefinition('nette.latteFactory')) {
