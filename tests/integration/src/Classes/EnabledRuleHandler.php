@@ -2,24 +2,24 @@
 
 namespace Tests\Integration\Classes;
 
-use Arachne\Verifier\IRule;
-use Arachne\Verifier\IRuleHandler;
+use Arachne\Verifier\RuleInterface;
+use Arachne\Verifier\RuleHandlerInterface;
 use Nette\Application\Request;
 use Nette\Object;
 
 /**
  * @author Jáchym Toušek
  */
-class EnabledRuleHandler extends Object implements IRuleHandler
+class EnabledRuleHandler extends Object implements RuleHandlerInterface
 {
 
 	/**
-	 * @param IRule $rule
+	 * @param RuleInterface $rule
 	 * @param Request $request
 	 * @param string $component
 	 * @throws DisabledException
 	 */
-	public function checkRule(IRule $rule, Request $request, $component = NULL)
+	public function checkRule(RuleInterface $rule, Request $request, $component = NULL)
 	{
 		if ($rule instanceof Enabled) {
 			$this->checkRuleEnabled($rule, $request, $component);

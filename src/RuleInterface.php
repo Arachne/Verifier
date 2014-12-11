@@ -10,21 +10,9 @@
 
 namespace Arachne\Verifier;
 
-use Nette\Application\BadRequestException;
-use Nette\Application\Request;
-
 /**
  * @author Jáchym Toušek
  */
-interface IRuleHandler
+interface RuleInterface
 {
-
-	/**
-	 * @param IRule $rule
-	 * @param Request $request
-	 * @param string $component
-	 * @throws BadRequestException
-	 */
-	public function checkRule(IRule $rule, Request $request, $component = NULL);
-
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\Integration\Classes;
 
-use Arachne\Verifier\Application\TVerifierPresenter;
+use Arachne\Verifier\Application\VerifierPresenterTrait;
 use Nette\Application\UI\Presenter;
 
 /**
@@ -11,7 +11,7 @@ use Nette\Application\UI\Presenter;
 class ArticlePresenter extends Presenter
 {
 
-	use TVerifierPresenter;
+	use VerifierPresenterTrait;
 
 	/**
 	 * @Enabled(TRUE)

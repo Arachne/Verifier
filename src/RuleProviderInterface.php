@@ -10,9 +10,18 @@
 
 namespace Arachne\Verifier;
 
+use Reflector;
+
 /**
  * @author Jáchym Toušek
  */
-interface IRule
+interface RuleProviderInterface
 {
+
+	/**
+	 * @param ReflectionClass|ReflectionMethod $reflection
+	 * @return RuleInterface[]
+	 */
+	public function getRules(Reflector $reflection);
+
 }

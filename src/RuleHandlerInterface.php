@@ -10,18 +10,21 @@
 
 namespace Arachne\Verifier;
 
-use Reflector;
+use Nette\Application\BadRequestException;
+use Nette\Application\Request;
 
 /**
  * @author Jáchym Toušek
  */
-interface IRuleProvider
+interface RuleHandlerInterface
 {
 
 	/**
-	 * @param ReflectionClass|ReflectionMethod $reflection
-	 * @return IRule[]
+	 * @param RuleInterface $rule
+	 * @param Request $request
+	 * @param string $component
+	 * @throws BadRequestException
 	 */
-	public function getRules(Reflector $reflection);
+	public function checkRule(RuleInterface $rule, Request $request, $component = NULL);
 
 }

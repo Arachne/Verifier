@@ -2,7 +2,7 @@
 
 namespace Tests\Integration\Classes;
 
-use Arachne\Verifier\Application\TVerifierControl;
+use Arachne\Verifier\Application\VerifierControlTrait;
 use Nette\Application\UI\Control;
 
 /**
@@ -11,7 +11,7 @@ use Nette\Application\UI\Control;
 class BlockControl extends Control
 {
 
-	use TVerifierControl;
+	use VerifierControlTrait;
 
 	public function render()
 	{

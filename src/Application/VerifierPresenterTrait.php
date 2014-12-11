@@ -19,10 +19,10 @@ use ReflectionMethod;
 /**
  * @author Jáchym Toušek
  */
-trait TVerifierPresenter
+trait VerifierPresenterTrait
 {
 
-	use TVerifierControl;
+	use VerifierControlTrait;
 
 	/** @var Verifier */
 	private $verifier;

@@ -30,7 +30,7 @@ class VerifierExtension extends CompilerExtension
 			->setClass('Arachne\Verifier\Verifier');
 
 		$builder->addDefinition($this->prefix('annotationsRuleProvider'))
-			->setClass('Arachne\Verifier\IRuleProvider')
+			->setClass('Arachne\Verifier\RuleProviderInterface')
 			->setFactory('Arachne\Verifier\Annotations\AnnotationsRuleProvider')
 			->addTag(self::TAG_RULE_PROVIDER)
 			->setAutowired(FALSE);

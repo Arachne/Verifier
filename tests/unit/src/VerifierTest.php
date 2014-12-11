@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Arachne\Verifier\IRuleHandler;
-use Arachne\Verifier\IRuleProvider;
+use Arachne\Verifier\RuleHandlerInterface;
+use Arachne\Verifier\RuleProviderInterface;
 use Arachne\Verifier\Verifier;
 use Codeception\TestCase\Test;
 use Mockery;
@@ -42,7 +42,7 @@ class VerifierTest extends Test
 
 	protected function _before()
 	{
-		$this->ruleProvider = Mockery::mock(IRuleProvider::class);
+		$this->ruleProvider = Mockery::mock(RuleProviderInterface::class);
 		$this->handlerResolver = Mockery::mock();
 		$this->presenterFactory = Mockery::mock(IPresenterFactory::class);
 		$resolver = function ($name) {
@@ -133,7 +133,7 @@ class VerifierTest extends Test
 		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'view',
 		]);
-		$handler = Mockery::mock(IRuleHandler::class)
+		$handler = Mockery::mock(RuleHandlerInterface::class)
 			->shouldReceive('checkRule')
 			->once()
 			->with(Mockery::type(TestRule::class), $request, NULL)
@@ -181,7 +181,7 @@ class VerifierTest extends Test
 	public function testIsComponentVerifiedFalse()
 	{
 		$request = Mockery::mock(Request::class);
-		$handler = Mockery::mock(IRuleHandler::class)
+		$handler = Mockery::mock(RuleHandlerInterface::class)
 			->shouldReceive('checkRule')
 			->once()
 			->with(Mockery::type(TestRule::class), $request, NULL)
@@ -294,11 +294,11 @@ class VerifierTest extends Test
 	 * @param Request $request
 	 * @param int $limit
 	 * @param string $component
-	 * @return IRuleHandler
+	 * @return RuleHandlerInterface
 	 */
 	private function createHandlerMock(Request $request, $limit, $component = NULL)
 	{
-		return Mockery::mock(IRuleHandler::class)
+		return Mockery::mock(RuleHandlerInterface::class)
 			->shouldReceive('checkRule')
 			->times($limit)
 			->with(Mockery::type(TestRule::class), $request, $component)
@@ -326,10 +326,10 @@ class VerifierTest extends Test
 	}
 
 	/**
-	 * @param IRuleHandler $handler
+	 * @param RuleHandlerInterface $handler
 	 * @param int $limit
 	 */
-	private function setupHandlerResolverMock(IRuleHandler $handler, $limit)
+	private function setupHandlerResolverMock(RuleHandlerInterface $handler, $limit)
 	{
 		$this->handlerResolver
 			->shouldReceive('resolve')

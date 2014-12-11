@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Classes;
 
-use Arachne\Verifier\IRule;
+use Arachne\Verifier\RuleInterface;
 use Nette\Object;
 
 /**
@@ -11,6 +11,6 @@ use Nette\Object;
  * @Annotation
  * @Target({"CLASS", "METHOD"})
  */
-class TestRule extends Object implements IRule
+class TestRule extends Object implements RuleInterface
 {
 }

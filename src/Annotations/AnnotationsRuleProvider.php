@@ -11,8 +11,8 @@
 namespace Arachne\Verifier\Annotations;
 
 use Arachne\Verifier\Exception\InvalidArgumentException;
-use Arachne\Verifier\IRule;
-use Arachne\Verifier\IRuleProvider;
+use Arachne\Verifier\RuleInterface;
+use Arachne\Verifier\RuleProviderInterface;
 use Doctrine\Common\Annotations\Reader;
 use Nette\Application\Request;
 use Nette\Object;
@@ -23,7 +23,7 @@ use Reflector;
 /**
  * @author Jáchym Toušek
  */
-class AnnotationsRuleProvider extends Object implements IRuleProvider
+class AnnotationsRuleProvider extends Object implements RuleProviderInterface
 {
 
 	/** @var Reader */
@@ -36,7 +36,7 @@ class AnnotationsRuleProvider extends Object implements IRuleProvider
 
 	/**
 	 * @param ReflectionClass|ReflectionMethod $rules
-	 * @return IRule[]
+	 * @return RuleInterface[]
 	 */
 	public function getRules(Reflector $reflection)
 	{
@@ -48,7 +48,7 @@ class AnnotationsRuleProvider extends Object implements IRuleProvider
 			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod or ReflectionClass.');
 		}
 		return array_filter($rules, function ($annotation) {
-			return $annotation instanceof IRule;
+			return $annotation instanceof RuleInterface;
 		});
 	}
 

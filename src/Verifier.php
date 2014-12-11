@@ -30,7 +30,7 @@ use Reflector;
 class Verifier extends Object
 {
 
-	/** @var IRuleProvider[] */
+	/** @var RuleProviderInterface[] */
 	private $ruleProviders;
 
 	/** @var callable */
@@ -39,7 +39,7 @@ class Verifier extends Object
 	/** @var IPresenterFactory */
 	private $presenterFactory;
 
-	/** @var IRule[][] */
+	/** @var RuleInterface[][] */
 	private $cache;
 
 	public function __construct(array $ruleProviders, callable $handlerResolver, IPresenterFactory $presenterFactory)
@@ -52,7 +52,7 @@ class Verifier extends Object
 	/**
 	 * Returns rules that are required for given reflection.
 	 * @param ReflectionClass|ReflectionMethod $reflection
-	 * @return IRule[]
+	 * @return RuleInterface[]
 	 */
 	public function getRules(Reflector $reflection)
 	{
@@ -74,7 +74,7 @@ class Verifier extends Object
 
 	/**
 	 * Checks whether the given rules are met.
-	 * @param IRule[] $rules
+	 * @param RuleInterface[] $rules
 	 * @param Request $request
 	 * @param string $component
 	 * @throws BadRequestException
@@ -84,7 +84,7 @@ class Verifier extends Object
 		foreach ($rules as $rule) {
 			$class = get_class($rule);
 			$handler = Callback::invoke($this->handlerResolver, $class);
-			if (!$handler instanceof IRuleHandler) {
+			if (!$handler instanceof RuleHandlerInterface) {
 				throw new UnexpectedTypeException("No rule handler found for type '$class'.");
 			}
 			$handler->checkRule($rule, $request, $component);
