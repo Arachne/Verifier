@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use Arachne\Verifier\AnnotationsRuleProvider;
+use Arachne\Verifier\Annotations\AnnotationsRuleProvider;
 use Codeception\TestCase\Test;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Mockery;

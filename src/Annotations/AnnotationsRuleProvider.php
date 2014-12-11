@@ -8,9 +8,11 @@
  * For the full copyright and license information, please view the file license.md that was distributed with this source code.
  */
 
-namespace Arachne\Verifier;
+namespace Arachne\Verifier\Annotations;
 
 use Arachne\Verifier\Exception\InvalidArgumentException;
+use Arachne\Verifier\IRule;
+use Arachne\Verifier\IRuleProvider;
 use Doctrine\Common\Annotations\Reader;
 use Nette\Application\Request;
 use Nette\Object;
