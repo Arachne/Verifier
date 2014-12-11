@@ -23,20 +23,20 @@ Please see documentation how to configure [Kdyby/Rules](https://github.com/Kdyby
 
 ### PHP 5.4
 
-Finally add Arachne\Verifier\Application\TVerifierPresenter trait to your BasePresenter and Arachne\Verifier\Application\TVerifierComponent trait to your BaseControl.
+Finally add Arachne\Verifier\Application\VerifierPresenterTrait trait to your BasePresenter and Arachne\Verifier\Application\VerifierControlTrait trait to your BaseControl.
 
 ```php
 abstract class BasePresenter extends \Nette\Application\UI\Presenter
 {
 
-	use \Arachne\Verifier\Application\TVerifierPresenter;
+	use \Arachne\Verifier\Application\VerifierPresenterTrait;
 
 }
 
 abstract class BaseControl extends \Nette\Application\UI\Control
 {
 
-	use \Arachne\Verifier\Application\TVerifierControl;
+	use \Arachne\Verifier\Application\VerifierControlTrait;
 
 }
 ```
@@ -49,10 +49,10 @@ If you don't use PHP 5.4, just copy all methods from the traits to your BasePres
 ## Usage
 
 You need two things:
-- some rule class(es) implementing Arachne\Verifier\IRule
-- a tagged service implementing Arachne\Verifier\IRuleHandler
+- some rule class(es) implementing Arachne\Verifier\RuleInterface
+- a tagged service implementing Arachne\Verifier\RuleHandlerInterface
 
-These will usually be provided by some other extensions. **For examples see Arachne/SecurityRules and Arachne/ComponentsProtection.**
+These will usually be provided by some other extensions. **For examples see Arachne/SecurityVerification and Arachne/ComponentsProtection.**
 
 If you want to add your own rules, see the Configuration section below. Otherwise feel free to skip it.
 
