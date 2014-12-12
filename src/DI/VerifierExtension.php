@@ -39,6 +39,13 @@ class VerifierExtension extends CompilerExtension
 			->addTag(self::TAG_PROVIDER)
 			->setAutowired(FALSE);
 
+		$builder->addDefinition($this->prefix('cascadeRuleHandler'))
+			->setClass('Arachne\Verifier\Rules\CascadeRuleHandler')
+			->addTag(self::TAG_HANDLER, array(
+				'Arachne\Verifier\Rules\Either',
+				'Arachne\Verifier\Rules\All',
+			));
+
 		if ($builder->hasDefinition('nette.latteFactory')) {
 			$builder->getDefinition('nette.latteFactory')
 				->addSetup('?->onCompile[] = function($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', array('@self'));

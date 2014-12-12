@@ -9,7 +9,7 @@ use Nette\Object;
  * @author Jáchym Toušek
  *
  * @Annotation
- * @Target({"CLASS", "METHOD"})
+ * @Target({"CLASS", "METHOD", "ANNOTATION"})
  */
 class Enabled extends Object implements RuleInterface
 {
