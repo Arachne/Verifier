@@ -11,7 +11,6 @@
 namespace Arachne\Verifier\DI;
 
 use Nette\DI\CompilerExtension;
-use Nette\DI\Statement;
 
 /**
  * @author Jáchym Toušek
@@ -29,8 +28,8 @@ class VerifierExtension extends CompilerExtension
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier');
 
-		$builder->addDefinition($this->prefix('handlerResolverFactory'))
-			->setFactory('Arachne\DI\Resolver\TagResolverFactory', array('tag' => self::TAG_HANDLER))
+		$builder->addDefinition($this->prefix('handlerResolver'))
+			->setFactory('Arachne\DI\Resolver\TagResolver', array('tag' => self::TAG_HANDLER))
 			->setAutowired(FALSE);
 
 		$builder->addDefinition($this->prefix('annotationsRuleProvider'))
@@ -64,7 +63,7 @@ class VerifierExtension extends CompilerExtension
 		$builder->getDefinition($this->prefix('verifier'))
 			->setArguments(array(
 				'ruleProviders' => $services,
-				'handlerResolver' => new Statement('?->create()', array($this->prefix('@handlerResolverFactory'))),
+				'handlerResolver' => $this->prefix('@handlerResolver'),
 			));
 	}
 
