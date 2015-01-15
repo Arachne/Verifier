@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Arachne\DIHelpers\ResolverInterface;
 use Arachne\Verifier\RuleHandlerInterface;
 use Arachne\Verifier\RuleProviderInterface;
 use Arachne\Verifier\Verifier;
@@ -43,12 +44,9 @@ class VerifierTest extends Test
 	protected function _before()
 	{
 		$this->ruleProvider = Mockery::mock(RuleProviderInterface::class);
-		$this->handlerResolver = Mockery::mock();
+		$this->handlerResolver = Mockery::mock(ResolverInterface::class);
 		$this->presenterFactory = Mockery::mock(IPresenterFactory::class);
-		$resolver = function ($name) {
-			return $this->handlerResolver->resolve($name);
-		};
-		$this->verifier = new Verifier([ $this->ruleProvider ], $resolver, $this->presenterFactory);
+		$this->verifier = new Verifier([ $this->ruleProvider ], $this->handlerResolver, $this->presenterFactory);
 	}
 
 	public function testGetRulesOnClass()

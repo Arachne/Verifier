@@ -10,6 +10,7 @@
 
 namespace Arachne\Verifier\DI;
 
+use Arachne\DIHelpers\DI\DIHelpersExtension;
 use Nette\DI\CompilerExtension;
 
 /**
@@ -29,7 +30,7 @@ class VerifierExtension extends CompilerExtension
 			->setClass('Arachne\Verifier\Verifier');
 
 		$builder->addDefinition($this->prefix('handlerResolver'))
-			->setFactory('Arachne\DI\Resolver\TagResolver', array('tag' => self::TAG_HANDLER))
+			->addTag(DIHelpersExtension::TAG_RESOLVER, self::TAG_HANDLER)
 			->setAutowired(FALSE);
 
 		$builder->addDefinition($this->prefix('annotationsRuleProvider'))
