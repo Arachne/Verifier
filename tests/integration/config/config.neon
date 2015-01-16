@@ -1,4 +1,5 @@
 extensions:
+	nette: Nette\Bridges\Framework\NetteExtension
 	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
 	arachne.dihelpers: Arachne\DIHelpers\DI\DIHelpersExtension
 	arachne.verifier: Arachne\Verifier\DI\VerifierExtension

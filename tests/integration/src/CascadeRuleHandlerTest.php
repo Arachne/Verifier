@@ -3,7 +3,6 @@
 namespace Tests\Integration;
 
 use Arachne\Verifier\Verifier;
-use Codeception\TestCase\Test;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 use Tests\Integration\Classes\CascadePresenter;

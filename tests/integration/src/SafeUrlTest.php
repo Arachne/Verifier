@@ -2,8 +2,6 @@
 
 namespace Tests\Integration;
 
-use Codeception\TestCase\Test;
-
 /**
  * @author Jáchym Toušek
  */

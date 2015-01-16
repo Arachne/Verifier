@@ -2,7 +2,6 @@
 
 namespace Tests\Integration;
 
-use Codeception\TestCase\Test;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
@@ -15,7 +14,7 @@ class ExceptionsTest extends Test
 
 	/**
 	 * @expectedException Arachne\Verifier\Exception\NotSupportedException
-	 * @expectedExceptionMessage Rules for render methods are not supported. Define the rules for action method instead.	 
+	 * @expectedExceptionMessage Rules for render methods are not supported. Define the rules for action method instead.
 	 */
 	public function testRenderMethod()
 	{
