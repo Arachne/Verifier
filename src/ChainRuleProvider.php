@@ -14,7 +14,7 @@ use Arachne\DIHelpers\ResolverInterface;
 use Reflector;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class ChainRuleProvider implements RuleProviderInterface
 {

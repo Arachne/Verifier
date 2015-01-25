@@ -17,7 +17,7 @@ use ReflectionClass;
 use ReflectionMethod;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 trait VerifierPresenterTrait
 {

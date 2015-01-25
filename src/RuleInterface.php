@@ -11,7 +11,7 @@
 namespace Arachne\Verifier;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 interface RuleInterface
 {

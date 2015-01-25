@@ -13,7 +13,7 @@ namespace Arachne\Verifier\DI;
 use Arachne\DIHelpers\CompilerExtension;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class VerifierExtension extends CompilerExtension
 {

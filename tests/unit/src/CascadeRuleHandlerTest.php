@@ -14,7 +14,7 @@ use Nette\Application\BadRequestException;
 use Nette\Application\Request;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class CascadeRuleHandlerTest extends Test
 {

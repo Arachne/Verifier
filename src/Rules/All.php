@@ -14,7 +14,7 @@ use Arachne\Verifier\RuleInterface;
 use Nette\Object;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  *
  * @Annotation
  * @Target({"CLASS", "METHOD", "ANNOTATION"})

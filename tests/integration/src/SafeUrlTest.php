@@ -3,7 +3,7 @@
 namespace Tests\Integration;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class SafeUrlTest extends Test
 {

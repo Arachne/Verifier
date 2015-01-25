@@ -13,7 +13,7 @@ namespace Arachne\Verifier;
 use Reflector;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 interface RuleProviderInterface
 {

@@ -7,7 +7,7 @@ use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class ExceptionsTest extends Test
 {

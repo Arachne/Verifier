@@ -16,7 +16,7 @@ use Latte\Macros\MacroSet;
 use Latte\PhpWriter;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class VerifierMacros extends MacroSet
 {

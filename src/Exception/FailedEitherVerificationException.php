@@ -13,7 +13,7 @@ namespace Arachne\Verifier\Exception;
 use Nette\Application\ForbiddenRequestException;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class FailedEitherVerificationException extends ForbiddenRequestException
 {

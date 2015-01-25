@@ -7,7 +7,7 @@ use Arachne\Verifier\Rules\Either;
 use Nette\Application\UI\Presenter;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class CascadePresenter extends Presenter
 {

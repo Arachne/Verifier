@@ -20,7 +20,7 @@ use Nette\Application\Request;
 use Nette\Object;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class CascadeRuleHandler extends Object implements RuleHandlerInterface
 {

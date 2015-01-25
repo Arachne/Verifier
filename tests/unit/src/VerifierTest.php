@@ -24,7 +24,7 @@ use Tests\Unit\Classes\TestPresenter;
 use Tests\Unit\Classes\TestRule;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class VerifierTest extends Test
 {

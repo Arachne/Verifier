@@ -6,7 +6,7 @@ use Arachne\Verifier\Application\VerifierControlTrait;
 use Nette\Application\UI\Control;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class BlockControl extends Control
 {

@@ -8,7 +8,7 @@ use Nette\Application\UI\Presenter;
 use Tests\Integration\Classes\CascadePresenter;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class CascadeRuleHandlerTest extends Test
 {

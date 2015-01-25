@@ -8,7 +8,7 @@ use Nette\Application\Request;
 use Nette\Object;
 
 /**
- * @author Jáchym Toušek
+ * @author Jáchym Toušek <enumag@gmail.com>
  */
 class EnabledRuleHandler extends Object implements RuleHandlerInterface
 {
