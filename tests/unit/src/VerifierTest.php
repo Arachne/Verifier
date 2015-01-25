@@ -46,7 +46,7 @@ class VerifierTest extends Test
 		$this->ruleProvider = Mockery::mock(RuleProviderInterface::class);
 		$this->handlerResolver = Mockery::mock(ResolverInterface::class);
 		$this->presenterFactory = Mockery::mock(IPresenterFactory::class);
-		$this->verifier = new Verifier([ $this->ruleProvider ], $this->handlerResolver, $this->presenterFactory);
+		$this->verifier = new Verifier($this->ruleProvider, $this->handlerResolver, $this->presenterFactory);
 	}
 
 	public function testGetRulesOnClass()

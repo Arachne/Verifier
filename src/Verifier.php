@@ -31,8 +31,8 @@ use Reflector;
 class Verifier extends Object
 {
 
-	/** @var RuleProviderInterface[] */
-	private $ruleProviders;
+	/** @var RuleProviderInterface */
+	private $ruleProvider;
 
 	/** @var ResolverInterface */
 	private $handlerResolver;
@@ -43,9 +43,9 @@ class Verifier extends Object
 	/** @var RuleInterface[][] */
 	private $cache;
 
-	public function __construct(array $ruleProviders, ResolverInterface $handlerResolver, IPresenterFactory $presenterFactory)
+	public function __construct(RuleProviderInterface $ruleProvider, ResolverInterface $handlerResolver, IPresenterFactory $presenterFactory)
 	{
-		$this->ruleProviders = $ruleProviders;
+		$this->ruleProvider = $ruleProvider;
 		$this->handlerResolver = $handlerResolver;
 		$this->presenterFactory = $presenterFactory;
 	}
@@ -63,11 +63,7 @@ class Verifier extends Object
 
 		$key = ($reflection instanceof ReflectionMethod ? $reflection->getDeclaringClass()->getName() . '::' : '') . $reflection->getName();
 		if (!isset($this->cache[$key])) {
-			$rules = array();
-			foreach ($this->ruleProviders as $provider) {
-				$rules += $provider->getRules($reflection);
-			}
-			$this->cache[$key] = $rules;
+			$this->cache[$key] = $this->ruleProvider->getRules($reflection);
 		}
 
 		return $this->cache[$key];

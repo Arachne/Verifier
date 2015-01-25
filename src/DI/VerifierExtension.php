@@ -10,8 +10,7 @@
 
 namespace Arachne\Verifier\DI;
 
-use Arachne\DIHelpers\DI\DIHelpersExtension;
-use Nette\DI\CompilerExtension;
+use Arachne\DIHelpers\CompilerExtension;
 
 /**
  * @author Jáchym Toušek
@@ -26,12 +25,22 @@ class VerifierExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$builder->addDefinition($this->prefix('verifier'))
-			->setClass('Arachne\Verifier\Verifier');
+		$extension = $this->getExtension('Arachne\DIHelpers\DI\DIHelpersExtension');
+		$providerResolver = $extension->addResolver(self::TAG_PROVIDER, 'Arachne\Verifier\RuleProviderInterface');
 
-		$builder->addDefinition($this->prefix('handlerResolver'))
-			->addTag(DIHelpersExtension::TAG_RESOLVER, self::TAG_HANDLER)
-			->setAutowired(FALSE);
+		$builder->addDefinition($this->prefix('chainRuleProvider'))
+			->setClass('Arachne\Verifier\ChainRuleProvider')
+			->setArguments(array(
+				'providerResolver' => '@' . $providerResolver,
+			));
+
+		$handlerResolver = $extension->addResolver(self::TAG_HANDLER, 'Arachne\Verifier\RuleHandlerInterface');
+
+		$builder->addDefinition($this->prefix('verifier'))
+			->setClass('Arachne\Verifier\Verifier')
+			->setArguments(array(
+				'handlerResolver' => '@' . $handlerResolver,
+			));
 
 		$builder->addDefinition($this->prefix('annotationsRuleProvider'))
 			->setClass('Arachne\Verifier\RuleProviderInterface')
@@ -46,26 +55,11 @@ class VerifierExtension extends CompilerExtension
 				'Arachne\Verifier\Rules\All',
 			));
 
-		if ($builder->hasDefinition('nette.latteFactory')) {
-			$builder->getDefinition('nette.latteFactory')
+		$extension = $this->getExtension('Nette\Bridges\Framework\NetteExtension');
+		if ($extension) {
+			$builder->getDefinition($extension->prefix('latteFactory'))
 				->addSetup('?->onCompile[] = function($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', array('@self'));
 		}
-	}
-
-	public function beforeCompile()
-	{
-		$builder = $this->getContainerBuilder();
-
-		$services = array();
-		foreach ($builder->findByTag(self::TAG_PROVIDER) as $name => $_) {
-			$services[] = '@' . $name;
-		}
-
-		$builder->getDefinition($this->prefix('verifier'))
-			->setArguments(array(
-				'ruleProviders' => $services,
-				'handlerResolver' => $this->prefix('@handlerResolver'),
-			));
 	}
 
 }
