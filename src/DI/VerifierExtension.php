@@ -55,7 +55,7 @@ class VerifierExtension extends CompilerExtension
 				'Arachne\Verifier\Rules\All',
 			));
 
-		$extension = $this->getExtension('Nette\Bridges\Framework\NetteExtension');
+		$extension = $this->getExtension('Nette\Bridges\Framework\NetteExtension', FALSE);
 		if ($extension) {
 			$builder->getDefinition($extension->prefix('latteFactory'))
 				->addSetup('?->onCompile[] = function($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', array('@self'));
