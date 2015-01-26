@@ -23,6 +23,6 @@ class All extends Object implements RuleInterface
 {
 
 	/** @var \Arachne\Verifier\RuleInterface[] */
-	public $rules = array();
+	public $rules = [];
 
 }

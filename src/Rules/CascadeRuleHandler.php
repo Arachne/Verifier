@@ -63,7 +63,7 @@ class CascadeRuleHandler extends Object implements RuleHandlerInterface
 	{
 		foreach ($rule->rules as $value) {
 			try {
-				$this->verifier->checkRules(array($value), $request, $component);
+				$this->verifier->checkRules([ $value ], $request, $component);
 				return;
 			} catch (BadRequestException $e) {
 				// intentionally ignored

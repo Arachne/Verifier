@@ -30,17 +30,17 @@ class VerifierExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('chainRuleProvider'))
 			->setClass('Arachne\Verifier\ChainRuleProvider')
-			->setArguments(array(
+			->setArguments([
 				'providerResolver' => '@' . $providerResolver,
-			));
+			]);
 
 		$handlerResolver = $extension->addResolver(self::TAG_HANDLER, 'Arachne\Verifier\RuleHandlerInterface');
 
 		$builder->addDefinition($this->prefix('verifier'))
 			->setClass('Arachne\Verifier\Verifier')
-			->setArguments(array(
+			->setArguments([
 				'handlerResolver' => '@' . $handlerResolver,
-			));
+			]);
 
 		$builder->addDefinition($this->prefix('annotationsRuleProvider'))
 			->setClass('Arachne\Verifier\RuleProviderInterface')
@@ -50,15 +50,15 @@ class VerifierExtension extends CompilerExtension
 
 		$builder->addDefinition($this->prefix('cascadeRuleHandler'))
 			->setClass('Arachne\Verifier\Rules\CascadeRuleHandler')
-			->addTag(self::TAG_HANDLER, array(
+			->addTag(self::TAG_HANDLER, [
 				'Arachne\Verifier\Rules\Either',
 				'Arachne\Verifier\Rules\All',
-			));
+			]);
 
 		$extension = $this->getExtension('Nette\Bridges\Framework\NetteExtension', FALSE);
 		if ($extension) {
 			$builder->getDefinition($extension->prefix('latteFactory'))
-				->addSetup('?->onCompile[] = function($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', array('@self'));
+				->addSetup('?->onCompile[] = function($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', [ '@self' ]);
 		}
 	}
 
