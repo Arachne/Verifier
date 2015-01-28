@@ -2,8 +2,7 @@
 
 namespace Tests\Unit\Classes;
 
-use Arachne\Verifier\RuleInterface;
-use Nette\Object;
+use Arachne\Verifier\Rules\ValidationRule;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
@@ -11,6 +10,6 @@ use Nette\Object;
  * @Annotation
  * @Target({"CLASS", "METHOD"})
  */
-class InvalidRule extends Object implements RuleInterface
+class InvalidRule extends ValidationRule
 {
 }

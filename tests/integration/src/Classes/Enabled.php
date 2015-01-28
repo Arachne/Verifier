@@ -2,8 +2,7 @@
 
 namespace Tests\Integration\Classes;
 
-use Arachne\Verifier\RuleInterface;
-use Nette\Object;
+use Arachne\Verifier\Rules\SecurityRule;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
@@ -11,7 +10,7 @@ use Nette\Object;
  * @Annotation
  * @Target({"CLASS", "METHOD", "ANNOTATION"})
  */
-class Enabled extends Object implements RuleInterface
+class Enabled extends SecurityRule
 {
 
 	public $value;

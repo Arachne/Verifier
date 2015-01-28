@@ -2,6 +2,7 @@
 
 namespace Tests\Integration\Classes;
 
+use Arachne\Verifier\Exception\VerificationException;
 use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\RuleHandlerInterface;
 use Nette\Application\Request;
@@ -30,7 +31,7 @@ class EnabledRuleHandler extends Object implements RuleHandlerInterface
 
 	/**
 	 * @param Allowed $rule
-	 * @throws DisabledException
+	 * @throws VerificationException
 	 */
 	protected function checkRuleEnabled(Enabled $rule, Request $request, $component = NULL)
 	{
@@ -41,7 +42,7 @@ class EnabledRuleHandler extends Object implements RuleHandlerInterface
 			$enabled = $rule->value;
 		}
 		if (!$enabled) {
-			throw new DisabledException("This action is not enabled.");
+			throw new VerificationException($rule, "This action is not enabled.");
 		}
 	}
 

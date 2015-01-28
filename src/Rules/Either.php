@@ -25,4 +25,12 @@ class Either extends Object implements RuleInterface
 	/** @var \Arachne\Verifier\RuleInterface[] */
 	public $rules = [];
 
+	/**
+	 * @return int
+	 */
+	public function getCode()
+	{
+		return $this->rules ? reset($this->rules)->getCode() : 404;
+	}
+
 }

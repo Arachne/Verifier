@@ -10,7 +10,7 @@
 
 namespace Arachne\Verifier;
 
-use Nette\Application\BadRequestException;
+use Arachne\Verifier\Exception\VerificationException;
 use Nette\Application\Request;
 
 /**
@@ -23,7 +23,7 @@ interface RuleHandlerInterface
 	 * @param RuleInterface $rule
 	 * @param Request $request
 	 * @param string $component
-	 * @throws BadRequestException
+	 * @throws VerificationException
 	 */
 	public function checkRule(RuleInterface $rule, Request $request, $component = NULL);
 

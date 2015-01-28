@@ -9,7 +9,7 @@ use Nette\Application\UI\Presenter;
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class CascadePresenter extends Presenter
+class TestPresenter extends Presenter
 {
 
 	/**

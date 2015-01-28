@@ -48,11 +48,16 @@ class VerifierExtension extends CompilerExtension
 			->addTag(self::TAG_PROVIDER)
 			->setAutowired(FALSE);
 
-		$builder->addDefinition($this->prefix('cascadeRuleHandler'))
-			->setClass('Arachne\Verifier\Rules\CascadeRuleHandler')
+		$builder->addDefinition($this->prefix('allRuleHandler'))
+			->setClass('Arachne\Verifier\Rules\AllRuleHandler')
+			->addTag(self::TAG_HANDLER, [
+				'Arachne\Verifier\Rules\All',
+			]);
+
+		$builder->addDefinition($this->prefix('eitherRuleHandler'))
+			->setClass('Arachne\Verifier\Rules\EitherRuleHandler')
 			->addTag(self::TAG_HANDLER, [
 				'Arachne\Verifier\Rules\Either',
-				'Arachne\Verifier\Rules\All',
 			]);
 
 		$extension = $this->getExtension('Nette\Bridges\Framework\NetteExtension', FALSE);

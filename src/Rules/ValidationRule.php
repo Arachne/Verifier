@@ -11,6 +11,7 @@
 namespace Arachne\Verifier\Rules;
 
 use Arachne\Verifier\RuleInterface;
+use Nette\Object;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
@@ -18,10 +19,15 @@ use Arachne\Verifier\RuleInterface;
  * @Annotation
  * @Target({"CLASS", "METHOD", "ANNOTATION"})
  */
-class All extends ValidationRule
+abstract class ValidationRule extends Object implements RuleInterface
 {
 
-	/** @var \Arachne\Verifier\RuleInterface[] */
-	public $rules = [];
+	/**
+	 * @return int
+	 */
+	public function getCode()
+	{
+		return 404;
+	}
 
 }

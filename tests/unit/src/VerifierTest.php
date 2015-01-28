@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Arachne\DIHelpers\ResolverInterface;
+use Arachne\Verifier\Exception\VerificationException;
 use Arachne\Verifier\RuleHandlerInterface;
 use Arachne\Verifier\RuleProviderInterface;
 use Arachne\Verifier\Verifier;
@@ -19,7 +20,6 @@ use ReflectionMethod;
 use Reflector;
 use Tests\Unit\Classes\InvalidRule;
 use Tests\Unit\Classes\TestControl;
-use Tests\Unit\Classes\TestException;
 use Tests\Unit\Classes\TestPresenter;
 use Tests\Unit\Classes\TestRule;
 
@@ -135,7 +135,7 @@ class VerifierTest extends Test
 			->shouldReceive('checkRule')
 			->once()
 			->with(Mockery::type(TestRule::class), $request, NULL)
-			->andThrow(TestException::class)
+			->andThrow(Mockery::mock(VerificationException::class))
 			->getMock();
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionClass::class), 1);
@@ -183,7 +183,7 @@ class VerifierTest extends Test
 			->shouldReceive('checkRule')
 			->once()
 			->with(Mockery::type(TestRule::class), $request, NULL)
-			->andThrow(TestException::class)
+			->andThrow(Mockery::mock(VerificationException::class))
 			->getMock();
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);

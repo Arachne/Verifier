@@ -13,7 +13,7 @@ namespace Arachne\Verifier;
 use Arachne\DIHelpers\ResolverInterface;
 use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\Exception\UnexpectedTypeException;
-use Nette\Application\BadRequestException;
+use Arachne\Verifier\Exception\VerificationException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
@@ -74,7 +74,7 @@ class Verifier extends Object
 	 * @param RuleInterface[] $rules
 	 * @param Request $request
 	 * @param string $component
-	 * @throws BadRequestException
+	 * @throws VerificationException
 	 */
 	public function checkRules(array $rules, Request $request, $component = NULL)
 	{
@@ -93,7 +93,7 @@ class Verifier extends Object
 	 * @param ReflectionClass|ReflectionMethod $reflection
 	 * @param Request $request
 	 * @param string $component
-	 * @throws BadRequestException
+	 * @throws VerificationException
 	 */
 	public function checkReflection(Reflector $reflection, Request $request, $component = NULL)
 	{
@@ -155,7 +155,7 @@ class Verifier extends Object
 					$this->checkReflection($reflection->getMethod($method), $request);
 				}
 			}
-		} catch (BadRequestException $e) {
+		} catch (VerificationException $e) {
 			return FALSE;
 		}
 
@@ -183,7 +183,7 @@ class Verifier extends Object
 				// component name should be $component->getName() . '-' . $name this time
 			}
 
-		} catch (BadRequestException $e) {
+		} catch (VerificationException $e) {
 			return FALSE;
 		}
 
