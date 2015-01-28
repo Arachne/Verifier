@@ -20,7 +20,6 @@ use Nette\Application\UI\Presenter;
 use Nette\Application\UI\PresenterComponent;
 use Nette\Application\UI\PresenterComponentReflection;
 use Nette\Object;
-use Nette\Utils\Callback;
 use ReflectionClass;
 use ReflectionMethod;
 use Reflector;

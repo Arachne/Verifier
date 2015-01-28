@@ -36,7 +36,7 @@ trait VerifierPresenterTrait
 	}
 
 	/**
-	 * @param ReflectionClass|ReflectionMethod $element
+	 * @param ReflectionClass|ReflectionMethod $reflection
 	 */
 	public function checkRequirements($reflection)
 	{
@@ -57,13 +57,13 @@ trait VerifierPresenterTrait
 
 	/**
 	 * Ensures that the action method exists.
-	 * @param string
-	 * @param array
+	 * @param string $method
+	 * @param array $parameters
 	 * @return bool
 	 */
-	protected function tryCall($method, array $params)
+	protected function tryCall($method, array $parameters)
 	{
-		$called = parent::tryCall($method, $params);
+		$called = parent::tryCall($method, $parameters);
 		if (!$called && substr($method, 0, 6) === 'action') {
 			$class = get_class($this);
 			throw new BadRequestException("Action '$class::$method' does not exist.");

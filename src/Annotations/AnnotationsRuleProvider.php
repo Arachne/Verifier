@@ -14,7 +14,6 @@ use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\RuleProviderInterface;
 use Doctrine\Common\Annotations\Reader;
-use Nette\Application\Request;
 use Nette\Object;
 use ReflectionClass;
 use ReflectionMethod;
@@ -35,7 +34,7 @@ class AnnotationsRuleProvider extends Object implements RuleProviderInterface
 	}
 
 	/**
-	 * @param ReflectionClass|ReflectionMethod $rules
+	 * @param ReflectionClass|ReflectionMethod $reflection
 	 * @return RuleInterface[]
 	 */
 	public function getRules(Reflector $reflection)

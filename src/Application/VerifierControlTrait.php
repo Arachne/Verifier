@@ -21,7 +21,7 @@ trait VerifierControlTrait
 {
 
 	/**
-	 * @param ReflectionClass|ReflectionMethod $element
+	 * @param ReflectionClass|ReflectionMethod $reflection
 	 */
 	public function checkRequirements($reflection)
 	{
@@ -34,20 +34,20 @@ trait VerifierControlTrait
 	 * @param string $destination
 	 * @param mixed[] $parameters
 	 */
-	public function redirectVerified($code, $destination = NULL, $args = [])
+	public function redirectVerified($code, $destination = NULL, $parameters = [])
 	{
 		// first parameter is optional
 		if (!is_numeric($code)) {
-			$args = $destination;
+			$parameters = $destination;
 			$destination = $code;
 			$code = NULL;
 		}
 
-		if (!is_array($args)) {
-			$args = array_slice(func_get_args(), is_numeric($code) ? 2 : 1);
+		if (!is_array($parameters)) {
+			$parameters = array_slice(func_get_args(), is_numeric($code) ? 2 : 1);
 		}
 
-		$link = $this->link($destination, $args);
+		$link = $this->link($destination, $parameters);
 		if ($this->getPresenter()->getVerifier()->isLinkVerified($this->getLastCreatedRequest(), $this)) {
 			$this->redirectUrl($link, $code);
 		}

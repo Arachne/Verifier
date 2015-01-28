@@ -10,6 +10,8 @@
 
 namespace Arachne\Verifier;
 
+use ReflectionClass;
+use ReflectionMethod;
 use Reflector;
 
 /**
