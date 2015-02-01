@@ -59,10 +59,15 @@ class VerifierExtension extends CompilerExtension
 			->addTag(self::TAG_HANDLER, [
 				'Arachne\Verifier\Rules\Either',
 			]);
+	}
 
-		$extension = $this->getExtension('Nette\Bridges\Framework\NetteExtension', FALSE);
-		if ($extension) {
-			$builder->getDefinition($extension->prefix('latteFactory'))
+	public function beforeCompile()
+	{
+		$builder = $this->getContainerBuilder();
+
+		$latte = $builder->getByType('Nette\Bridges\ApplicationLatte\ILatteFactory') ?: 'nette.latteFactory';
+		if ($builder->hasDefinition($latte)) {
+			$builder->getDefinition($latte)
 				->addSetup('?->onCompile[] = function($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', [ '@self' ]);
 		}
 	}
