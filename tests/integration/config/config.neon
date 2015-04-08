@@ -1,21 +1,37 @@
-extensions:
-	nette: Nette\Bridges\Framework\NetteExtension
-	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
-	arachne.dihelpers: Arachne\DIHelpers\DI\DIHelpersExtension
-	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
-	enumag.application: Enumag\Application\DI\ApplicationExtension
+common:
+	extensions:
+		arachne.dihelpers: Arachne\DIHelpers\DI\DIHelpersExtension
+		arachne.verifier: Arachne\Verifier\DI\VerifierExtension
+		enumag.application: Enumag\Application\DI\ApplicationExtension
+		kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
 
-nette:
-	application:
+	services:
+		routerFactory: Tests\Integration\Classes\RouterFactory
+		router: @routerFactory::create()
+		enabledRuleHandler:
+			class: Tests\Integration\Classes\EnabledRuleHandler
+			tags:
+				arachne.verifier.ruleHandler:
+					- Tests\Integration\Classes\Enabled
+
+nette_2.2 < common:
+	extensions:
+		nette: Nette\Bridges\Framework\NetteExtension
+
+	nette:
+		application:
+			catchExceptions: null
+			mapping:
+				*: Tests\Integration\Classes\*Presenter
+
+nette_2.3 < common:
+	extensions:
+		nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension( %debugMode%, [ %appDir% ] )
+		nette.cache: Nette\Bridges\CacheDI\CacheExtension( %tempDir% )
+		nette.http: Nette\Bridges\HttpDI\HttpExtension
+		nette.latte: Nette\Bridges\ApplicationDI\LatteExtension( %tempDir%, %debugMode% )
+
+	nette.application:
 		catchExceptions: null
 		mapping:
 			*: Tests\Integration\Classes\*Presenter
-
-services:
-	routerFactory: Tests\Integration\Classes\RouterFactory
-	router: @routerFactory::create()
-	enabledRuleHandler:
-		class: Tests\Integration\Classes\EnabledRuleHandler
-		tags:
-			arachne.verifier.ruleHandler:
-				- Tests\Integration\Classes\Enabled
