@@ -41,7 +41,7 @@ class EitherRuleHandlerTest extends Test
 
 		$this->verifier
 			->shouldReceive('checkRules')
-			->with([ $rule1 ], $request, NULL)
+			->with([ $rule1 ], $request, null)
 			->once()
 			->andReturn();
 
@@ -59,13 +59,13 @@ class EitherRuleHandlerTest extends Test
 
 		$this->verifier
 			->shouldReceive('checkRules')
-			->with([ $rule1 ], $request, NULL)
+			->with([ $rule1 ], $request, null)
 			->once()
 			->andThrow(Mockery::mock(VerificationException::class));
 
 		$this->verifier
 			->shouldReceive('checkRules')
-			->with([ $rule2 ], $request, NULL)
+			->with([ $rule2 ], $request, null)
 			->once()
 			->andReturn();
 
@@ -90,13 +90,13 @@ class EitherRuleHandlerTest extends Test
 
 		$this->verifier
 			->shouldReceive('checkRules')
-			->with([ $rule1 ], $request, NULL)
+			->with([ $rule1 ], $request, null)
 			->once()
 			->andThrow(Mockery::mock(VerificationException::class));
 
 		$this->verifier
 			->shouldReceive('checkRules')
-			->with([ $rule2 ], $request, NULL)
+			->with([ $rule2 ], $request, null)
 			->once()
 			->andThrow(Mockery::mock(VerificationException::class));
 

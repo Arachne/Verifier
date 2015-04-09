@@ -30,7 +30,7 @@ class VerifierMacros extends MacroSet
 		$me->addMacro('ifComponentVerified', 'if ($_presenter->getContext()->getByType(\'Arachne\Verifier\Verifier\')->isComponentVerified(%node.word, $_presenter->getRequest(), $_control)) {', '}');
 		$me->addMacro('ifLinkVerified', '$_l->verifiedLink = $_control->link(%node.word, %node.array?); if (!$_presenter->getLastCreatedRequest() || $_presenter->getContext()->getByType(\'Arachne\Verifier\Verifier\')->isLinkVerified($_presenter->getLastCreatedRequest(), $_control)) {', '}');
 		$me->addMacro('ifPresenterLinkVerified', '$_l->verifiedLink = $_presenter->link(%node.word, %node.array?); if (!$_presenter->getLastCreatedRequest() || $_presenter->getContext()->getByType(\'Arachne\Verifier\Verifier\')->isLinkVerified($_presenter->getLastCreatedRequest(), $_presenter)) {', '}');
-		$me->addMacro('href', NULL, NULL, function (MacroNode $node, PhpWriter $writer) use ($me) {
+		$me->addMacro('href', null, null, function (MacroNode $node, PhpWriter $writer) use ($me) {
 			$word = $node->tokenizer->fetchWord();
 			if ($word) {
 				$link = '$_control->link(' . $writer->formatWord($word) . ', %node.array?)';

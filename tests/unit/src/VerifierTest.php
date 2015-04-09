@@ -134,7 +134,7 @@ class VerifierTest extends Test
 		$handler = Mockery::mock(RuleHandlerInterface::class)
 			->shouldReceive('checkRule')
 			->once()
-			->with(Mockery::type(TestRule::class), $request, NULL)
+			->with(Mockery::type(TestRule::class), $request, null)
 			->andThrow(Mockery::mock(VerificationException::class))
 			->getMock();
 
@@ -171,7 +171,7 @@ class VerifierTest extends Test
 		$this->setupHandlerResolverMock($handler, 1);
 
 		$parent = new TestPresenter();
-		$parent->setParent(NULL, 'Test');
+		$parent->setParent(null, 'Test');
 
 		$this->assertTrue($this->verifier->isComponentVerified('component', $request, $parent));
 	}
@@ -182,7 +182,7 @@ class VerifierTest extends Test
 		$handler = Mockery::mock(RuleHandlerInterface::class)
 			->shouldReceive('checkRule')
 			->once()
-			->with(Mockery::type(TestRule::class), $request, NULL)
+			->with(Mockery::type(TestRule::class), $request, null)
 			->andThrow(Mockery::mock(VerificationException::class))
 			->getMock();
 
@@ -199,13 +199,13 @@ class VerifierTest extends Test
 		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'action',
 			Presenter::SIGNAL_KEY => 'component-signal',
-		], FALSE);
+		], false);
 		$handler = $this->createHandlerMock($request, 1, 'component');
 
 		$this->setupRuleProviderMock(Mockery::type(ReflectionMethod::class), 1);
 		$this->setupHandlerResolverMock($handler, 1);
 
-		$component = new TestControl(NULL, 'component');
+		$component = new TestControl(null, 'component');
 		$parent = Mockery::mock(Presenter::class)
 			->shouldDeferMissing();
 		$component->setParent($parent);
@@ -222,7 +222,7 @@ class VerifierTest extends Test
 		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'action',
 			Presenter::SIGNAL_KEY => 'component-signal',
-		], FALSE);
+		], false);
 
 		$component = Mockery::mock(PresenterComponent::class)
 			->shouldReceive('getUniqueId')
@@ -240,7 +240,7 @@ class VerifierTest extends Test
 	{
 		$request = $this->createRequestMock([
 			Presenter::ACTION_KEY => 'invalid',
-		], TRUE);
+		], true);
 
 		$this->setupPresenterFactoryMock();
 		$this->ruleProvider
@@ -294,7 +294,7 @@ class VerifierTest extends Test
 	 * @param string $component
 	 * @return RuleHandlerInterface
 	 */
-	private function createHandlerMock(Request $request, $limit, $component = NULL)
+	private function createHandlerMock(Request $request, $limit, $component = null)
 	{
 		return Mockery::mock(RuleHandlerInterface::class)
 			->shouldReceive('checkRule')
@@ -309,7 +309,7 @@ class VerifierTest extends Test
 	 * @param bool $presenter
 	 * @return Request
 	 */
-	private function createRequestMock(array $parameters, $presenter = TRUE)
+	private function createRequestMock(array $parameters, $presenter = true)
 	{
 		$request = Mockery::mock(Request::class);
 		$request->shouldReceive('getParameters')

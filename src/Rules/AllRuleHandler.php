@@ -41,7 +41,7 @@ class AllRuleHandler extends Object implements RuleHandlerInterface
 	 * @param string $component
 	 * @throws VerificationException
 	 */
-	public function checkRule(RuleInterface $rule, Request $request, $component = NULL)
+	public function checkRule(RuleInterface $rule, Request $request, $component = null)
 	{
 		if (!$rule instanceof All) {
 			throw new InvalidArgumentException('Unknown rule \'' . get_class($rule) . '\' given.');

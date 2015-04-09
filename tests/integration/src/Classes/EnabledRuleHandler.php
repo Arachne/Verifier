@@ -20,7 +20,7 @@ class EnabledRuleHandler extends Object implements RuleHandlerInterface
 	 * @param string $component
 	 * @throws DisabledException
 	 */
-	public function checkRule(RuleInterface $rule, Request $request, $component = NULL)
+	public function checkRule(RuleInterface $rule, Request $request, $component = null)
 	{
 		if ($rule instanceof Enabled) {
 			$this->checkRuleEnabled($rule, $request, $component);
@@ -33,7 +33,7 @@ class EnabledRuleHandler extends Object implements RuleHandlerInterface
 	 * @param Allowed $rule
 	 * @throws VerificationException
 	 */
-	protected function checkRuleEnabled(Enabled $rule, Request $request, $component = NULL)
+	protected function checkRuleEnabled(Enabled $rule, Request $request, $component = null)
 	{
 		if (is_string($rule->value)) {
 			$parameters = $request->getParameters();

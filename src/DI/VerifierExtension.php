@@ -46,7 +46,7 @@ class VerifierExtension extends CompilerExtension
 			->setClass('Arachne\Verifier\RuleProviderInterface')
 			->setFactory('Arachne\Verifier\Annotations\AnnotationsRuleProvider')
 			->addTag(self::TAG_PROVIDER)
-			->setAutowired(FALSE);
+			->setAutowired(false);
 
 		$builder->addDefinition($this->prefix('allRuleHandler'))
 			->setClass('Arachne\Verifier\Rules\AllRuleHandler')

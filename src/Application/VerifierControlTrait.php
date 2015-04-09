@@ -34,13 +34,13 @@ trait VerifierControlTrait
 	 * @param string $destination
 	 * @param mixed[] $parameters
 	 */
-	public function redirectVerified($code, $destination = NULL, $parameters = [])
+	public function redirectVerified($code, $destination = null, $parameters = [])
 	{
 		// first parameter is optional
 		if (!is_numeric($code)) {
 			$parameters = $destination;
 			$destination = $code;
-			$code = NULL;
+			$code = null;
 		}
 
 		if (!is_array($parameters)) {

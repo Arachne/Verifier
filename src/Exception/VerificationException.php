@@ -28,7 +28,7 @@ class VerificationException extends BadRequestException
 	 * @param string $message
 	 * @param Exception $previous
 	 */
-	public function __construct(RuleInterface $rule, $message, Exception $previous = NULL)
+	public function __construct(RuleInterface $rule, $message, Exception $previous = null)
 	{
 		parent::__construct($message, $rule->getCode(), $previous);
 		$this->rule = $rule;

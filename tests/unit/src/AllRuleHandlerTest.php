@@ -40,7 +40,7 @@ class AllRuleHandlerTest extends Test
 
 		$this->verifier
 			->shouldReceive('checkRules')
-			->with($rule->rules, $request, NULL)
+			->with($rule->rules, $request, null)
 			->once()
 			->andReturn();
 

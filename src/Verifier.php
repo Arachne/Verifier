@@ -75,7 +75,7 @@ class Verifier extends Object
 	 * @param string $component
 	 * @throws VerificationException
 	 */
-	public function checkRules(array $rules, Request $request, $component = NULL)
+	public function checkRules(array $rules, Request $request, $component = null)
 	{
 		foreach ($rules as $rule) {
 			$class = get_class($rule);
@@ -94,7 +94,7 @@ class Verifier extends Object
 	 * @param string $component
 	 * @throws VerificationException
 	 */
-	public function checkReflection(Reflector $reflection, Request $request, $component = NULL)
+	public function checkReflection(Reflector $reflection, Request $request, $component = null)
 	{
 		$rules = $this->getRules($reflection);
 		$this->checkRules($rules, $request, $component);
@@ -128,7 +128,7 @@ class Verifier extends Object
 					$signal = substr($signalId, $pos + 1);
 				} else {
 					// signal for presenter
-					$name = NULL;
+					$name = null;
 					$presenter = $request->getPresenterName();
 					$reflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
 					$signal = $signalId;
@@ -155,10 +155,10 @@ class Verifier extends Object
 				}
 			}
 		} catch (VerificationException $e) {
-			return FALSE;
+			return false;
 		}
 
-		return TRUE;
+		return true;
 	}
 
 	/**
@@ -176,17 +176,17 @@ class Verifier extends Object
 			$method = 'createComponent' . ucfirst($name);
 			if ($reflection->hasMethod($method)) {
 				$factory = $reflection->getMethod($method);
-				$this->checkReflection($factory, $request, $parent->getParent() ? $parent->getUniqueId() : NULL);
+				$this->checkReflection($factory, $request, $parent->getParent() ? $parent->getUniqueId() : null);
 
 				// TODO: find component class based on @return rule and check it's class-level rules
 				// component name should be $component->getName() . '-' . $name this time
 			}
 
 		} catch (VerificationException $e) {
-			return FALSE;
+			return false;
 		}
 
-		return TRUE;
+		return true;
 	}
 
 }
