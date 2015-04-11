@@ -26,21 +26,14 @@ class VerifierExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		$extension = $this->getExtension('Arachne\DIHelpers\DI\DIHelpersExtension');
-		$providerResolver = $extension->addResolver(self::TAG_PROVIDER, 'Arachne\Verifier\RuleProviderInterface');
+		$extension->addResolver(self::TAG_PROVIDER, 'Arachne\Verifier\RuleProviderInterface');
+		$extension->addResolver(self::TAG_HANDLER, 'Arachne\Verifier\RuleHandlerInterface');
 
 		$builder->addDefinition($this->prefix('chainRuleProvider'))
-			->setClass('Arachne\Verifier\ChainRuleProvider')
-			->setArguments([
-				'providerResolver' => '@' . $providerResolver,
-			]);
-
-		$handlerResolver = $extension->addResolver(self::TAG_HANDLER, 'Arachne\Verifier\RuleHandlerInterface');
+			->setClass('Arachne\Verifier\ChainRuleProvider');
 
 		$builder->addDefinition($this->prefix('verifier'))
-			->setClass('Arachne\Verifier\Verifier')
-			->setArguments([
-				'handlerResolver' => '@' . $handlerResolver,
-			]);
+			->setClass('Arachne\Verifier\Verifier');
 
 		$builder->addDefinition($this->prefix('annotationsRuleProvider'))
 			->setClass('Arachne\Verifier\RuleProviderInterface')
@@ -64,6 +57,17 @@ class VerifierExtension extends CompilerExtension
 	public function beforeCompile()
 	{
 		$builder = $this->getContainerBuilder();
+		$extension = $this->getExtension('Arachne\DIHelpers\DI\DIHelpersExtension');
+
+		$builder->getDefinition($this->prefix('chainRuleProvider'))
+			->setArguments([
+				'providerResolver' => '@' . $extension->getResolver(self::TAG_PROVIDER),
+			]);
+
+		$builder->getDefinition($this->prefix('verifier'))
+			->setArguments([
+				'handlerResolver' => '@' . $extension->getResolver(self::TAG_HANDLER),
+			]);
 
 		$latte = $builder->getByType('Nette\Bridges\ApplicationLatte\ILatteFactory') ?: 'nette.latteFactory';
 		if ($builder->hasDefinition($latte)) {
