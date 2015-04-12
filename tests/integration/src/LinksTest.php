@@ -21,15 +21,15 @@ class LinksTest extends Test
 	public function testRedirect()
 	{
 		$this->guy->amOnPage('/article/remove/1');
-		$this->guy->seeRedirectTo('/article/delete/1');
 		$this->guy->seeResponseCodeIs(302);
+		$this->guy->seeRedirectTo('/article/delete/1');
 	}
 
 	public function testRedirectCustomCode()
 	{
 		$this->guy->amOnPage('/article/redirect/1');
-		$this->guy->seeRedirectTo('/article/delete/1');
 		$this->guy->seeResponseCodeIs(301);
+		$this->guy->seeRedirectTo('/article/delete/1');
 	}
 
 	public function testRedirectNotAllowed()
