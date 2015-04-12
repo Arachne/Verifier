@@ -2,6 +2,7 @@
 
 namespace Tests\Integration;
 
+use Codeception\TestCase\Test;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;

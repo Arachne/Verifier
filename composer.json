@@ -21,7 +21,7 @@
 	},
 	"require-dev": {
 		"php": ">=5.5.0",
-		"arachne/codeception": "~0.5.2",
+		"arachne/codeception": "~0.5.3",
 		"arachne/coding-style": "~0.3.0",
 		"codeception/codeception": "~2.0",
 		"codeception/mockery-module": "~0.2",
@@ -29,7 +29,6 @@
 		"mockery/mockery": "~0.9",
 		"nette/application": "~2.3",
 		"nette/di": "~2.3",
-		"nette/robot-loader": "~2.3",
 		"nette/utils": "~2.3",
 		"latte/latte": "~2.3",
 		"squizlabs/php_codesniffer": "~2.0",

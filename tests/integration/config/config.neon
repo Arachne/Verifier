@@ -1,5 +1,6 @@
 common:
 	extensions:
+		arachne.codeception: Arachne\Codeception\DI\CodeceptionExtension
 		arachne.dihelpers: Arachne\DIHelpers\DI\DIHelpersExtension
 		arachne.verifier: Arachne\Verifier\DI\VerifierExtension
 		enumag.application: Enumag\Application\DI\ApplicationExtension
@@ -26,10 +27,10 @@ nette_2.2 < common:
 
 nette_2.3 < common:
 	extensions:
-		nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension( %debugMode%, [ %appDir% ] )
+		nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension
 		nette.cache: Nette\Bridges\CacheDI\CacheExtension( %tempDir% )
 		nette.http: Nette\Bridges\HttpDI\HttpExtension
-		nette.latte: Nette\Bridges\ApplicationDI\LatteExtension( %tempDir%, %debugMode% )
+		nette.latte: Nette\Bridges\ApplicationDI\LatteExtension( %tempDir% )
 
 	nette.application:
 		catchExceptions: null

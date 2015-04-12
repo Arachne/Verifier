@@ -1,7 +1,7 @@
 {
 	"require": {
 		"php": ">=5.4.0",
-		"arachne/di-helpers": "~0.2.0",
+		"arachne/di-helpers": "~0.2.0|~0.3.0",
 		"doctrine/annotations": "~1.1",
 		"kdyby/annotations": "~2.1",
 		"nette/application": "~2.2.0",
@@ -10,8 +10,8 @@
 	},
 	"require-dev": {
 		"php": ">=5.5.0",
-		"arachne/codeception": "~0.5.2",
-		"arachne/coding-style": "~0.2.0",
+		"arachne/codeception": "~0.5.3",
+		"arachne/coding-style": "~0.3.0",
 		"codeception/codeception": "~2.0",
 		"codeception/mockery-module": "~0.2",
 		"enumag/application": "~0.3.5",
