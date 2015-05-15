@@ -47,7 +47,7 @@ trait VerifierControlTrait
 			$parameters = array_slice(func_get_args(), is_numeric($code) ? 2 : 1);
 		}
 
-		$link = $this->link($destination, $parameters);
+		$link = $this->getPresenter()->createRequest($this, $destination, $parameters, 'redirect');
 		if ($this->getPresenter()->getVerifier()->isLinkVerified($this->getLastCreatedRequest(), $this)) {
 			$this->redirectUrl($link, $code);
 		}
