@@ -44,4 +44,17 @@ class ComponentsTest extends Test
 		$this->guy->seeResponseCodeIs(403);
 	}
 
+	public function testSubComponentAllowed()
+	{
+		$this->guy->amOnPage('/article/?do=parent-child-signal1&parent-child-parameter=1');
+		$this->guy->seeResponseCodeIs(302);
+		$this->guy->seeRedirectTo('/article/?do=parent-child-signal2');
+	}
+
+	public function testSubComponentNotAllowed()
+	{
+		$this->guy->amOnPage('/article/?do=parent-child-signal1&parent-child-parameter=0');
+		$this->guy->seeResponseCodeIs(403);
+	}
+
 }

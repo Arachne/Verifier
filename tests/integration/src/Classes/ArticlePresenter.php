@@ -104,6 +104,15 @@ class ArticlePresenter extends Presenter
 		return new BlockControl();
 	}
 
+	/**
+	 * @Enabled(TRUE)
+	 * @return ParentControl
+	 */
+	protected function createComponentParent()
+	{
+		return new ParentControl();
+	}
+
 	public function formatTemplateFiles()
 	{
 		$name = $this->getName();

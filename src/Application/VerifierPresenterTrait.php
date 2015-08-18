@@ -71,4 +71,12 @@ trait VerifierPresenterTrait
 		return $called;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function createRequest($component, $destination, array $parameters, $mode)
+	{
+		return parent::createRequest($component, $destination, $parameters, $mode);
+	}
+
 }

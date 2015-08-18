@@ -25,7 +25,7 @@ trait VerifierControlTrait
 	 */
 	public function checkRequirements($reflection)
 	{
-		$this->getPresenter()->getVerifier()->checkReflection($reflection, $this->getPresenter()->getRequest(), $this->getName());
+		$this->getPresenter()->getVerifier()->checkReflection($reflection, $this->getPresenter()->getRequest(), $this->getUniqueId());
 	}
 
 	/**
@@ -38,18 +38,18 @@ trait VerifierControlTrait
 	{
 		// first parameter is optional
 		if (!is_numeric($code)) {
-			$parameters = $destination;
+			$parameters = is_array($destination) ? $destination : array_slice(func_get_args(), 1);
 			$destination = $code;
 			$code = null;
+
+		} elseif (!is_array($parameters)) {
+			$parameters = array_slice(func_get_args(), 2);
 		}
 
-		if (!is_array($parameters)) {
-			$parameters = array_slice(func_get_args(), is_numeric($code) ? 2 : 1);
-		}
-
-		$link = $this->getPresenter()->createRequest($this, $destination, $parameters, 'redirect');
-		if ($this->getPresenter()->getVerifier()->isLinkVerified($this->getLastCreatedRequest(), $this)) {
-			$this->redirectUrl($link, $code);
+		$presenter = $this->getPresenter();
+		$link = $presenter->createRequest($this, $destination, $parameters, 'redirect');
+		if ($presenter->getVerifier()->isLinkVerified($presenter->getLastCreatedRequest(), $this)) {
+			$presenter->redirectUrl($link, $code);
 		}
 	}
 
