@@ -12,7 +12,10 @@ use Nette\Application\UI\Presenter;
 class TestPresenter extends Presenter
 {
 
-	protected $property;
+	/**
+	 * @TestRule
+	 */
+	public $property;
 
 	/**
 	 * @TestRule

@@ -14,10 +14,23 @@ class ArticlePresenter extends Presenter
 	use VerifierPresenterTrait;
 
 	/**
+	 * @var BlockControlFactory
+	 * @inject
+	 */
+	public $factory;
+
+	/**
+	 * @var bool
+	 * @Enabled( "$privilege" )
+	 */
+	public $privilege;
+
+	/**
 	 * @Enabled(TRUE)
 	 */
 	public function actionDefault()
 	{
+		$this->getTemplate()->privilege = $this->privilege;
 	}
 
 	/**
@@ -92,7 +105,7 @@ class ArticlePresenter extends Presenter
 	 */
 	protected function createComponentHeader()
 	{
-		return new BlockControl();
+		return $this->factory->create();
 	}
 
 	/**

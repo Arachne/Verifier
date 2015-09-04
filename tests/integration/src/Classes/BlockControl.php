@@ -13,8 +13,15 @@ class BlockControl extends Control
 
 	use VerifierControlTrait;
 
+	/**
+	 * @var bool
+	 * @Enabled( "$privilege" )
+	 */
+	public $privilege;
+
 	public function render()
 	{
+		$this->getTemplate()->privilege = $this->privilege;
 		$this->template->setFile(__DIR__ . '/../../templates/block.latte');
 		$this->template->render();
 	}

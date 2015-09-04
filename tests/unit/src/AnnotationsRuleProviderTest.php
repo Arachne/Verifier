@@ -8,6 +8,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Mockery;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 use Reflector;
 use Tests\Unit\Classes\TestPresenter;
 use Tests\Unit\Classes\TestRule;
@@ -37,6 +38,12 @@ class AnnotationsRuleProviderTest extends Test
 	{
 		$reflection = new ReflectionMethod(TestPresenter::class, 'renderView');
 		$this->assertEquals([ new TestRule(), new TestRule() ], $this->provider->getRules($reflection));
+	}
+
+	public function testPropertyAnnotations()
+	{
+		$reflection = new ReflectionProperty(TestPresenter::class, 'property');
+		$this->assertEquals([ new TestRule() ], $this->provider->getRules($reflection));
 	}
 
 	/**

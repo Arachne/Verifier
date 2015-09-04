@@ -10,6 +10,8 @@
 
 namespace Arachne\Verifier\Application;
 
+use Nette\Application\UI\Presenter;
+use Nette\ComponentModel\IComponent;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -19,6 +21,9 @@ use ReflectionMethod;
  */
 trait VerifierControlTrait
 {
+
+	/** @var callable[] */
+	public $onPresenter;
 
 	/**
 	 * @param ReflectionClass|ReflectionMethod $reflection
@@ -66,6 +71,18 @@ trait VerifierControlTrait
 		}
 
 		return parent::createComponent($name);
+	}
+
+	/**
+	 * This method will be called when the component (or component's parent) becomes attached to a monitored object. Do not call this method yourself.
+	 * @param IComponent
+	 */
+	protected function attached($component)
+	{
+		if ($component instanceof Presenter) {
+			$this->onPresenter($component);
+		}
+		parent::attached($component);
 	}
 
 }

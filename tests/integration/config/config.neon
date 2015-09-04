@@ -5,6 +5,7 @@ common:
 		arachne.verifier: Arachne\Verifier\DI\VerifierExtension
 		enumag.application: Enumag\Application\DI\ApplicationExtension
 		kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
+		inject: Nette\DI\Extensions\InjectExtension
 
 	services:
 		routerFactory: Tests\Integration\Classes\RouterFactory
@@ -14,6 +15,19 @@ common:
 			tags:
 				arachne.verifier.ruleHandler:
 					- Tests\Integration\Classes\Enabled
+		blockControl:
+			implement: Tests\Integration\Classes\BlockControlFactory
+			tags:
+				- arachne.verifier.verifyProperties
+		articlePresenter:
+			class: Tests\Integration\Classes\ArticlePresenter
+			tags:
+				- arachne.verifier.verifyProperties
+				- inject
+
+	kdyby.annotations:
+		ignore:
+			- inject
 
 nette_2.2 < common:
 	extensions:

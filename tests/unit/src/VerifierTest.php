@@ -17,6 +17,7 @@ use Nette\Application\UI\Presenter;
 use Nette\Application\UI\PresenterComponent;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 use Reflector;
 use Tests\Unit\Classes\InvalidRule;
 use Tests\Unit\Classes\TestControl;
@@ -67,9 +68,9 @@ class VerifierTest extends Test
 
 	/**
 	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
-	 * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod or ReflectionClass.
+	 * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.
 	 */
-	public function testGetRulesOnProperty()
+	public function testGetRulesOnReflector()
 	{
 		$reflection = Mockery::mock(Reflector::class);
 		$this->verifier->getRules($reflection);
@@ -247,6 +248,36 @@ class VerifierTest extends Test
 		$component = Mockery::mock(PresenterComponent::class);
 
 		$this->verifier->isLinkVerified($request, $component);
+	}
+
+	public function testVerifyPropertiesTrue()
+	{
+		$request = Mockery::mock(Request::class);
+		$handler = $this->createHandlerMock($request, null);
+
+		$this->setupRuleProviderMock(Mockery::type(ReflectionProperty::class), null);
+		$this->setupHandlerResolverMock($handler, null);
+
+		$parent = new TestPresenter();
+		$parent->setParent(null, 'Test');
+
+		$this->verifier->verifyProperties($request, $parent);
+		$this->assertTrue($parent->property);
+	}
+
+	public function testVerifyPropertiesFalse()
+	{
+		$request = Mockery::mock(Request::class);
+		$handler = $this->createHandlerMock($request, null, null, true);
+
+		$this->setupRuleProviderMock(Mockery::type(ReflectionProperty::class), null);
+		$this->setupHandlerResolverMock($handler, null);
+
+		$parent = new TestPresenter();
+		$parent->setParent(null, 'Test');
+
+		$this->verifier->verifyProperties($request, $parent);
+		$this->assertFalse($parent->property);
 	}
 
 	/**

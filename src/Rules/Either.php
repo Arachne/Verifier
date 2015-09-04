@@ -17,7 +17,6 @@ use Nette\Object;
  * @author Jáchym Toušek <enumag@gmail.com>
  *
  * @Annotation
- * @Target({"CLASS", "METHOD", "ANNOTATION"})
  */
 class Either extends Object implements RuleInterface
 {

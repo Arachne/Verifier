@@ -14,7 +14,6 @@ namespace Arachne\Verifier\Rules;
  * @author Jáchym Toušek <enumag@gmail.com>
  *
  * @Annotation
- * @Target({"CLASS", "METHOD", "ANNOTATION"})
  */
 class All extends ValidationRule
 {

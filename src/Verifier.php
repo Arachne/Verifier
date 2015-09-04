@@ -22,6 +22,7 @@ use Nette\Application\UI\PresenterComponentReflection;
 use Nette\Object;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 use Reflector;
 
 /**
@@ -51,16 +52,21 @@ class Verifier extends Object
 
 	/**
 	 * Returns rules that are required for given reflection.
-	 * @param ReflectionClass|ReflectionMethod $reflection
+	 * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
 	 * @return RuleInterface[]
 	 */
 	public function getRules(Reflector $reflection)
 	{
-		if (!$reflection instanceof ReflectionMethod && !$reflection instanceof ReflectionClass) {
-			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod or ReflectionClass.');
+		if ($reflection instanceof ReflectionMethod) {
+			$key = $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName();
+		} elseif ($reflection instanceof ReflectionClass) {
+			$key = $reflection->getName();
+		} elseif ($reflection instanceof ReflectionProperty) {
+			$key = $reflection->getDeclaringClass()->getName() . '::$' . $reflection->getName();
+		} else {
+			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.');
 		}
 
-		$key = ($reflection instanceof ReflectionMethod ? $reflection->getDeclaringClass()->getName() . '::' : '') . $reflection->getName();
 		if (!isset($this->cache[$key])) {
 			$this->cache[$key] = $this->ruleProvider->getRules($reflection);
 		}
@@ -187,6 +193,33 @@ class Verifier extends Object
 		}
 
 		return true;
+	}
+
+	/**
+	 * Sets public properties of the component to true or false according to their associated rules (if any).
+	 * @param Request $request
+	 * @param PresenterComponent $component
+	 */
+	public function verifyProperties(Request $request, PresenterComponent $component)
+	{
+		$reflection = new ReflectionClass($component);
+		$id = $component->getParent() ? $component->getUniqueId() : null;
+
+		foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+			$rules = $this->getRules($property);
+			if (!$rules) {
+				continue;
+			}
+
+			try {
+				$this->checkRules($rules, $request, $id);
+			} catch (VerificationException $e) {
+				$property->setValue($component, false);
+				continue;
+			}
+
+			$property->setValue($component, true);
+		}
 	}
 
 }

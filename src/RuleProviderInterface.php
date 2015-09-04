@@ -12,6 +12,7 @@ namespace Arachne\Verifier;
 
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 use Reflector;
 
 /**
@@ -21,7 +22,7 @@ interface RuleProviderInterface
 {
 
 	/**
-	 * @param ReflectionClass|ReflectionMethod $reflection
+	 * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
 	 * @return RuleInterface[]
 	 */
 	public function getRules(Reflector $reflection);

@@ -17,7 +17,6 @@ use Nette\Object;
  * @author Jáchym Toušek <enumag@gmail.com>
  *
  * @Annotation
- * @Target({"CLASS", "METHOD", "ANNOTATION"})
  */
 abstract class SecurityRule extends Object implements RuleInterface
 {

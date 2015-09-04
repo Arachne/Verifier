@@ -17,6 +17,7 @@ use Doctrine\Common\Annotations\Reader;
 use Nette\Object;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 use Reflector;
 
 /**
@@ -34,7 +35,7 @@ class AnnotationsRuleProvider extends Object implements RuleProviderInterface
 	}
 
 	/**
-	 * @param ReflectionClass|ReflectionMethod $reflection
+	 * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
 	 * @return RuleInterface[]
 	 */
 	public function getRules(Reflector $reflection)
@@ -43,6 +44,8 @@ class AnnotationsRuleProvider extends Object implements RuleProviderInterface
 			$rules = $this->reader->getMethodAnnotations($reflection);
 		} elseif ($reflection instanceof ReflectionClass) {
 			$rules = $this->reader->getClassAnnotations($reflection);
+		} elseif ($reflection instanceof ReflectionProperty) {
+			$rules = $this->reader->getPropertyAnnotations($reflection);
 		} else {
 			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod or ReflectionClass.');
 		}
