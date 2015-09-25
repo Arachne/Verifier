@@ -10,8 +10,8 @@
 
 namespace Arachne\Verifier;
 
-use Arachne\DIHelpers\ResolverInterface;
 use Reflector;
+use Traversable;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
@@ -19,25 +19,21 @@ use Reflector;
 class ChainRuleProvider implements RuleProviderInterface
 {
 
-	/** @var ResolverInterface */
-	private $providerResolver;
+	/** @var Traversable */
+	private $providers;
 
-	/**
-	 * @param ResolverInterface $providerResolver
-	 */
-	public function __construct(ResolverInterface $providerResolver)
+	public function __construct(Traversable $providers)
 	{
-		$this->providerResolver = $providerResolver;
+		$this->providers = $providers;
 	}
 
 	/**
-	 * @param ReflectionClass|ReflectionMethod $reflection
-	 * @return RuleInterface[]
+	 * {@inheritdoc}
 	 */
 	public function getRules(Reflector $reflection)
 	{
 		$rules = [];
-		foreach ($this->providerResolver as $provider) {
+		foreach ($this->providers as $provider) {
 			$rules += $provider->getRules($reflection);
 		}
 		return $rules;
