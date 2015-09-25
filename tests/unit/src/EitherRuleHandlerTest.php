@@ -7,7 +7,7 @@ use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\Rules\Either;
 use Arachne\Verifier\Rules\EitherRuleHandler;
 use Arachne\Verifier\Verifier;
-use Codeception\TestCase\Test;
+use Codeception\MockeryModule\Test;
 use Mockery;
 use Mockery\MockInterface;
 use Nette\Application\Request;

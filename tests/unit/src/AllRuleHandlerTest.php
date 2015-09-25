@@ -6,7 +6,7 @@ use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\Rules\All;
 use Arachne\Verifier\Rules\AllRuleHandler;
 use Arachne\Verifier\Verifier;
-use Codeception\TestCase\Test;
+use Codeception\MockeryModule\Test;
 use Mockery;
 use Mockery\MockInterface;
 use Nette\Application\Request;

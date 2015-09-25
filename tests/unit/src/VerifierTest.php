@@ -7,7 +7,7 @@ use Arachne\Verifier\Exception\VerificationException;
 use Arachne\Verifier\RuleHandlerInterface;
 use Arachne\Verifier\RuleProviderInterface;
 use Arachne\Verifier\Verifier;
-use Codeception\TestCase\Test;
+use Codeception\MockeryModule\Test;
 use Mockery;
 use Mockery\Matcher\MatcherAbstract;
 use Mockery\MockInterface;
