@@ -37,7 +37,8 @@ class EnabledRuleHandler extends Object implements RuleHandlerInterface
 	{
 		if (is_string($rule->value)) {
 			$parameters = $request->getParameters();
-			$enabled = (bool) $parameters[($component ? $component . '-' : '') . ltrim($rule->value, '$')];
+			$parameter = ($component ? $component . '-' : '') . ltrim($rule->value, '$');
+			$enabled = isset($parameters[$parameter]) && (bool) $parameters[$parameter];
 		} else {
 			$enabled = $rule->value;
 		}
