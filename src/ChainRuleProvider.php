@@ -34,7 +34,7 @@ class ChainRuleProvider implements RuleProviderInterface
 	{
 		$rules = [];
 		foreach ($this->providers as $provider) {
-			$rules += $provider->getRules($reflection) ?: [];
+			$rules = array_merge($rules, $provider->getRules($reflection) ?: []);
 		}
 		return $rules;
 	}
