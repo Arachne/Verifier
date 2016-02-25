@@ -34,7 +34,7 @@ trait VerifierControlTrait
 	}
 
 	/**
-	 * @todo Remove this method or add canCreateComponent and verifiedLink methods and move all three to a separate trait TVerifierHelpers
+	 * Redirects to destination if the link can be verified.
 	 * @param int $code
 	 * @param string $destination
 	 * @param mixed[] $parameters
@@ -55,6 +55,37 @@ trait VerifierControlTrait
 		$link = $presenter->createRequest($this, $destination, $parameters, 'redirect');
 		if ($presenter->getVerifier()->isLinkVerified($presenter->getLastCreatedRequest(), $this)) {
 			$presenter->redirectUrl($link, $code);
+		}
+	}
+
+	/**
+	 * Returns link to destination but only if it can be verified.
+	 * @param string $destination
+	 * @param array $args
+	 * @return string|null
+	 */
+	public function linkVerified($destination, $args = [])
+	{
+		$link = $this->link($destination, $args);
+		$presenter = $this->getPresenter();
+		$presenter->getLastCreatedRequest();
+
+		if ($presenter->getVerifier()->isLinkVerified($presenter->getLastCreatedRequest(), $this)) {
+			return $link;
+		}
+	}
+
+	/**
+	 * Returns specified component but only if it can be verified.
+	 * @param string $name
+	 * @return IComponent|null
+	 */
+	public function getComponentVerified($name)
+	{
+		$presenter = $this->getPresenter();
+
+		if ($presenter->getVerifier()->isComponentVerified($name, $presenter->getRequest(), $this)) {
+			return $this->getComponent($name);
 		}
 	}
 
