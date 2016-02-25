@@ -183,9 +183,6 @@ class Verifier extends Object
 			if ($reflection->hasMethod($method)) {
 				$factory = $reflection->getMethod($method);
 				$this->checkReflection($factory, $request, $parent->getParent() ? $parent->getUniqueId() : null);
-
-				// TODO: find component class based on @return rule and check it's class-level rules
-				// component name should be $component->getName() . '-' . $name this time
 			}
 
 		} catch (VerificationException $e) {

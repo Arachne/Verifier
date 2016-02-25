@@ -17,7 +17,6 @@ use ReflectionMethod;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
- * @todo injectVerifier method and check if it was injected in attached method
  */
 trait VerifierControlTrait
 {
