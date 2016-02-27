@@ -59,10 +59,13 @@ class Verifier extends Object
 	{
 		if ($reflection instanceof ReflectionMethod) {
 			$key = $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName();
+
 		} elseif ($reflection instanceof ReflectionClass) {
 			$key = $reflection->getName();
+
 		} elseif ($reflection instanceof ReflectionProperty) {
 			$key = $reflection->getDeclaringClass()->getName() . '::$' . $reflection->getName();
+
 		} else {
 			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.');
 		}
@@ -132,6 +135,7 @@ class Verifier extends Object
 					}
 					$reflection = new PresenterComponentReflection($component);
 					$signal = substr($signalId, $pos + 1);
+
 				} else {
 					// signal for presenter
 					$name = null;
@@ -210,6 +214,7 @@ class Verifier extends Object
 
 			try {
 				$this->checkRules($rules, $request, $id);
+
 			} catch (VerificationException $e) {
 				$property->setValue($component, false);
 				continue;
