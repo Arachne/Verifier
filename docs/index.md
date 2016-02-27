@@ -1,6 +1,6 @@
 # Documentation
 
-This extension is here to provide easy annotation-based verification whether given action is available or not. The most typical use-case is authorization (see Arachne/SecurityRules) but you can write your own handlers as well.
+This extension is here to provide easy annotation-based verification whether given action is available or not. The most typical use-case is authorization (see Arachne/SecurityVerification) but you can write your own handlers as well. It is not actually limited to annotations eiter, you can provide your own implementation to provide verification rules.
 
 
 ## Installation
@@ -11,7 +11,7 @@ The best way to install Arachne/Verifier is using [Composer](http://getcomposer.
 $ composer require arachne/verifier
 ```
 
-Now you need to register Arachne/Verifier and Kdyby/Rules extensions using your [neon](http://ne-on.org/) config file.
+Now you need to register Arachne/Verifier and Kdyby/Annotations extensions using your [neon](http://ne-on.org/) config file.
 
 ```yml
 extensions:
@@ -19,11 +19,9 @@ extensions:
 	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
 ```
 
-Please see documentation how to configure [Kdyby/Rules](https://github.com/Kdyby/Rules/blob/master/docs/en/index.md).
+Please see documentation how to configure [Kdyby/Annotations](https://github.com/Kdyby/Annotations/blob/master/docs/en/index.md).
 
-### PHP 5.4
-
-Finally add Arachne\Verifier\Application\VerifierPresenterTrait trait to your BasePresenter and Arachne\Verifier\Application\VerifierControlTrait trait to your BaseControl.
+Finally add the `Arachne\Verifier\Application\VerifierPresenterTrait` trait to your presenters and the `Arachne\Verifier\Application\VerifierControlTrait` trait to the components where you need verfication.
 
 ```php
 abstract class BasePresenter extends \Nette\Application\UI\Presenter
@@ -41,18 +39,18 @@ abstract class BaseControl extends \Nette\Application\UI\Control
 }
 ```
 
-### PHP 5.3
-
-If you don't use PHP 5.4, just copy all methods from the traits to your BasePresenter and BaseControl.
-
 
 ## Usage
 
-You need two things:
-- some rule class(es) implementing Arachne\Verifier\RuleInterface
-- a tagged service implementing Arachne\Verifier\RuleHandlerInterface
+To use Verifier you need two things:
+- some rule class(es) implementing `Arachne\Verifier\RuleInterface`
+- a tagged service implementing `Arachne\Verifier\RuleHandlerInterface`
 
-These will usually be provided by some other extensions. **For examples see Arachne/SecurityVerification and Arachne/ComponentsProtection.**
+These will usually be provided by some other extensions:
+
+- Arachne/SecurityVerification - authentization and authorizationand
+- Arachne/ComponentsProtection - bind component to certain action to fix common security hole
+- Arachne/ParameterValidation - validate request parameters, works best with Arachne/EntityLoader
 
 If you want to add your own rules, see the Configuration section below. Otherwise feel free to skip it.
 
@@ -71,7 +69,7 @@ services:
 
 ### Presenter
 
-In presenters you can now use these rules to restrict access to the whole presenter or separately to its actions, signals and components. Note that rules for views are NOT supported.
+In presenters you can now use these rules to restrict access to the whole presenter or separately to its actions, signals and components. Note that rules for views are NOT supported. Also class-level annotations for non-presenter components are NOT supported.
 
 ```php
 use App\MyRule;
@@ -102,13 +100,11 @@ class ArticlePresenter extends BasePresenter
 }
 ```
 
-Note that class-level annotations in components are not supported.
-
-### Template
+### Latte macros
 
 #### Links
 
-In template you can use the `n:ifLinkVerified` macro to check whether the link is available.
+In latte template you can use the `n:ifLinkVerified` macro to check whether the link is available.
 
 ```html
 {* This link will not be shown if the action is not available. *}
@@ -128,4 +124,76 @@ There is also the `n:ifComponentVerified` macro to check whether the component i
 {ifComponentVerified menu}
 	{control menu}
 {/ifComponentVerified}
+```
+
+### Default rules
+
+Verifier has built-in rules `All` and `Either`. They are no good by themselves but if you have some other rules you might need some more complicated conditions.
+
+/**
+ * This presenter is available only if MyRule("x") is met or both MyRule("y") and @MyRule("z") are met.
+ * @Either(rules = {
+ *     @MyRule("x"),
+ *     @All(rules = {@MyRule("y"), @MyRule("z")})
+ * })
+ */
+class ArticlePresenter extends BasePresenter
+{
+}
+```
+
+### Verified properties
+
+Note: This feature is considered experimental.
+
+Sometimes you might need to change some behavior instead of disabling the action completely based on outhorization or other conditions. Verifier can help you achieve this using verified properties. It is basically a public boolean property of a presenter or a component that has some verification rules. Verifier can go over these rules and set the property to true if all the rules are met or false otherwise.
+
+```php
+class ArticlePresenter extends BasePresenter
+{
+
+	/**
+	 * @MyRule("write")
+	 * @var bool
+	 */
+	public $readAndWrite;
+
+}
+
+class HeaderControl extends BaseControl
+{
+
+	/**
+	 * @MyRule("adminLinks")
+	 * @var bool
+	 */
+	public $adminLinks;
+
+}
+
+interface HeaderControlFactory
+{
+
+	/**
+	 * @return HeaderControl
+	 */
+	public function create();
+
+}
+```
+
+To get this working in a presenter you need to define the presenter as a service and also give it the `arachne.verifier.verifyProperties` tag.
+
+For non-presenter components you need to create the component using a generated factory with the same tag.
+
+```yml
+services:
+	articlePresenter:
+		class: ArticlePresenter
+		tags:
+			- arachne.verifier.verifyProperties
+	headerControlFactory:
+		implement: HeaderControlFactory
+		tags:
+			- arachne.verifier.verifyProperties
 ```
