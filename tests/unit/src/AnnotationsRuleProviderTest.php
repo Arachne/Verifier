@@ -48,7 +48,7 @@ class AnnotationsRuleProviderTest extends Test
 
 	/**
 	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
-	 * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod or ReflectionClass.
+	 * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.
 	 */
 	public function testInvalidReflection()
 	{
