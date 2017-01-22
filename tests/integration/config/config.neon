@@ -1,53 +1,39 @@
-common:
-	extensions:
-		arachne.codeception: Arachne\Codeception\DI\CodeceptionExtension
-		arachne.dihelpers.iterators: Arachne\DIHelpers\DI\IteratorsExtension
-		arachne.dihelpers.resolvers: Arachne\DIHelpers\DI\ResolversExtension
-		arachne.verifier: Arachne\Verifier\DI\VerifierExtension
-		enumag.application: Enumag\Application\DI\ApplicationExtension
-		kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
-		inject: Nette\DI\Extensions\InjectExtension
+extensions:
+	nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension
+	nette.cache: Nette\Bridges\CacheDI\CacheExtension( %tempDir% )
+	nette.http: Nette\Bridges\HttpDI\HttpExtension
+	nette.latte: Nette\Bridges\ApplicationDI\LatteExtension( %tempDir% )
+	arachne.codeception: Arachne\Codeception\DI\HttpExtension
+	arachne.dihelpers.iterators: Arachne\DIHelpers\DI\IteratorsExtension
+	arachne.dihelpers.resolvers: Arachne\DIHelpers\DI\ResolversExtension
+	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
+	enumag.application: Enumag\Application\DI\ApplicationExtension
+	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
+	inject: Nette\DI\Extensions\InjectExtension
 
-	services:
-		routerFactory: Tests\Integration\Classes\RouterFactory
-		router: @routerFactory::create()
-		enabledRuleHandler:
-			class: Tests\Integration\Classes\EnabledRuleHandler
-			tags:
-				arachne.verifier.ruleHandler:
-					- Tests\Integration\Classes\Enabled
-		blockControl:
-			implement: Tests\Integration\Classes\BlockControlFactory
-			tags:
-				- arachne.verifier.verifyProperties
-		articlePresenter:
-			class: Tests\Integration\Classes\ArticlePresenter
-			tags:
-				- arachne.verifier.verifyProperties
-				- inject
-
-	kdyby.annotations:
-		ignore:
+services:
+	routerFactory: Tests\Integration\Classes\RouterFactory
+	router: @routerFactory::create()
+	enabledRuleHandler:
+		class: Tests\Integration\Classes\EnabledRuleHandler
+		tags:
+			arachne.verifier.ruleHandler:
+				- Tests\Integration\Classes\Enabled
+	blockControl:
+		implement: Tests\Integration\Classes\BlockControlFactory
+		tags:
+			- arachne.verifier.verifyProperties
+	articlePresenter:
+		class: Tests\Integration\Classes\ArticlePresenter
+		tags:
+			- arachne.verifier.verifyProperties
 			- inject
 
-nette_2.2 < common:
-	extensions:
-		nette: Nette\Bridges\Framework\NetteExtension
+nette.application:
+	catchExceptions: null
+	mapping:
+		*: Tests\Integration\Classes\*Presenter
 
-	nette:
-		application:
-			catchExceptions: null
-			mapping:
-				*: Tests\Integration\Classes\*Presenter
-
-nette_2.3 < common:
-	extensions:
-		nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension
-		nette.cache: Nette\Bridges\CacheDI\CacheExtension( %tempDir% )
-		nette.http: Nette\Bridges\HttpDI\HttpExtension
-		nette.latte: Nette\Bridges\ApplicationDI\LatteExtension( %tempDir% )
-
-	nette.application:
-		catchExceptions: null
-		mapping:
-			*: Tests\Integration\Classes\*Presenter
+kdyby.annotations:
+	ignore:
+		- inject
