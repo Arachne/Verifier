@@ -56,15 +56,21 @@ class VerifierExtension extends CompilerExtension
 
         $builder->addDefinition($this->prefix('allRuleHandler'))
             ->setClass('Arachne\Verifier\Rules\AllRuleHandler')
-            ->addTag(self::TAG_HANDLER, [
-                'Arachne\Verifier\Rules\All',
-            ]);
+            ->addTag(
+                self::TAG_HANDLER,
+                [
+                    'Arachne\Verifier\Rules\All',
+                ]
+            );
 
         $builder->addDefinition($this->prefix('eitherRuleHandler'))
             ->setClass('Arachne\Verifier\Rules\EitherRuleHandler')
-            ->addTag(self::TAG_HANDLER, [
-                'Arachne\Verifier\Rules\Either',
-            ]);
+            ->addTag(
+                self::TAG_HANDLER,
+                [
+                    'Arachne\Verifier\Rules\Either',
+                ]
+            );
     }
 
     public function beforeCompile()
@@ -84,14 +90,18 @@ class VerifierExtension extends CompilerExtension
         }
 
         $builder->getDefinition($this->prefix('chainRuleProvider'))
-            ->setArguments([
-                'providers' => '@'.$providerIterator,
-            ]);
+            ->setArguments(
+                [
+                    'providers' => '@'.$providerIterator,
+                ]
+            );
 
         $builder->getDefinition($this->prefix('verifier'))
-            ->setArguments([
-                'handlerResolver' => '@'.$handlerResolver,
-            ]);
+            ->setArguments(
+                [
+                    'handlerResolver' => '@'.$handlerResolver,
+                ]
+            );
 
         $latte = $builder->getByType('Nette\Bridges\ApplicationLatte\ILatteFactory') ?: 'nette.latteFactory';
         if ($builder->hasDefinition($latte)) {

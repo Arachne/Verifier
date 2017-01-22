@@ -18,7 +18,9 @@ use Traversable;
  */
 class ChainRuleProvider implements RuleProviderInterface
 {
-    /** @var Traversable */
+    /**
+     * @var Traversable
+     */
     private $providers;
 
     public function __construct(Traversable $providers)

@@ -24,7 +24,9 @@ use Reflector;
  */
 class AnnotationsRuleProvider implements RuleProviderInterface
 {
-    /** @var Reader */
+    /**
+     * @var Reader
+     */
     private $reader;
 
     public function __construct(Reader $reader)
@@ -49,8 +51,11 @@ class AnnotationsRuleProvider implements RuleProviderInterface
             throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.');
         }
 
-        return array_filter($rules, function ($annotation) {
-            return $annotation instanceof RuleInterface;
-        });
+        return array_filter(
+            $rules,
+            function ($annotation) {
+                return $annotation instanceof RuleInterface;
+            }
+        );
     }
 }

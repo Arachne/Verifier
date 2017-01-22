@@ -17,6 +17,8 @@ namespace Arachne\Verifier\Rules;
  */
 class All extends ValidationRule
 {
-    /** @var \Arachne\Verifier\RuleInterface[] */
+    /**
+     * @var \Arachne\Verifier\RuleInterface[]
+     */
     public $rules = [];
 }

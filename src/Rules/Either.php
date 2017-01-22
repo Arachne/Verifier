@@ -19,7 +19,9 @@ use Arachne\Verifier\RuleInterface;
  */
 class Either implements RuleInterface
 {
-    /** @var \Arachne\Verifier\RuleInterface[] */
+    /**
+     * @var \Arachne\Verifier\RuleInterface[]
+     */
     public $rules = [];
 
     /**

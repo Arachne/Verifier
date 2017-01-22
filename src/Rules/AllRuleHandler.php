@@ -22,7 +22,9 @@ use Nette\Application\Request;
  */
 class AllRuleHandler implements RuleHandlerInterface
 {
-    /** @var Verifier */
+    /**
+     * @var Verifier
+     */
     private $verifier;
 
     /**

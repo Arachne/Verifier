@@ -19,7 +19,9 @@ use Nette\Application\BadRequestException;
  */
 class VerificationException extends BadRequestException
 {
-    /** @var RuleInterface */
+    /**
+     * @var RuleInterface
+     */
     private $rule;
 
     /**

@@ -22,7 +22,9 @@ use Nette\Application\Request;
  */
 class EitherRuleHandler implements RuleHandlerInterface
 {
-    /** @var Verifier */
+    /**
+     * @var Verifier
+     */
     private $verifier;
 
     /**
@@ -55,6 +57,7 @@ class EitherRuleHandler implements RuleHandlerInterface
                 // intentionally ignored
             }
         }
+
         throw new VerificationException($rule, 'None of the rules was met.');
     }
 }

@@ -20,7 +20,9 @@ use ReflectionMethod;
  */
 trait VerifierControlTrait
 {
-    /** @var callable[] */
+    /**
+     * @var callable[]
+     */
     public $onPresenter;
 
     /**
@@ -32,7 +34,7 @@ trait VerifierControlTrait
     }
 
     /**
-     * Redirects to destination if the link can be verified.
+     * Redirects to destination if all the requirements are met.
      *
      * @param int     $code
      * @param string  $destination
@@ -57,7 +59,7 @@ trait VerifierControlTrait
     }
 
     /**
-     * Returns link to destination but only if it can be verified.
+     * Returns link to destination but only if all it's requirements are met.
      *
      * @param string $destination
      * @param array  $args
@@ -76,7 +78,7 @@ trait VerifierControlTrait
     }
 
     /**
-     * Returns specified component but only if it can be verified.
+     * Returns specified component but only if all it's requirements are met.
      *
      * @param string $name
      *
@@ -109,7 +111,7 @@ trait VerifierControlTrait
     }
 
     /**
-     * This method will be called when the component (or component's parent) becomes attached to a monitored object. Do not call this method yourself.
+     * Calls onPresenter event which is used to verify component properties.
      *
      * @param IComponent
      */
@@ -118,6 +120,7 @@ trait VerifierControlTrait
         if ($component instanceof Presenter) {
             $this->onPresenter($component);
         }
+
         parent::attached($component);
     }
 }

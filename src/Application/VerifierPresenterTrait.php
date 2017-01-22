@@ -23,10 +23,14 @@ trait VerifierPresenterTrait
 {
     use VerifierControlTrait;
 
-    /** @var callable[] */
+    /**
+     * @var callable[]
+     */
     public $onStartup;
 
-    /** @var Verifier */
+    /**
+     * @var Verifier
+     */
     private $verifier;
 
     /**
@@ -43,7 +47,7 @@ trait VerifierPresenterTrait
     public function checkRequirements($reflection)
     {
         $rules = $this->verifier->getRules($reflection);
-        if (!empty($rules) && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
+        if ($rules && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
             throw new NotSupportedException('Rules for render methods are not supported. Define the rules for action method instead.');
         }
         $this->verifier->checkRules($rules, $this->getRequest());
@@ -76,11 +80,19 @@ trait VerifierPresenterTrait
         return $called;
     }
 
+    /**
+     * This method has to be public because it is called by VerifierControlTrait.
+     *
+     * @internal
+     */
     public function createRequest($component, $destination, array $parameters, $mode)
     {
         return parent::createRequest($component, $destination, $parameters, $mode);
     }
 
+    /**
+     * Calls onStartup event which is used to verify presenter properties.
+     */
     public function startup()
     {
         parent::startup();

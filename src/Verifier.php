@@ -29,16 +29,24 @@ use Reflector;
  */
 class Verifier
 {
-    /** @var RuleProviderInterface */
+    /**
+     * @var RuleProviderInterface
+     */
     private $ruleProvider;
 
-    /** @var ResolverInterface */
+    /**
+     * @var ResolverInterface
+     */
     private $handlerResolver;
 
-    /** @var IPresenterFactory */
+    /**
+     * @var IPresenterFactory
+     */
     private $presenterFactory;
 
-    /** @var RuleInterface[][] */
+    /**
+     * @var RuleInterface[][]
+     */
     private $cache;
 
     public function __construct(RuleProviderInterface $ruleProvider, ResolverInterface $handlerResolver, IPresenterFactory $presenterFactory)
@@ -129,6 +137,7 @@ class Verifier
                 if (!is_string($signalId)) {
                     throw new InvalidArgumentException('Signal name is not a string.');
                 }
+
                 $pos = strrpos($signalId, '-');
                 if ($pos) {
                     // signal for a component
@@ -184,15 +193,14 @@ class Verifier
     public function isComponentVerified($name, Request $request, PresenterComponent $parent)
     {
         $reflection = new PresenterComponentReflection($parent);
-
-        try {
-            $method = 'createComponent'.ucfirst($name);
-            if ($reflection->hasMethod($method)) {
-                $factory = $reflection->getMethod($method);
+        $method = 'createComponent'.ucfirst($name);
+        if ($reflection->hasMethod($method)) {
+            $factory = $reflection->getMethod($method);
+            try {
                 $this->checkReflection($factory, $request, $parent->getParent() ? $parent->getUniqueId() : null);
+            } catch (VerificationException $e) {
+                return false;
             }
-        } catch (VerificationException $e) {
-            return false;
         }
 
         return true;
