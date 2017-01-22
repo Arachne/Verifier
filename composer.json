@@ -1,8 +1,9 @@
 {
 	"name": "arachne/verifier",
+    "description": "Requirements verification for Nette/Application.",
 	"type": "library",
 	"keywords": [ "nette", "arachne", "security" ],
-	"homepage": "http://enumag.cz",
+    "license": "MIT",
 	"authors": [
 		{
 			"name": "Jáchym Toušek",
@@ -47,8 +48,5 @@
 			"type": "composer",
 			"url": "http://packages.m33.cz"
 		}
-	],
-  "config": {
-    "secure-http": false
-  }
+	]
 }
