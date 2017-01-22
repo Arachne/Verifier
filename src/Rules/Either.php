@@ -11,14 +11,13 @@
 namespace Arachne\Verifier\Rules;
 
 use Arachne\Verifier\RuleInterface;
-use Nette\Object;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  *
  * @Annotation
  */
-class Either extends Object implements RuleInterface
+class Either implements RuleInterface
 {
     /** @var \Arachne\Verifier\RuleInterface[] */
     public $rules = [];

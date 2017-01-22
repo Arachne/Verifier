@@ -14,7 +14,6 @@ use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\RuleProviderInterface;
 use Doctrine\Common\Annotations\Reader;
-use Nette\Object;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -23,7 +22,7 @@ use Reflector;
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class AnnotationsRuleProvider extends Object implements RuleProviderInterface
+class AnnotationsRuleProvider implements RuleProviderInterface
 {
     /** @var Reader */
     private $reader;

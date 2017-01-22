@@ -16,12 +16,11 @@ use Arachne\Verifier\RuleHandlerInterface;
 use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\Verifier;
 use Nette\Application\Request;
-use Nette\Object;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class EitherRuleHandler extends Object implements RuleHandlerInterface
+class EitherRuleHandler implements RuleHandlerInterface
 {
     /** @var Verifier */
     private $verifier;

@@ -19,7 +19,6 @@ use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 use Nette\Application\UI\PresenterComponent;
 use Nette\Application\UI\PresenterComponentReflection;
-use Nette\Object;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -28,7 +27,7 @@ use Reflector;
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class Verifier extends Object
+class Verifier
 {
     /** @var RuleProviderInterface */
     private $ruleProvider;

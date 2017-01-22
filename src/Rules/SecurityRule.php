@@ -11,14 +11,13 @@
 namespace Arachne\Verifier\Rules;
 
 use Arachne\Verifier\RuleInterface;
-use Nette\Object;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  *
  * @Annotation
  */
-abstract class SecurityRule extends Object implements RuleInterface
+abstract class SecurityRule implements RuleInterface
 {
     /**
      * @return int
