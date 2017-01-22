@@ -16,46 +16,44 @@ use Nette\Application\Request;
  */
 class AllRuleHandlerTest extends Test
 {
+    /** @var AllRuleHandler */
+    private $handler;
 
-	/** @var AllRuleHandler */
-	private $handler;
+    /** @var MockInterface */
+    private $verifier;
 
-	/** @var MockInterface */
-	private $verifier;
+    protected function _before()
+    {
+        $this->verifier = Mockery::mock(Verifier::class);
+        $this->handler = new AllRuleHandler($this->verifier);
+    }
 
-	protected function _before()
-	{
-		$this->verifier = Mockery::mock(Verifier::class);
-		$this->handler = new AllRuleHandler($this->verifier);
-	}
+    public function testAll()
+    {
+        $rule = new All();
+        $rule->rules = [
+            Mockery::mock(RuleInterface::class),
+            Mockery::mock(RuleInterface::class),
+        ];
+        $request = new Request('Test', 'GET', []);
 
-	public function testAll()
-	{
-		$rule = new All();
-		$rule->rules = [
-			Mockery::mock(RuleInterface::class),
-			Mockery::mock(RuleInterface::class),
-		];
-		$request = new Request('Test', 'GET', []);
+        $this->verifier
+            ->shouldReceive('checkRules')
+            ->with($rule->rules, $request, null)
+            ->once()
+            ->andReturn();
 
-		$this->verifier
-			->shouldReceive('checkRules')
-			->with($rule->rules, $request, null)
-			->once()
-			->andReturn();
+        $this->assertNull($this->handler->checkRule($rule, $request));
+    }
 
-		$this->assertNull($this->handler->checkRule($rule, $request));
-	}
+    /**
+     * @expectedException \Arachne\Verifier\Exception\InvalidArgumentException
+     */
+    public function testUnknownAnnotation()
+    {
+        $rule = Mockery::mock(RuleInterface::class);
+        $request = new Request('Test', 'GET', []);
 
-	/**
-	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
-	 */
-	public function testUnknownAnnotation()
-	{
-		$rule = Mockery::mock(RuleInterface::class);
-		$request = new Request('Test', 'GET', []);
-
-		$this->handler->checkRule($rule, $request);
-	}
-
+        $this->handler->checkRule($rule, $request);
+    }
 }

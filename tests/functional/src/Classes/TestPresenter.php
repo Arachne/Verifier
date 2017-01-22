@@ -11,67 +11,65 @@ use Nette\Application\UI\Presenter;
  */
 class TestPresenter extends Presenter
 {
+    /**
+     * @Either(@Enabled(TRUE))
+     */
+    public function actionEitherFirst()
+    {
+    }
 
-	/**
-	 * @Either(@Enabled(TRUE))
-	 */
-	public function actionEitherFirst()
-	{
-	}
+    /**
+     * @Either({
+     *   @Enabled(FALSE),
+     *   @Enabled(TRUE),
+     * })
+     */
+    public function actionEitherSecond()
+    {
+    }
 
-	/**
-	 * @Either({
-	 *   @Enabled(FALSE),
-	 *   @Enabled(TRUE),
-	 * })
-	 */
-	public function actionEitherSecond()
-	{
-	}
+    /**
+     * @Either({
+     *   @Enabled(FALSE),
+     *   @Enabled(FALSE),
+     * })
+     */
+    public function actionEitherFalse()
+    {
+    }
 
-	/**
-	 * @Either({
-	 *   @Enabled(FALSE),
-	 *   @Enabled(FALSE),
-	 * })
-	 */
-	public function actionEitherFalse()
-	{
-	}
+    /**
+     * @Either({
+     *   @Either
+     * })
+     */
+    public function actionEitherInner()
+    {
+    }
 
-	/**
-	 * @Either({
-	 *   @Either
-	 * })
-	 */
-	public function actionEitherInner()
-	{
-	}
+    /**
+     * @All(@Enabled(TRUE))
+     */
+    public function actionAllTrue()
+    {
+    }
 
-	/**
-	 * @All(@Enabled(TRUE))
-	 */
-	public function actionAllTrue()
-	{
-	}
+    /**
+     * @All({
+     *   @Enabled(FALSE),
+     *   @Enabled(TRUE),
+     * })
+     */
+    public function actionAllFalse()
+    {
+    }
 
-	/**
-	 * @All({
-	 *   @Enabled(FALSE),
-	 *   @Enabled(TRUE),
-	 * })
-	 */
-	public function actionAllFalse()
-	{
-	}
-
-	/**
-	 * @Either({
-	 *   @All
-	 * })
-	 */
-	public function actionAllInner()
-	{
-	}
-
+    /**
+     * @Either({
+     *   @All
+     * })
+     */
+    public function actionAllInner()
+    {
+    }
 }

@@ -11,47 +11,46 @@ use Nette\Application\UI\Presenter;
  */
 class TestPresenter extends Presenter
 {
+    /**
+     * @TestRule
+     */
+    public $property;
 
-	/**
-	 * @TestRule
-	 */
-	public $property;
+    /**
+     * @TestRule
+     */
+    public function actionAction()
+    {
+    }
 
-	/**
-	 * @TestRule
-	 */
-	public function actionAction()
-	{
-	}
+    /**
+     * This should be ignored.
+     *
+     * @TestRule
+     */
+    public function renderAction()
+    {
+    }
 
-	/**
-	 * This should be ignored.
-	 * @TestRule
-	 */
-	public function renderAction()
-	{
-	}
+    /**
+     * @TestRule
+     * @TestRule
+     */
+    public function renderView()
+    {
+    }
 
-	/**
-	 * @TestRule
-	 * @TestRule
-	 */
-	public function renderView()
-	{
-	}
+    /**
+     * @TestRule
+     */
+    public function handleSignal()
+    {
+    }
 
-	/**
-	 * @TestRule
-	 */
-	public function handleSignal()
-	{
-	}
-
-	/**
-	 * @TestRule
-	 */
-	public function createComponentComponent()
-	{
-	}
-
+    /**
+     * @TestRule
+     */
+    public function createComponentComponent()
+    {
+    }
 }

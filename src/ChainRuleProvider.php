@@ -18,25 +18,24 @@ use Traversable;
  */
 class ChainRuleProvider implements RuleProviderInterface
 {
+    /** @var Traversable */
+    private $providers;
 
-	/** @var Traversable */
-	private $providers;
+    public function __construct(Traversable $providers)
+    {
+        $this->providers = $providers;
+    }
 
-	public function __construct(Traversable $providers)
-	{
-		$this->providers = $providers;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getRules(Reflector $reflection)
+    {
+        $rules = [];
+        foreach ($this->providers as $provider) {
+            $rules = array_merge($rules, $provider->getRules($reflection) ?: []);
+        }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getRules(Reflector $reflection)
-	{
-		$rules = [];
-		foreach ($this->providers as $provider) {
-			$rules = array_merge($rules, $provider->getRules($reflection) ?: []);
-		}
-		return $rules;
-	}
-
+        return $rules;
+    }
 }

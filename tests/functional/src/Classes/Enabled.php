@@ -11,7 +11,5 @@ use Arachne\Verifier\Rules\SecurityRule;
  */
 class Enabled extends SecurityRule
 {
-
-	public $value;
-
+    public $value;
 }

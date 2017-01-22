@@ -11,19 +11,17 @@ use Nette\Application\UI\Control;
  */
 class TestControl extends Control
 {
+    /**
+     * @TestRule
+     */
+    public function handleSignal()
+    {
+    }
 
-	/**
-	 * @TestRule
-	 */
-	public function handleSignal()
-	{
-	}
-
-	/**
-	 * @TestRule
-	 */
-	public function createComponentComponent()
-	{
-	}
-
+    /**
+     * @TestRule
+     */
+    public function createComponentComponent()
+    {
+    }
 }

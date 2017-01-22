@@ -20,13 +20,11 @@ use Nette\Object;
  */
 abstract class SecurityRule extends Object implements RuleInterface
 {
-
-	/**
-	 * @return int
-	 */
-	public function getCode()
-	{
-		return 403;
-	}
-
+    /**
+     * @return int
+     */
+    public function getCode()
+    {
+        return 403;
+    }
 }

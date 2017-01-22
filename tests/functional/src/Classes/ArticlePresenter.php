@@ -10,127 +10,134 @@ use Nette\Application\UI\Presenter;
  */
 class ArticlePresenter extends Presenter
 {
+    use VerifierPresenterTrait;
 
-	use VerifierPresenterTrait;
+    /**
+     * @var BlockControlFactory
+     * @inject
+     */
+    public $factory;
 
-	/**
-	 * @var BlockControlFactory
-	 * @inject
-	 */
-	public $factory;
+    /**
+     * @var bool
+     * @Enabled( "$privilege" )
+     */
+    public $privilege;
 
-	/**
-	 * @var bool
-	 * @Enabled( "$privilege" )
-	 */
-	public $privilege;
+    /**
+     * @Enabled(TRUE)
+     */
+    public function actionDefault()
+    {
+        $this->getTemplate()->privilege = $this->privilege;
+    }
 
-	/**
-	 * @Enabled(TRUE)
-	 */
-	public function actionDefault()
-	{
-		$this->getTemplate()->privilege = $this->privilege;
-	}
+    /**
+     * @Enabled(FALSE)
+     *
+     * @param int $id
+     */
+    public function actionEdit($id)
+    {
+    }
 
-	/**
-	 * @Enabled(FALSE)
-	 * @param int $id
-	 */
-	public function actionEdit($id)
-	{
-	}
+    /**
+     * @Enabled(TRUE)
+     *
+     * @param int $id
+     */
+    public function actionModify($id)
+    {
+        $this->redirectVerified('edit', $id);
+    }
 
-	/**
-	 * @Enabled(TRUE)
-	 * @param int $id
-	 */
-	public function actionModify($id)
-	{
-		$this->redirectVerified('edit', $id);
-	}
+    /**
+     * @Enabled(TRUE)
+     *
+     * @param int $id
+     */
+    public function actionDelete($id)
+    {
+    }
 
-	/**
-	 * @Enabled(TRUE)
-	 * @param int $id
-	 */
-	public function actionDelete($id)
-	{
-	}
+    /**
+     * @Enabled(TRUE)
+     *
+     * @param int $id
+     */
+    public function actionRemove($id)
+    {
+        $this->redirectVerified('delete', $id);
+    }
 
-	/**
-	 * @Enabled(TRUE)
-	 * @param int $id
-	 */
-	public function actionRemove($id)
-	{
-		$this->redirectVerified('delete', $id);
-	}
+    /**
+     * @Enabled(TRUE)
+     *
+     * @param int $id
+     */
+    public function actionRedirect($id)
+    {
+        $this->redirectVerified(301, 'delete', $id);
+    }
 
-	/**
-	 * @Enabled(TRUE)
-	 * @param int $id
-	 */
-	public function actionRedirect($id)
-	{
-		$this->redirectVerified(301, 'delete', $id);
-	}
+    public function actionView()
+    {
+    }
 
-	public function actionView()
-	{
-	}
+    /**
+     * @Enabled(TRUE)
+     */
+    public function renderView()
+    {
+    }
 
-	/**
-	 * @Enabled(TRUE)
-	 */
-	public function renderView()
-	{
-	}
+    public function actionSafeurl()
+    {
+    }
 
-	public function actionSafeurl()
-	{
-	}
+    public function actionComponentNotEnabled()
+    {
+    }
 
-	public function actionComponentNotEnabled()
-	{
-	}
+    public function renderUndefinedAction()
+    {
+    }
 
-	public function renderUndefinedAction()
-	{
-	}
+    /**
+     * @Enabled(TRUE)
+     *
+     * @return BlockControl
+     */
+    protected function createComponentHeader()
+    {
+        return $this->factory->create();
+    }
 
-	/**
-	 * @Enabled(TRUE)
-	 * @return BlockControl
-	 */
-	protected function createComponentHeader()
-	{
-		return $this->factory->create();
-	}
+    /**
+     * @Enabled(FALSE)
+     *
+     * @return BlockControl
+     */
+    protected function createComponentFooter()
+    {
+        return new BlockControl();
+    }
 
-	/**
-	 * @Enabled(FALSE)
-	 * @return BlockControl
-	 */
-	protected function createComponentFooter()
-	{
-		return new BlockControl();
-	}
+    /**
+     * @Enabled(TRUE)
+     *
+     * @return ParentControl
+     */
+    protected function createComponentParent()
+    {
+        return new ParentControl();
+    }
 
-	/**
-	 * @Enabled(TRUE)
-	 * @return ParentControl
-	 */
-	protected function createComponentParent()
-	{
-		return new ParentControl();
-	}
+    public function formatTemplateFiles()
+    {
+        $name = $this->getName();
+        $presenter = substr($name, strrpos(':'.$name, ':'));
 
-	public function formatTemplateFiles()
-	{
-		$name = $this->getName();
-		$presenter = substr($name, strrpos(':' . $name, ':'));
-		return [ __DIR__ . "/../../templates/$presenter.$this->view.latte" ];
-	}
-
+        return [__DIR__."/../../templates/$presenter.$this->view.latte"];
+    }
 }

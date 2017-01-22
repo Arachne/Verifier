@@ -20,13 +20,11 @@ use Nette\Object;
  */
 abstract class ValidationRule extends Object implements RuleInterface
 {
-
-	/**
-	 * @return int
-	 */
-	public function getCode()
-	{
-		return 404;
-	}
-
+    /**
+     * @return int
+     */
+    public function getCode()
+    {
+        return 404;
+    }
 }

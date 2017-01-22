@@ -18,42 +18,40 @@ use Tests\Unit\Classes\TestRule;
  */
 class AnnotationsRuleProviderTest extends Test
 {
+    /** @var AnnotationsRuleProvider */
+    private $provider;
 
-	/** @var AnnotationsRuleProvider */
-	private $provider;
+    protected function _before()
+    {
+        $reader = new AnnotationReader();
+        $this->provider = new AnnotationsRuleProvider($reader);
+    }
 
-	protected function _before()
-	{
-		$reader = new AnnotationReader();
-		$this->provider = new AnnotationsRuleProvider($reader);
-	}
+    public function testClassAnnotations()
+    {
+        $reflection = new ReflectionClass(TestPresenter::class);
+        $this->assertEquals([new TestRule()], $this->provider->getRules($reflection));
+    }
 
-	public function testClassAnnotations()
-	{
-		$reflection = new ReflectionClass(TestPresenter::class);
-		$this->assertEquals([ new TestRule() ], $this->provider->getRules($reflection));
-	}
+    public function testMethodAnnotations()
+    {
+        $reflection = new ReflectionMethod(TestPresenter::class, 'renderView');
+        $this->assertEquals([new TestRule(), new TestRule()], $this->provider->getRules($reflection));
+    }
 
-	public function testMethodAnnotations()
-	{
-		$reflection = new ReflectionMethod(TestPresenter::class, 'renderView');
-		$this->assertEquals([ new TestRule(), new TestRule() ], $this->provider->getRules($reflection));
-	}
+    public function testPropertyAnnotations()
+    {
+        $reflection = new ReflectionProperty(TestPresenter::class, 'property');
+        $this->assertEquals([new TestRule()], $this->provider->getRules($reflection));
+    }
 
-	public function testPropertyAnnotations()
-	{
-		$reflection = new ReflectionProperty(TestPresenter::class, 'property');
-		$this->assertEquals([ new TestRule() ], $this->provider->getRules($reflection));
-	}
-
-	/**
-	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
-	 * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.
-	 */
-	public function testInvalidReflection()
-	{
-		$reflection = Mockery::mock(Reflector::class);
-		$this->provider->getRules($reflection);
-	}
-
+    /**
+     * @expectedException \Arachne\Verifier\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.
+     */
+    public function testInvalidReflection()
+    {
+        $reflection = Mockery::mock(Reflector::class);
+        $this->provider->getRules($reflection);
+    }
 }

@@ -15,11 +15,10 @@ namespace Arachne\Verifier;
  */
 interface RuleInterface
 {
-
-	/**
-	 * Specifies HTTP code to use when the rule fails.
-	 * @return int
-	 */
-	public function getCode();
-
+    /**
+     * Specifies HTTP code to use when the rule fails.
+     *
+     * @return int
+     */
+    public function getCode();
 }

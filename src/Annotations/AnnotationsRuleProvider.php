@@ -25,34 +25,33 @@ use Reflector;
  */
 class AnnotationsRuleProvider extends Object implements RuleProviderInterface
 {
+    /** @var Reader */
+    private $reader;
 
-	/** @var Reader */
-	private $reader;
+    public function __construct(Reader $reader)
+    {
+        $this->reader = $reader;
+    }
 
-	public function __construct(Reader $reader)
-	{
-		$this->reader = $reader;
-	}
+    /**
+     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     *
+     * @return RuleInterface[]
+     */
+    public function getRules(Reflector $reflection)
+    {
+        if ($reflection instanceof ReflectionMethod) {
+            $rules = $this->reader->getMethodAnnotations($reflection);
+        } elseif ($reflection instanceof ReflectionClass) {
+            $rules = $this->reader->getClassAnnotations($reflection);
+        } elseif ($reflection instanceof ReflectionProperty) {
+            $rules = $this->reader->getPropertyAnnotations($reflection);
+        } else {
+            throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.');
+        }
 
-	/**
-	 * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-	 * @return RuleInterface[]
-	 */
-	public function getRules(Reflector $reflection)
-	{
-		if ($reflection instanceof ReflectionMethod) {
-			$rules = $this->reader->getMethodAnnotations($reflection);
-		} elseif ($reflection instanceof ReflectionClass) {
-			$rules = $this->reader->getClassAnnotations($reflection);
-		} elseif ($reflection instanceof ReflectionProperty) {
-			$rules = $this->reader->getPropertyAnnotations($reflection);
-		} else {
-			throw new InvalidArgumentException('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.');
-		}
-
-		return array_filter($rules, function ($annotation) {
-			return $annotation instanceof RuleInterface;
-		});
-	}
-
+        return array_filter($rules, function ($annotation) {
+            return $annotation instanceof RuleInterface;
+        });
+    }
 }

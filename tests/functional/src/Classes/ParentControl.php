@@ -10,15 +10,13 @@ use Nette\Application\UI\Control;
  */
 class ParentControl extends Control
 {
+    use VerifierControlTrait;
 
-	use VerifierControlTrait;
-
-	/**
-	 * @return ChildControl
-	 */
-	protected function createComponentChild()
-	{
-		return new ChildControl();
-	}
-
+    /**
+     * @return ChildControl
+     */
+    protected function createComponentChild()
+    {
+        return new ChildControl();
+    }
 }

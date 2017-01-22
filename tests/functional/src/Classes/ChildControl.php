@@ -10,19 +10,17 @@ use Nette\Application\UI\Control;
  */
 class ChildControl extends Control
 {
+    use VerifierControlTrait;
 
-	use VerifierControlTrait;
+    /**
+     * @Enabled( "$parameter" )
+     */
+    public function handleSignal1($parameter)
+    {
+        $this->redirectVerified('signal2!');
+    }
 
-	/**
-	 * @Enabled( "$parameter" )
-	 */
-	public function handleSignal1($parameter)
-	{
-		$this->redirectVerified('signal2!');
-	}
-
-	public function handleSignal2()
-	{
-	}
-
+    public function handleSignal2()
+    {
+    }
 }

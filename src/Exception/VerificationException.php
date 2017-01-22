@@ -19,27 +19,25 @@ use Nette\Application\BadRequestException;
  */
 class VerificationException extends BadRequestException
 {
+    /** @var RuleInterface */
+    private $rule;
 
-	/** @var RuleInterface */
-	private $rule;
+    /**
+     * @param RuleInterface $rule
+     * @param string        $message
+     * @param Exception     $previous
+     */
+    public function __construct(RuleInterface $rule, $message, Exception $previous = null)
+    {
+        parent::__construct($message, $rule->getCode(), $previous);
+        $this->rule = $rule;
+    }
 
-	/**
-	 * @param RuleInterface $rule
-	 * @param string $message
-	 * @param Exception $previous
-	 */
-	public function __construct(RuleInterface $rule, $message, Exception $previous = null)
-	{
-		parent::__construct($message, $rule->getCode(), $previous);
-		$this->rule = $rule;
-	}
-
-	/**
-	 * @return RuleInterface
-	 */
-	public function getRule()
-	{
-		return $this->rule;
-	}
-
+    /**
+     * @return RuleInterface
+     */
+    public function getRule()
+    {
+        return $this->rule;
+    }
 }

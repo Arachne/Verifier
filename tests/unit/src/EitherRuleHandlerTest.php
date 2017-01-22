@@ -17,101 +17,99 @@ use Nette\Application\Request;
  */
 class EitherRuleHandlerTest extends Test
 {
+    /** @var EitherRuleHandler */
+    private $handler;
 
-	/** @var EitherRuleHandler */
-	private $handler;
+    /** @var MockInterface */
+    private $verifier;
 
-	/** @var MockInterface */
-	private $verifier;
+    protected function _before()
+    {
+        $this->verifier = Mockery::mock(Verifier::class);
+        $this->handler = new EitherRuleHandler($this->verifier);
+    }
 
-	protected function _before()
-	{
-		$this->verifier = Mockery::mock(Verifier::class);
-		$this->handler = new EitherRuleHandler($this->verifier);
-	}
+    public function testEitherFirst()
+    {
+        $rule = new Either();
+        $rule->rules = [
+            $rule1 = Mockery::mock(RuleInterface::class),
+            $rule2 = Mockery::mock(RuleInterface::class),
+        ];
+        $request = new Request('Test', 'GET', []);
 
-	public function testEitherFirst()
-	{
-		$rule = new Either();
-		$rule->rules = [
-			$rule1 = Mockery::mock(RuleInterface::class),
-			$rule2 = Mockery::mock(RuleInterface::class),
-		];
-		$request = new Request('Test', 'GET', []);
+        $this->verifier
+            ->shouldReceive('checkRules')
+            ->with([$rule1], $request, null)
+            ->once()
+            ->andReturn();
 
-		$this->verifier
-			->shouldReceive('checkRules')
-			->with([ $rule1 ], $request, null)
-			->once()
-			->andReturn();
+        $this->assertNull($this->handler->checkRule($rule, $request));
+    }
 
-		$this->assertNull($this->handler->checkRule($rule, $request));
-	}
+    public function testEitherSecond()
+    {
+        $rule = new Either();
+        $rule->rules = [
+            $rule1 = Mockery::mock(RuleInterface::class),
+            $rule2 = Mockery::mock(RuleInterface::class),
+        ];
+        $request = new Request('Test', 'GET', []);
 
-	public function testEitherSecond()
-	{
-		$rule = new Either();
-		$rule->rules = [
-			$rule1 = Mockery::mock(RuleInterface::class),
-			$rule2 = Mockery::mock(RuleInterface::class),
-		];
-		$request = new Request('Test', 'GET', []);
+        $this->verifier
+            ->shouldReceive('checkRules')
+            ->with([$rule1], $request, null)
+            ->once()
+            ->andThrow(Mockery::mock(VerificationException::class));
 
-		$this->verifier
-			->shouldReceive('checkRules')
-			->with([ $rule1 ], $request, null)
-			->once()
-			->andThrow(Mockery::mock(VerificationException::class));
+        $this->verifier
+            ->shouldReceive('checkRules')
+            ->with([$rule2], $request, null)
+            ->once()
+            ->andReturn();
 
-		$this->verifier
-			->shouldReceive('checkRules')
-			->with([ $rule2 ], $request, null)
-			->once()
-			->andReturn();
+        $this->assertNull($this->handler->checkRule($rule, $request));
+    }
 
-		$this->assertNull($this->handler->checkRule($rule, $request));
-	}
+    /**
+     * @expectedException \Arachne\Verifier\Exception\VerificationException
+     * @expectedExceptionMessage None of the rules was met.
+     */
+    public function testEitherException()
+    {
+        $rule = new Either();
+        $rule1 = Mockery::mock(RuleInterface::class)
+            ->shouldReceive('getCode')
+            ->once()
+            ->andReturn(404)
+            ->getMock();
+        $rule2 = Mockery::mock(RuleInterface::class);
+        $rule->rules = [$rule1, $rule2];
+        $request = new Request('Test', 'GET', []);
 
-	/**
-	 * @expectedException Arachne\Verifier\Exception\VerificationException
-	 * @expectedExceptionMessage None of the rules was met.
-	 */
-	public function testEitherException()
-	{
-		$rule = new Either();
-		$rule1 = Mockery::mock(RuleInterface::class)
-			->shouldReceive('getCode')
-			->once()
-			->andReturn(404)
-			->getMock();
-		$rule2 = Mockery::mock(RuleInterface::class);
-		$rule->rules = [ $rule1, $rule2 ];
-		$request = new Request('Test', 'GET', []);
+        $this->verifier
+            ->shouldReceive('checkRules')
+            ->with([$rule1], $request, null)
+            ->once()
+            ->andThrow(Mockery::mock(VerificationException::class));
 
-		$this->verifier
-			->shouldReceive('checkRules')
-			->with([ $rule1 ], $request, null)
-			->once()
-			->andThrow(Mockery::mock(VerificationException::class));
+        $this->verifier
+            ->shouldReceive('checkRules')
+            ->with([$rule2], $request, null)
+            ->once()
+            ->andThrow(Mockery::mock(VerificationException::class));
 
-		$this->verifier
-			->shouldReceive('checkRules')
-			->with([ $rule2 ], $request, null)
-			->once()
-			->andThrow(Mockery::mock(VerificationException::class));
+        $this->handler->checkRule($rule, $request);
+    }
 
-		$this->handler->checkRule($rule, $request);
-	}
+    /**
+     * @expectedException \Arachne\Verifier\Exception\InvalidArgumentException
+     */
+    public function testUnknownAnnotation()
+    {
+        $rule = Mockery::mock(RuleInterface::class);
+        $request = new Request('Test', 'GET', []);
 
-	/**
-	 * @expectedException Arachne\Verifier\Exception\InvalidArgumentException
-	 */
-	public function testUnknownAnnotation()
-	{
-		$rule = Mockery::mock(RuleInterface::class);
-		$request = new Request('Test', 'GET', []);
-
-		$this->handler->checkRule($rule, $request);
-	}
-
+        $this->handler->checkRule($rule, $request);
+    }
 }

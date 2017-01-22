@@ -18,13 +18,12 @@ use Nette\Application\Request;
  */
 interface RuleHandlerInterface
 {
-
-	/**
-	 * @param RuleInterface $rule
-	 * @param Request $request
-	 * @param string $component
-	 * @throws VerificationException
-	 */
-	public function checkRule(RuleInterface $rule, Request $request, $component = null);
-
+    /**
+     * @param RuleInterface $rule
+     * @param Request       $request
+     * @param string        $component
+     *
+     * @throws VerificationException
+     */
+    public function checkRule(RuleInterface $rule, Request $request, $component = null);
 }

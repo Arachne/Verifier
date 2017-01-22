@@ -7,10 +7,8 @@ namespace Tests\Functional\Classes;
  */
 interface BlockControlFactory
 {
-
-	/**
-	 * @return BlockControl
-	 */
-	public function create();
-
+    /**
+     * @return BlockControl
+     */
+    public function create();
 }
