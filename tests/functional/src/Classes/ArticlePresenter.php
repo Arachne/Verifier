@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Classes;
+namespace Tests\Functional\Classes;
 
 use Arachne\Verifier\Application\VerifierPresenterTrait;
 use Nette\Application\UI\Presenter;

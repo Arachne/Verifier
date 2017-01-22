@@ -12,19 +12,19 @@ extensions:
 	inject: Nette\DI\Extensions\InjectExtension
 
 services:
-	routerFactory: Tests\Integration\Classes\RouterFactory
+	routerFactory: Tests\Functional\Classes\RouterFactory
 	router: @routerFactory::create()
 	enabledRuleHandler:
-		class: Tests\Integration\Classes\EnabledRuleHandler
+		class: Tests\Functional\Classes\EnabledRuleHandler
 		tags:
 			arachne.verifier.ruleHandler:
-				- Tests\Integration\Classes\Enabled
+				- Tests\Functional\Classes\Enabled
 	blockControl:
-		implement: Tests\Integration\Classes\BlockControlFactory
+		implement: Tests\Functional\Classes\BlockControlFactory
 		tags:
 			- arachne.verifier.verifyProperties
 	articlePresenter:
-		class: Tests\Integration\Classes\ArticlePresenter
+		class: Tests\Functional\Classes\ArticlePresenter
 		tags:
 			- arachne.verifier.verifyProperties
 			- inject
@@ -32,7 +32,7 @@ services:
 nette.application:
 	catchExceptions: null
 	mapping:
-		*: Tests\Integration\Classes\*Presenter
+		*: Tests\Functional\Classes\*Presenter
 
 kdyby.annotations:
 	ignore:

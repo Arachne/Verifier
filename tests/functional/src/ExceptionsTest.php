@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration;
+namespace Tests\Functional;
 
 use Codeception\TestCase\Test;
 use Nette\Application\IPresenterFactory;
@@ -25,7 +25,7 @@ class ExceptionsTest extends Test
 	/**
 	 * @expectedException Nette\Application\BadRequestException
 	 * @expectedExceptionCode 404
-	 * @expectedExceptionMessage Action 'Tests\Integration\Classes\ArticlePresenter::actionUndefinedAction' does not exist.
+	 * @expectedExceptionMessage Action 'Tests\Functional\Classes\ArticlePresenter::actionUndefinedAction' does not exist.
 	 */
 	public function testUndefinedAction()
 	{

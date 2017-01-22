@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Integration;
+namespace Tests\Functional;
 
 use Arachne\Verifier\Verifier;
 use Codeception\TestCase\Test;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
-use Tests\Integration\Classes\TestPresenter;
+use Tests\Functional\Classes\TestPresenter;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>

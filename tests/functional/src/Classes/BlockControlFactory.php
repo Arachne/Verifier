@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integration\Classes;
+namespace Tests\Functional\Classes;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
