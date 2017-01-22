@@ -1,7 +1,7 @@
 <?php
 
-/**
- * This file is part of the Arachne Verifier extenstion
+/*
+ * This file is part of the Arachne package.
  *
  * Copyright (c) Jáchym Toušek (enumag@gmail.com)
  *
