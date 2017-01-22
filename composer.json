@@ -15,24 +15,21 @@
 		"arachne/di-helpers": "~0.2.0|~0.3.0|~0.4.0",
 		"doctrine/annotations": "~1.1",
 		"kdyby/annotations": "~2.1",
-		"nette/application": "~2.2",
-		"nette/di": "~2.2",
-		"nette/utils": "~2.2"
+		"nette/application": "~2.4",
+		"nette/di": "~2.4",
+		"nette/utils": "~2.4"
 	},
 	"require-dev": {
 		"php": ">=5.5.0",
-		"arachne/codeception": "~0.6.3",
+		"arachne/codeception": "~0.7.3",
 		"arachne/coding-style": "~0.3.0",
-		"codeception/codeception": "~2.1.0",
+		"codeception/codeception": "~2.2.0",
 		"codeception/mockery-module": "~0.2.2",
-		"enumag/application": "~0.3.5",
+		"enumag/application": "~0.3.17",
 		"mockery/mockery": "~0.9",
-		"nette/application": "~2.3",
-		"nette/di": "~2.3",
-		"nette/utils": "~2.3",
-		"latte/latte": "~2.3",
+		"latte/latte": "~2.4",
 		"squizlabs/php_codesniffer": "~2.0",
-		"tracy/tracy": "~2.3"
+		"tracy/tracy": "~2.4"
 	},
 	"autoload": {
 		"psr-4": {
@@ -50,5 +47,8 @@
 			"type": "composer",
 			"url": "http://packages.m33.cz"
 		}
-	]
+	],
+  "config": {
+    "secure-http": false
+  }
 }
