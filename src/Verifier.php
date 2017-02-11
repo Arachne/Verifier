@@ -10,7 +10,6 @@
 
 namespace Arachne\Verifier;
 
-use Arachne\DIHelpers\ResolverInterface;
 use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\Exception\UnexpectedTypeException;
 use Arachne\Verifier\Exception\VerificationException;
@@ -35,7 +34,7 @@ class Verifier
     private $ruleProvider;
 
     /**
-     * @var ResolverInterface
+     * @var callable
      */
     private $handlerResolver;
 
@@ -49,7 +48,7 @@ class Verifier
      */
     private $cache;
 
-    public function __construct(RuleProviderInterface $ruleProvider, ResolverInterface $handlerResolver, IPresenterFactory $presenterFactory)
+    public function __construct(RuleProviderInterface $ruleProvider, callable $handlerResolver, IPresenterFactory $presenterFactory)
     {
         $this->ruleProvider = $ruleProvider;
         $this->handlerResolver = $handlerResolver;
@@ -95,7 +94,7 @@ class Verifier
     {
         foreach ($rules as $rule) {
             $class = get_class($rule);
-            $handler = $this->handlerResolver->resolve($class);
+            $handler = call_user_func($this->handlerResolver, $class);
             if (!$handler instanceof RuleHandlerInterface) {
                 throw new UnexpectedTypeException("No rule handler found for type '$class'.");
             }

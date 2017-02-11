@@ -10,7 +10,10 @@
 
 namespace Arachne\Verifier\DI;
 
-use Arachne\DIHelpers\CompilerExtension;
+use Arachne\ServiceCollections\DI\ServiceCollectionsExtension;
+use Arachne\Verifier\RuleHandlerInterface;
+use Arachne\Verifier\RuleProviderInterface;
+use Nette\DI\CompilerExtension;
 use Nette\Utils\AssertionException;
 
 /**
@@ -26,27 +29,36 @@ class VerifierExtension extends CompilerExtension
     {
         $builder = $this->getContainerBuilder();
 
-        if ($extension = $this->getExtension('Arachne\DIHelpers\DI\ResolversExtension', false)) {
-            $extension->add(self::TAG_HANDLER, 'Arachne\Verifier\RuleHandlerInterface');
-        } elseif ($extension = $this->getExtension('Arachne\DIHelpers\DI\DIHelpersExtension', false)) {
-            $extension->addResolver(self::TAG_HANDLER, 'Arachne\Verifier\RuleHandlerInterface');
-        } else {
-            throw new AssertionException('Cannot add resolver because arachne/di-helpers is not properly installed.');
-        }
+        /** @var ServiceCollectionsExtension $serviceCollectionsExtension */
+        $serviceCollectionsExtension = $this->getExtension(ServiceCollectionsExtension::class);
 
-        if ($extension = $this->getExtension('Arachne\DIHelpers\DI\IteratorsExtension', false)) {
-            $extension->add(self::TAG_PROVIDER, 'Arachne\Verifier\RuleProviderInterface');
-        } elseif ($extension = $this->getExtension('Arachne\DIHelpers\DI\DIHelpersExtension', false)) {
-            $extension->addResolver(self::TAG_PROVIDER, 'Arachne\Verifier\RuleProviderInterface');
-        } else {
-            throw new AssertionException('Cannot add iterator because arachne/di-helpers is not properly installed.');
-        }
+        $handlerResolver = $serviceCollectionsExtension->getCollection(
+            ServiceCollectionsExtension::TYPE_RESOLVER,
+            self::TAG_HANDLER,
+            RuleHandlerInterface::class
+        );
+
+        $providerIterator = $serviceCollectionsExtension->getCollection(
+            ServiceCollectionsExtension::TYPE_ITERATOR,
+            self::TAG_PROVIDER,
+            RuleProviderInterface::class
+        );
 
         $builder->addDefinition($this->prefix('chainRuleProvider'))
-            ->setClass('Arachne\Verifier\ChainRuleProvider');
+            ->setClass('Arachne\Verifier\ChainRuleProvider')
+            ->setArguments(
+                [
+                    'providers' => '@'.$providerIterator,
+                ]
+            );
 
         $builder->addDefinition($this->prefix('verifier'))
-            ->setClass('Arachne\Verifier\Verifier');
+            ->setClass('Arachne\Verifier\Verifier')
+            ->setArguments(
+                [
+                    'handlerResolver' => '@'.$handlerResolver,
+                ]
+            );
 
         $builder->addDefinition($this->prefix('annotationsRuleProvider'))
             ->setClass('Arachne\Verifier\RuleProviderInterface')
@@ -77,32 +89,6 @@ class VerifierExtension extends CompilerExtension
     {
         $builder = $this->getContainerBuilder();
 
-        if ($extension = $this->getExtension('Arachne\DIHelpers\DI\ResolversExtension', false)) {
-            $handlerResolver = $extension->get(self::TAG_HANDLER);
-        } elseif ($extension = $this->getExtension('Arachne\DIHelpers\DI\DIHelpersExtension', false)) {
-            $handlerResolver = $extension->getResolver(self::TAG_HANDLER);
-        }
-
-        if ($extension = $this->getExtension('Arachne\DIHelpers\DI\IteratorsExtension', false)) {
-            $providerIterator = $extension->get(self::TAG_PROVIDER);
-        } elseif ($extension = $this->getExtension('Arachne\DIHelpers\DI\DIHelpersExtension', false)) {
-            $providerIterator = $extension->getResolver(self::TAG_PROVIDER);
-        }
-
-        $builder->getDefinition($this->prefix('chainRuleProvider'))
-            ->setArguments(
-                [
-                    'providers' => '@'.$providerIterator,
-                ]
-            );
-
-        $builder->getDefinition($this->prefix('verifier'))
-            ->setArguments(
-                [
-                    'handlerResolver' => '@'.$handlerResolver,
-                ]
-            );
-
         $latte = $builder->getByType('Nette\Bridges\ApplicationLatte\ILatteFactory') ?: 'nette.latteFactory';
         if ($builder->hasDefinition($latte)) {
             $builder->getDefinition($latte)
@@ -117,5 +103,23 @@ class VerifierExtension extends CompilerExtension
                 $definition->addSetup('$service->onPresenter[] = function (\Nette\Application\UI\Presenter $presenter) use ($service) { ?->verifyProperties($presenter->getRequest(), $service); }', ['@Arachne\Verifier\Verifier']);
             }
         }
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return CompilerExtension
+     */
+    private function getExtension($class)
+    {
+        $extensions = $this->compiler->getExtensions($class);
+
+        if (!$extensions) {
+            throw new AssertionException(
+                sprintf('Extension "%s" requires "%s" to be installed.', get_class($this), $class)
+            );
+        }
+
+        return reset($extensions);
     }
 }

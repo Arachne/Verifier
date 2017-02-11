@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use Arachne\DIHelpers\ResolverInterface;
 use Arachne\Verifier\Exception\UnexpectedTypeException;
 use Arachne\Verifier\Exception\VerificationException;
 use Arachne\Verifier\RuleHandlerInterface;
@@ -11,6 +10,7 @@ use Arachne\Verifier\Verifier;
 use Codeception\Test\Unit;
 use Eloquent\Phony\Mock\Handle\InstanceHandle;
 use Eloquent\Phony\Phpunit\Phony;
+use Eloquent\Phony\Stub\StubVerifier;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
@@ -35,9 +35,9 @@ class VerifierTest extends Unit
     private $ruleProviderHandle;
 
     /**
-     * @var InstanceHandle
+     * @var StubVerifier
      */
-    private $handlerResolverHandle;
+    private $handlerResolver;
 
     /**
      * @var InstanceHandle
@@ -52,11 +52,11 @@ class VerifierTest extends Unit
     protected function _before()
     {
         $this->ruleProviderHandle = Phony::mock(RuleProviderInterface::class);
-        $this->handlerResolverHandle = Phony::mock(ResolverInterface::class);
+        $this->handlerResolver = Phony::stub();
         $this->presenterFactoryHandle = Phony::mock(IPresenterFactory::class);
         $this->verifier = new Verifier(
             $this->ruleProviderHandle->get(),
-            $this->handlerResolverHandle->get(),
+            $this->handlerResolver,
             $this->presenterFactoryHandle->get()
         );
     }
@@ -264,8 +264,7 @@ class VerifierTest extends Unit
         } catch (UnexpectedTypeException $e) {
         }
 
-        $this->handlerResolverHandle
-            ->resolve
+        $this->handlerResolver
             ->calledWith(InvalidRule::class);
     }
 
@@ -373,8 +372,7 @@ class VerifierTest extends Unit
      */
     private function setupHandlerResolverMock(RuleHandlerInterface $handler)
     {
-        $this->handlerResolverHandle
-            ->resolve
+        $this->handlerResolver
             ->with(TestRule::class)
             ->returns($handler);
     }
