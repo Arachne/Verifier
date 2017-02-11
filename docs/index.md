@@ -8,15 +8,16 @@ This extension is here to provide easy annotation-based verification whether giv
 The best way to install Arachne/Verifier is using [Composer](http://getcomposer.org/):
 
 ```sh
-$ composer require arachne/verifier
+$ composer require arachne/verifier kdyby/annotations
 ```
 
-Now you need to register Arachne/Verifier and Kdyby/Annotations extensions using your [neon](http://ne-on.org/) config file.
+Now you need to register required extensions using your [neon](http://ne-on.org/) config file.
 
 ```yml
 extensions:
-	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
-	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
+    arachne.servicecollections: Arachne\ServiceCollections\DI\ServiceCollectionsExtension
+    arachne.verifier: Arachne\Verifier\DI\VerifierExtension
+    kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
 ```
 
 Please see documentation how to configure [Kdyby/Annotations](https://github.com/Kdyby/Annotations/blob/master/docs/en/index.md).
@@ -26,16 +27,12 @@ Finally add the `Arachne\Verifier\Application\VerifierPresenterTrait` trait to y
 ```php
 abstract class BasePresenter extends \Nette\Application\UI\Presenter
 {
-
-	use \Arachne\Verifier\Application\VerifierPresenterTrait;
-
+    use \Arachne\Verifier\Application\VerifierPresenterTrait;
 }
 
 abstract class BaseControl extends \Nette\Application\UI\Control
 {
-
-	use \Arachne\Verifier\Application\VerifierControlTrait;
-
+    use \Arachne\Verifier\Application\VerifierControlTrait;
 }
 ```
 
@@ -60,11 +57,11 @@ Let's say you have some rule App\MyRule and a handler App\MyRuleHandler. You nee
 
 ```yml
 services:
-	myRuleHandler:
-		class: App\MyRuleHandler
-		tags:
-			arachne.verifier.ruleHandler:
-				- App\MyRule
+    myRuleHandler:
+        class: App\MyRuleHandler
+        tags:
+            arachne.verifier.ruleHandler:
+                - App\MyRule
 ```
 
 ### Presenter
@@ -79,24 +76,22 @@ use App\MyRule;
  */
 class ArticlePresenter extends BasePresenter
 {
+    /**
+     * @MyRule("some argument")
+     * @MyRule("different argument")
+     */
+    public function actionEdit($id)
+    {
+        // ...
+    }
 
-	/**
-	 * @MyRule("some argument")
-	 * @MyRule("different argument")
-	 */
-	public function actionEdit($id)
-	{
-		// ...
-	}
-
-	/**
-	 * @MyRule("argument")
-	 */
-	public function createComponentMenu()
-	{
-		// ...
-	}
-
+    /**
+     * @MyRule("argument")
+     */
+    public function createComponentMenu()
+    {
+        // ...
+    }
 }
 ```
 
@@ -122,7 +117,7 @@ There is also the `n:ifComponentVerified` macro to check whether the component i
 ```html
 {* The component will only be shown if it is available. *}
 {ifComponentVerified menu}
-	{control menu}
+    {control menu}
 {/ifComponentVerified}
 ```
 
@@ -151,34 +146,28 @@ Sometimes you might need to change some behavior instead of disabling the action
 ```php
 class ArticlePresenter extends BasePresenter
 {
-
-	/**
-	 * @MyRule("write")
-	 * @var bool
-	 */
-	public $readAndWrite;
-
+    /**
+     * @MyRule("write")
+     * @var bool
+     */
+    public $readAndWrite;
 }
 
 class HeaderControl extends BaseControl
 {
-
-	/**
-	 * @MyRule("adminLinks")
-	 * @var bool
-	 */
-	public $adminLinks;
-
+    /**
+     * @MyRule("adminLinks")
+     * @var bool
+     */
+    public $adminLinks;
 }
 
 interface HeaderControlFactory
 {
-
-	/**
-	 * @return HeaderControl
-	 */
-	public function create();
-
+    /**
+     * @return HeaderControl
+     */
+    public function create();
 }
 ```
 
@@ -188,12 +177,12 @@ For non-presenter components you need to create the component using a generated 
 
 ```yml
 services:
-	articlePresenter:
-		class: ArticlePresenter
-		tags:
-			- arachne.verifier.verifyProperties
-	headerControlFactory:
-		implement: HeaderControlFactory
-		tags:
-			- arachne.verifier.verifyProperties
+    articlePresenter:
+        class: ArticlePresenter
+        tags:
+            - arachne.verifier.verifyProperties
+    headerControlFactory:
+        implement: HeaderControlFactory
+        tags:
+            - arachne.verifier.verifyProperties
 ```
