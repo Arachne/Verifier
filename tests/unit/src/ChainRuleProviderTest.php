@@ -6,56 +6,70 @@ use Arachne\Verifier\ChainRuleProvider;
 use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\RuleProviderInterface;
 use ArrayIterator;
-use Codeception\MockeryModule\Test;
-use Mockery;
+use Codeception\Test\Unit;
+use Eloquent\Phony\Mock\Handle\InstanceHandle;
+use Eloquent\Phony\Phpunit\Phony;
 use Reflector;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class ChainRuleProviderTest extends Test
+class ChainRuleProviderTest extends Unit
 {
+    /**
+     * @var InstanceHandle
+     */
+    private $ruleProvider1Handle;
+
+    /**
+     * @var InstanceHandle
+     */
+    private $ruleProvider2Handle;
+
+    /**
+     * @var ChainRuleProvider
+     */
+    private $chainRuleProvider;
+
     protected function _before()
     {
-        $this->ruleProvider1 = Mockery::mock(RuleProviderInterface::class);
-        $this->ruleProvider2 = Mockery::mock(RuleProviderInterface::class);
-        $this->chainRuleProvider = new ChainRuleProvider(new ArrayIterator([$this->ruleProvider1, $this->ruleProvider2]));
+        $this->ruleProvider1Handle = Phony::mock(RuleProviderInterface::class);
+        $this->ruleProvider2Handle = Phony::mock(RuleProviderInterface::class);
+        $this->chainRuleProvider = new ChainRuleProvider(new ArrayIterator([$this->ruleProvider1Handle->get(), $this->ruleProvider2Handle->get()]));
     }
 
     public function testProviderReturningNull()
     {
-        $reflector = Mockery::mock(Reflector::class);
-
-        $this->ruleProvider1
-            ->shouldReceive('getRules')
-            ->with($reflector)
-            ->once();
-
-        $this->ruleProvider2
-            ->shouldReceive('getRules')
-            ->with($reflector)
-            ->once();
+        $reflector = Phony::mock(Reflector::class)->get();
 
         $this->assertSame([], $this->chainRuleProvider->getRules($reflector));
+
+        $this->ruleProvider1Handle
+            ->getRules
+            ->calledWith($reflector);
+
+        $this->ruleProvider2Handle
+            ->getRules
+            ->calledWith($reflector);
     }
 
     public function testMergingProviderResults()
     {
-        $reflector = Mockery::mock(Reflector::class);
+        $reflector = Phony::mock(Reflector::class)->get();
 
-        $rule1 = Mockery::mock(RuleInterface::class);
-        $this->ruleProvider1
-            ->shouldReceive('getRules')
-            ->with($reflector)
-            ->once()
-            ->andReturn([$rule1]);
+        $rule1 = Phony::mock(RuleInterface::class)->get();
 
-        $rule2 = Mockery::mock(RuleInterface::class);
-        $this->ruleProvider2
-            ->shouldReceive('getRules')
+        $this->ruleProvider1Handle
+            ->getRules
             ->with($reflector)
-            ->once()
-            ->andReturn([$rule2]);
+            ->returns([$rule1]);
+
+        $rule2 = Phony::mock(RuleInterface::class)->get();
+
+        $this->ruleProvider2Handle
+            ->getRules
+            ->with($reflector)
+            ->returns([$rule2]);
 
         $this->assertSame([$rule1, $rule2], $this->chainRuleProvider->getRules($reflector));
     }

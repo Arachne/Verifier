@@ -2,57 +2,59 @@
 
 namespace Tests\Functional;
 
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class ComponentsTest extends Test
+class ComponentsTest extends Unit
 {
+    protected $tester;
+
     public function testComponentMacro()
     {
-        $this->guy->amOnPage('/article/');
-        $this->guy->seeResponseCodeIs(200);
-        $this->guy->see('header');
-        $this->guy->dontSee('footer');
-        $this->guy->see('fallback');
+        $this->tester->amOnPage('/article/');
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->see('header');
+        $this->tester->dontSee('footer');
+        $this->tester->see('fallback');
     }
 
     public function testLinkMacroInComponent()
     {
-        $this->guy->amOnPage('/article/');
-        $this->guy->seeResponseCodeIs(200);
-        $this->guy->see('Component link');
-        $this->guy->seeLink('Component link', '/article/');
-        $this->guy->see('Component signal link true');
-        $this->guy->seeLink('Component signal link true', '/article/?header-parameter=1&do=header-signal');
-        $this->guy->dontSee('Component signal link false');
-        $this->guy->dontSee('Signal called!');
+        $this->tester->amOnPage('/article/');
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->see('Component link');
+        $this->tester->seeLink('Component link', '/article/');
+        $this->tester->see('Component signal link true');
+        $this->tester->seeLink('Component signal link true', '/article/?header-parameter=1&do=header-signal');
+        $this->tester->dontSee('Component signal link false');
+        $this->tester->dontSee('Signal called!');
     }
 
     public function testComponentSignal()
     {
-        $this->guy->amOnPage('/article/?do=header-signal&header-parameter=1');
-        $this->guy->seeResponseCodeIs(200);
-        $this->guy->see('Signal called!');
+        $this->tester->amOnPage('/article/?do=header-signal&header-parameter=1');
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->see('Signal called!');
     }
 
     public function testComponentNotAllowed()
     {
-        $this->guy->amOnPage('/article/component-not-enabled');
-        $this->guy->seeResponseCodeIs(403);
+        $this->tester->amOnPage('/article/component-not-enabled');
+        $this->tester->seeResponseCodeIs(403);
     }
 
     public function testSubComponentAllowed()
     {
-        $this->guy->amOnPage('/article/?do=parent-child-signal1&parent-child-parameter=1');
-        $this->guy->seeResponseCodeIs(302);
-        $this->guy->seeRedirectTo('/article/?do=parent-child-signal2');
+        $this->tester->amOnPage('/article/?do=parent-child-signal1&parent-child-parameter=1');
+        $this->tester->seeResponseCodeIs(302);
+        $this->tester->seeRedirectTo('/article/?do=parent-child-signal2');
     }
 
     public function testSubComponentNotAllowed()
     {
-        $this->guy->amOnPage('/article/?do=parent-child-signal1&parent-child-parameter=0');
-        $this->guy->seeResponseCodeIs(403);
+        $this->tester->amOnPage('/article/?do=parent-child-signal1&parent-child-parameter=0');
+        $this->tester->seeResponseCodeIs(403);
     }
 }

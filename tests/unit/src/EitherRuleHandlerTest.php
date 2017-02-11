@@ -7,68 +7,63 @@ use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\Rules\Either;
 use Arachne\Verifier\Rules\EitherRuleHandler;
 use Arachne\Verifier\Verifier;
-use Codeception\MockeryModule\Test;
-use Mockery;
-use Mockery\MockInterface;
+use Codeception\Test\Unit;
+use Eloquent\Phony\Mock\Handle\InstanceHandle;
+use Eloquent\Phony\Phpunit\Phony;
 use Nette\Application\Request;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class EitherRuleHandlerTest extends Test
+class EitherRuleHandlerTest extends Unit
 {
-    /** @var EitherRuleHandler */
-    private $handler;
+    /**
+     * @var InstanceHandle
+     */
+    private $verifierHandle;
 
-    /** @var MockInterface */
-    private $verifier;
+    /**
+     * @var EitherRuleHandler
+     */
+    private $handler;
 
     protected function _before()
     {
-        $this->verifier = Mockery::mock(Verifier::class);
-        $this->handler = new EitherRuleHandler($this->verifier);
+        $this->verifierHandle = Phony::mock(Verifier::class);
+        $this->handler = new EitherRuleHandler($this->verifierHandle->get());
     }
 
     public function testEitherFirst()
     {
         $rule = new Either();
         $rule->rules = [
-            $rule1 = Mockery::mock(RuleInterface::class),
-            $rule2 = Mockery::mock(RuleInterface::class),
+            $rule1 = Phony::mock(RuleInterface::class)->get(),
+            $rule2 = Phony::mock(RuleInterface::class)->get(),
         ];
         $request = new Request('Test', 'GET', []);
 
-        $this->verifier
-            ->shouldReceive('checkRules')
-            ->with([$rule1], $request, null)
-            ->once()
-            ->andReturn();
+        $this->handler->checkRule($rule, $request);
 
-        $this->assertNull($this->handler->checkRule($rule, $request));
+        $this->verifierHandle
+            ->checkRules
+            ->calledWith([$rule1], $request, null);
     }
 
     public function testEitherSecond()
     {
         $rule = new Either();
         $rule->rules = [
-            $rule1 = Mockery::mock(RuleInterface::class),
-            $rule2 = Mockery::mock(RuleInterface::class),
+            $rule1 = Phony::mock(RuleInterface::class),
+            $rule2 = Phony::mock(RuleInterface::class),
         ];
         $request = new Request('Test', 'GET', []);
 
-        $this->verifier
-            ->shouldReceive('checkRules')
+        $this->verifierHandle
+            ->checkRules
             ->with([$rule1], $request, null)
-            ->once()
-            ->andThrow(Mockery::mock(VerificationException::class));
+            ->throws(Phony::mock(VerificationException::class)->get());
 
-        $this->verifier
-            ->shouldReceive('checkRules')
-            ->with([$rule2], $request, null)
-            ->once()
-            ->andReturn();
-
-        $this->assertNull($this->handler->checkRule($rule, $request));
+        $this->handler->checkRule($rule, $request);
     }
 
     /**
@@ -78,26 +73,28 @@ class EitherRuleHandlerTest extends Test
     public function testEitherException()
     {
         $rule = new Either();
-        $rule1 = Mockery::mock(RuleInterface::class)
-            ->shouldReceive('getCode')
-            ->once()
-            ->andReturn(404)
-            ->getMock();
-        $rule2 = Mockery::mock(RuleInterface::class);
+        $rule1Handle = Phony::mock(RuleInterface::class);
+        $rule1Handle
+            ->getCode
+            ->returns(404);
+
+        $rule2Handle = Phony::mock(RuleInterface::class);
+
+        $rule1 = $rule1Handle->get();
+        $rule2 = $rule2Handle->get();
+
         $rule->rules = [$rule1, $rule2];
         $request = new Request('Test', 'GET', []);
 
-        $this->verifier
-            ->shouldReceive('checkRules')
+        $this->verifierHandle
+            ->checkRules
             ->with([$rule1], $request, null)
-            ->once()
-            ->andThrow(Mockery::mock(VerificationException::class));
+            ->throws(Phony::mock(VerificationException::class)->get());
 
-        $this->verifier
-            ->shouldReceive('checkRules')
+        $this->verifierHandle
+            ->checkRules
             ->with([$rule2], $request, null)
-            ->once()
-            ->andThrow(Mockery::mock(VerificationException::class));
+            ->throws(Phony::mock(VerificationException::class)->get());
 
         $this->handler->checkRule($rule, $request);
     }
@@ -107,7 +104,7 @@ class EitherRuleHandlerTest extends Test
      */
     public function testUnknownAnnotation()
     {
-        $rule = Mockery::mock(RuleInterface::class);
+        $rule = Phony::mock(RuleInterface::class)->get();
         $request = new Request('Test', 'GET', []);
 
         $this->handler->checkRule($rule, $request);

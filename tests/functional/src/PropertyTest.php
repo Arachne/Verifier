@@ -2,34 +2,36 @@
 
 namespace Tests\Functional;
 
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class PropertyTest extends Test
+class PropertyTest extends Unit
 {
+    protected $tester;
+
     public function testNoProperty()
     {
-        $this->guy->amOnPage('/article/');
-        $this->guy->seeResponseCodeIs(200);
-        $this->guy->dontSee('Presenter property verified');
-        $this->guy->dontSee('Component property verified');
+        $this->tester->amOnPage('/article/');
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->dontSee('Presenter property verified');
+        $this->tester->dontSee('Component property verified');
     }
 
     public function testPresenterProperty()
     {
-        $this->guy->amOnPage('/article/?privilege=1');
-        $this->guy->seeResponseCodeIs(200);
-        $this->guy->see('Presenter property verified');
-        $this->guy->dontSee('Component property verified');
+        $this->tester->amOnPage('/article/?privilege=1');
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->see('Presenter property verified');
+        $this->tester->dontSee('Component property verified');
     }
 
     public function testComponentProperty()
     {
-        $this->guy->amOnPage('/article/?header-privilege=1');
-        $this->guy->seeResponseCodeIs(200);
-        $this->guy->dontSee('Presenter property verified');
-        $this->guy->see('Component property verified');
+        $this->tester->amOnPage('/article/?header-privilege=1');
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->dontSee('Presenter property verified');
+        $this->tester->see('Component property verified');
     }
 }

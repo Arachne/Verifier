@@ -2,7 +2,7 @@
 
 namespace Tests\Functional;
 
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
@@ -10,15 +10,30 @@ use Nette\Application\UI\Presenter;
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class ExceptionsTest extends Test
+class ExceptionsTest extends Unit
 {
+    protected $tester;
+
     /**
      * @expectedException \Arachne\Verifier\Exception\NotSupportedException
      * @expectedExceptionMessage Rules for render methods are not supported. Define the rules for action method instead.
      */
     public function testRenderMethod()
     {
-        $this->guy->amOnPage('/article/view');
+        $request = new Request(
+            'Article',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'view',
+            ]
+        );
+
+        $presenter = $this->tester
+            ->grabService(IPresenterFactory::class)
+            ->createPresenter('Article');
+        // Canonicalization is broken in CLI.
+        $presenter->autoCanonicalize = false;
+        $presenter->run($request);
     }
 
     /**
@@ -28,10 +43,14 @@ class ExceptionsTest extends Test
      */
     public function testUndefinedAction()
     {
-        $request = new Request('Article', 'GET', [
-            Presenter::ACTION_KEY => 'UndefinedAction',
-        ]);
-        $this->guy
+        $request = new Request(
+            'Article',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'UndefinedAction',
+            ]
+        );
+        $this->tester
             ->grabService(IPresenterFactory::class)
             ->createPresenter('Article')
             ->run($request);

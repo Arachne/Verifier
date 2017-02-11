@@ -6,44 +6,46 @@ use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\Rules\All;
 use Arachne\Verifier\Rules\AllRuleHandler;
 use Arachne\Verifier\Verifier;
-use Codeception\MockeryModule\Test;
-use Mockery;
-use Mockery\MockInterface;
+use Codeception\Test\Unit;
+use Eloquent\Phony\Mock\Handle\InstanceHandle;
+use Eloquent\Phony\Phpunit\Phony;
 use Nette\Application\Request;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class AllRuleHandlerTest extends Test
+class AllRuleHandlerTest extends Unit
 {
-    /** @var AllRuleHandler */
+    /**
+     * @var AllRuleHandler
+     */
     private $handler;
 
-    /** @var MockInterface */
-    private $verifier;
+    /**
+     * @var InstanceHandle
+     */
+    private $verifierHandle;
 
     protected function _before()
     {
-        $this->verifier = Mockery::mock(Verifier::class);
-        $this->handler = new AllRuleHandler($this->verifier);
+        $this->verifierHandle = Phony::mock(Verifier::class);
+        $this->handler = new AllRuleHandler($this->verifierHandle->get());
     }
 
     public function testAll()
     {
         $rule = new All();
         $rule->rules = [
-            Mockery::mock(RuleInterface::class),
-            Mockery::mock(RuleInterface::class),
+            Phony::mock(RuleInterface::class)->get(),
+            Phony::mock(RuleInterface::class)->get(),
         ];
         $request = new Request('Test', 'GET', []);
 
-        $this->verifier
-            ->shouldReceive('checkRules')
-            ->with($rule->rules, $request, null)
-            ->once()
-            ->andReturn();
+        $this->handler->checkRule($rule, $request);
 
-        $this->assertNull($this->handler->checkRule($rule, $request));
+        $this->verifierHandle
+            ->checkRules
+            ->calledWith($rule->rules, $request, null);
     }
 
     /**
@@ -51,7 +53,7 @@ class AllRuleHandlerTest extends Test
      */
     public function testUnknownAnnotation()
     {
-        $rule = Mockery::mock(RuleInterface::class);
+        $rule = Phony::mock(RuleInterface::class)->get();
         $request = new Request('Test', 'GET', []);
 
         $this->handler->checkRule($rule, $request);

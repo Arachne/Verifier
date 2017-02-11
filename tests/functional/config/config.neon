@@ -7,7 +7,6 @@ extensions:
 	arachne.dihelpers.iterators: Arachne\DIHelpers\DI\IteratorsExtension
 	arachne.dihelpers.resolvers: Arachne\DIHelpers\DI\ResolversExtension
 	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
-	enumag.application: Enumag\Application\DI\ApplicationExtension
 	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
 	inject: Nette\DI\Extensions\InjectExtension
 
@@ -30,7 +29,7 @@ services:
 			- inject
 
 nette.application:
-	catchExceptions: null
+	catchExceptions: true
 	mapping:
 		*: Tests\Functional\Classes\*Presenter
 

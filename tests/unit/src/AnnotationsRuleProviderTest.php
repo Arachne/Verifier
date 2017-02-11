@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use Arachne\Verifier\Annotations\AnnotationsRuleProvider;
-use Codeception\MockeryModule\Test;
+use Codeception\Test\Unit;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Mockery;
+use Eloquent\Phony\Phpunit\Phony;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -16,9 +16,11 @@ use Tests\Unit\Classes\TestRule;
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class AnnotationsRuleProviderTest extends Test
+class AnnotationsRuleProviderTest extends Unit
 {
-    /** @var AnnotationsRuleProvider */
+    /**
+     * @var AnnotationsRuleProvider
+     */
     private $provider;
 
     protected function _before()
@@ -51,7 +53,7 @@ class AnnotationsRuleProviderTest extends Test
      */
     public function testInvalidReflection()
     {
-        $reflection = Mockery::mock(Reflector::class);
+        $reflection = Phony::mock(Reflector::class)->get();
         $this->provider->getRules($reflection);
     }
 }

@@ -3,7 +3,7 @@
 namespace Tests\Functional;
 
 use Arachne\Verifier\Verifier;
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 use Tests\Functional\Classes\TestPresenter;
@@ -11,15 +11,18 @@ use Tests\Functional\Classes\TestPresenter;
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class RuleHandlersTest extends Test
+class RuleHandlersTest extends Unit
 {
-    /** @var Verifier */
+    protected $tester;
+
+    /**
+     * @var Verifier
+     */
     private $verifier;
 
     public function _before()
     {
-        parent::_before();
-        $this->verifier = $this->guy->grabService(Verifier::class);
+        $this->verifier = $this->tester->grabService(Verifier::class);
     }
 
     public function testEitherFirst()

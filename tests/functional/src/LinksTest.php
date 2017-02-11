@@ -2,48 +2,50 @@
 
 namespace Tests\Functional;
 
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class LinksTest extends Test
+class LinksTest extends Unit
 {
+    protected $tester;
+
     public function testLinkMacro()
     {
-        $this->guy->amOnPage('/article/');
-        $this->guy->seeResponseCodeIs(200);
-        $this->guy->see('Normal link');
-        $this->guy->dontSee('Checked link');
-        $this->guy->seeLink('Normal link', '/article/edit/1');
-        $this->guy->dontSeeLink('Checked link', '/article/edit/1');
+        $this->tester->amOnPage('/article/');
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->see('Normal link');
+        $this->tester->dontSee('Checked link');
+        $this->tester->seeLink('Normal link', '/article/edit/1');
+        $this->tester->dontSeeLink('Checked link', '/article/edit/1');
     }
 
     public function testRedirect()
     {
-        $this->guy->amOnPage('/article/remove/1');
-        $this->guy->seeResponseCodeIs(302);
-        $this->guy->seeRedirectTo('/article/delete/1');
+        $this->tester->amOnPage('/article/remove/1');
+        $this->tester->seeResponseCodeIs(302);
+        $this->tester->seeRedirectTo('/article/delete/1');
     }
 
     public function testRedirectCustomCode()
     {
-        $this->guy->amOnPage('/article/redirect/1');
-        $this->guy->seeResponseCodeIs(301);
-        $this->guy->seeRedirectTo('/article/delete/1');
+        $this->tester->amOnPage('/article/redirect/1');
+        $this->tester->seeResponseCodeIs(301);
+        $this->tester->seeRedirectTo('/article/delete/1');
     }
 
     public function testRedirectNotAllowed()
     {
-        $this->guy->amOnPage('/article/modify/1');
+        $this->tester->amOnPage('/article/modify/1');
         // Response code should never be 302 because the redirect target action is not allowed.
         // It's actually 404 because there is no template.
-        $this->guy->seeResponseCodeIs(404);
+        $this->tester->seeResponseCodeIs(404);
     }
 
     public function testActionNotAllowed()
     {
-        $this->guy->amOnPage('/article/edit/1');
-        $this->guy->seeResponseCodeIs(403);
+        $this->tester->amOnPage('/article/edit/1');
+        $this->tester->seeResponseCodeIs(403);
     }
 }

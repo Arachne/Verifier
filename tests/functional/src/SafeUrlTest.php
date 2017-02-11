@@ -2,19 +2,21 @@
 
 namespace Tests\Functional;
 
-use Codeception\TestCase\Test;
+use Codeception\Test\Unit;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class SafeUrlTest extends Test
+class SafeUrlTest extends Unit
 {
+    protected $tester;
+
     public function testHrefMacro()
     {
-        $this->guy->amOnPage('/article/safeurl');
-        $this->guy->seeResponseCodeIs(200);
-        $this->guy->debugContent();
-        $this->guy->seeLink('Safe url', '');
-        $this->guy->dontSeeLink('Safe url', 'javascript');
+        $this->tester->amOnPage('/article/safeurl');
+        $this->tester->seeResponseCodeIs(200);
+        $this->tester->debugContent();
+        $this->tester->seeLink('Safe url', '');
+        $this->tester->dontSeeLink('Safe url', 'javascript');
     }
 }
