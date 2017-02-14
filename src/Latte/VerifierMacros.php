@@ -18,9 +18,21 @@ class VerifierMacros extends MacroSet
     public static function install(Compiler $compiler)
     {
         $me = new static($compiler);
-        $me->addMacro('ifComponentVerified', 'if ($_presenter->getVerifier()->isComponentVerified(%node.word, $_presenter->getRequest(), $_control)) {', '}');
-        $me->addMacro('ifLinkVerified', 'if ($_verifiedLink = $_control->linkVerified(%node.word, %node.array?)) {', '}');
-        $me->addMacro('ifPresenterLinkVerified', 'if ($_verifiedLink = $_presenter->linkVerified(%node.word, %node.array?)) {', '}');
+        $me->addMacro(
+            'ifComponentVerified',
+            'if ($_presenter->getVerifier()->isComponentVerified(%node.word, $_presenter->getRequest(), $_control)) {',
+            '}'
+        );
+        $me->addMacro(
+            'ifLinkVerified',
+            'if ($_verifiedLink = $_control->linkVerified(%node.word, %node.array?)) {',
+            '}'
+        );
+        $me->addMacro(
+            'ifPresenterLinkVerified',
+            'if ($_verifiedLink = $_presenter->linkVerified(%node.word, %node.array?)) {',
+            '}'
+        );
         $me->addMacro(
             'href',
             null,

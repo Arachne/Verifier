@@ -3,8 +3,17 @@
 namespace Arachne\Verifier\DI;
 
 use Arachne\ServiceCollections\DI\ServiceCollectionsExtension;
+use Arachne\Verifier\Annotations\AnnotationsRuleProvider;
+use Arachne\Verifier\ChainRuleProvider;
 use Arachne\Verifier\RuleHandlerInterface;
 use Arachne\Verifier\RuleProviderInterface;
+use Arachne\Verifier\Rules\All;
+use Arachne\Verifier\Rules\AllRuleHandler;
+use Arachne\Verifier\Rules\Either;
+use Arachne\Verifier\Rules\EitherRuleHandler;
+use Arachne\Verifier\Verifier;
+use Nette\Application\UI\Presenter;
+use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\DI\CompilerExtension;
 use Nette\Utils\AssertionException;
 
@@ -37,7 +46,7 @@ class VerifierExtension extends CompilerExtension
         );
 
         $builder->addDefinition($this->prefix('chainRuleProvider'))
-            ->setClass('Arachne\Verifier\ChainRuleProvider')
+            ->setClass(ChainRuleProvider::class)
             ->setArguments(
                 [
                     'providers' => '@'.$providerIterator,
@@ -45,7 +54,7 @@ class VerifierExtension extends CompilerExtension
             );
 
         $builder->addDefinition($this->prefix('verifier'))
-            ->setClass('Arachne\Verifier\Verifier')
+            ->setClass(Verifier::class)
             ->setArguments(
                 [
                     'handlerResolver' => '@'.$handlerResolver,
@@ -53,26 +62,26 @@ class VerifierExtension extends CompilerExtension
             );
 
         $builder->addDefinition($this->prefix('annotationsRuleProvider'))
-            ->setClass('Arachne\Verifier\RuleProviderInterface')
-            ->setFactory('Arachne\Verifier\Annotations\AnnotationsRuleProvider')
+            ->setClass(RuleProviderInterface::class)
+            ->setFactory(AnnotationsRuleProvider::class)
             ->addTag(self::TAG_PROVIDER)
             ->setAutowired(false);
 
         $builder->addDefinition($this->prefix('allRuleHandler'))
-            ->setClass('Arachne\Verifier\Rules\AllRuleHandler')
+            ->setClass(AllRuleHandler::class)
             ->addTag(
                 self::TAG_HANDLER,
                 [
-                    'Arachne\Verifier\Rules\All',
+                    All::class,
                 ]
             );
 
         $builder->addDefinition($this->prefix('eitherRuleHandler'))
-            ->setClass('Arachne\Verifier\Rules\EitherRuleHandler')
+            ->setClass(EitherRuleHandler::class)
             ->addTag(
                 self::TAG_HANDLER,
                 [
-                    'Arachne\Verifier\Rules\Either',
+                    Either::class,
                 ]
             );
     }
@@ -81,18 +90,27 @@ class VerifierExtension extends CompilerExtension
     {
         $builder = $this->getContainerBuilder();
 
-        $latte = $builder->getByType('Nette\Bridges\ApplicationLatte\ILatteFactory') ?: 'nette.latteFactory';
+        $latte = $builder->getByType(ILatteFactory::class) ?: 'nette.latteFactory';
         if ($builder->hasDefinition($latte)) {
             $builder->getDefinition($latte)
-                ->addSetup('?->onCompile[] = function ($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }', ['@self']);
+                ->addSetup(
+                    '?->onCompile[] = function ($engine) { \Arachne\Verifier\Latte\VerifierMacros::install($engine->getCompiler()); }',
+                    ['@self']
+                );
         }
 
         foreach ($builder->findByTag(self::TAG_VERIFY_PROPERTIES) as $service => $attributes) {
             $definition = $builder->getDefinition($service);
-            if (is_subclass_of($definition->getClass(), 'Nette\Application\UI\Presenter')) {
-                $definition->addSetup('$service->onStartup[] = function () use ($service) { ?->verifyProperties($service->getRequest(), $service); }', ['@Arachne\Verifier\Verifier']);
+            if (is_subclass_of($definition->getClass(), Presenter::class)) {
+                $definition->addSetup(
+                    '$service->onStartup[] = function () use ($service) { ?->verifyProperties($service->getRequest(), $service); }',
+                    ['@'.Verifier::class]
+                );
             } else {
-                $definition->addSetup('$service->onPresenter[] = function (\Nette\Application\UI\Presenter $presenter) use ($service) { ?->verifyProperties($presenter->getRequest(), $service); }', ['@Arachne\Verifier\Verifier']);
+                $definition->addSetup(
+                    '$service->onPresenter[] = function (\Nette\Application\UI\Presenter $presenter) use ($service) { ?->verifyProperties($presenter->getRequest(), $service); }',
+                    ['@'.Verifier::class]
+                );
             }
         }
     }
