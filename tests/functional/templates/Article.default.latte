@@ -1,21 +1,21 @@
 {ifComponentVerified header}
-	{control header}
+    {control header}
 {/ifComponentVerified}
 
 <a n:ifLinkVerified="Article:edit 1" n:href>
-	Checked link
+    Checked link
 </a>
 
 <a n:href="Article:edit 1">
-	Normal link
+    Normal link
 </a>
 
 {ifComponentVerified footer}
-	{control footer}
+    {control footer}
 {else}
-	fallback
+    fallback
 {/ifComponentVerified}
 
 {if $privilege}
-	Presenter property verified
+    Presenter property verified
 {/if}

@@ -1,37 +1,37 @@
 extensions:
-	nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension
-	nette.cache: Nette\Bridges\CacheDI\CacheExtension( %tempDir% )
-	nette.http: Nette\Bridges\HttpDI\HttpExtension
-	nette.latte: Nette\Bridges\ApplicationDI\LatteExtension( %tempDir% )
-	arachne.codeception: Arachne\Codeception\DI\HttpExtension
-	arachne.servicecollections: Arachne\ServiceCollections\DI\ServiceCollectionsExtension
-	arachne.verifier: Arachne\Verifier\DI\VerifierExtension
-	kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
-	inject: Nette\DI\Extensions\InjectExtension
+    nette.application: Nette\Bridges\ApplicationDI\ApplicationExtension
+    nette.cache: Nette\Bridges\CacheDI\CacheExtension( %tempDir% )
+    nette.http: Nette\Bridges\HttpDI\HttpExtension
+    nette.latte: Nette\Bridges\ApplicationDI\LatteExtension( %tempDir% )
+    arachne.codeception: Arachne\Codeception\DI\HttpExtension
+    arachne.servicecollections: Arachne\ServiceCollections\DI\ServiceCollectionsExtension
+    arachne.verifier: Arachne\Verifier\DI\VerifierExtension
+    kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
+    inject: Nette\DI\Extensions\InjectExtension
 
 services:
-	routerFactory: Tests\Functional\Classes\RouterFactory
-	router: @routerFactory::create()
-	enabledRuleHandler:
-		class: Tests\Functional\Classes\EnabledRuleHandler
-		tags:
-			arachne.verifier.ruleHandler:
-				- Tests\Functional\Classes\Enabled
-	blockControl:
-		implement: Tests\Functional\Classes\BlockControlFactory
-		tags:
-			- arachne.verifier.verifyProperties
-	articlePresenter:
-		class: Tests\Functional\Classes\ArticlePresenter
-		tags:
-			- arachne.verifier.verifyProperties
-			- inject
+    routerFactory: Tests\Functional\Classes\RouterFactory
+    router: @routerFactory::create()
+    enabledRuleHandler:
+        class: Tests\Functional\Classes\EnabledRuleHandler
+        tags:
+            arachne.verifier.ruleHandler:
+                - Tests\Functional\Classes\Enabled
+    blockControl:
+        implement: Tests\Functional\Classes\BlockControlFactory
+        tags:
+            - arachne.verifier.verifyProperties
+    articlePresenter:
+        class: Tests\Functional\Classes\ArticlePresenter
+        tags:
+            - arachne.verifier.verifyProperties
+            - inject
 
 nette.application:
-	catchExceptions: true
-	mapping:
-		*: Tests\Functional\Classes\*Presenter
+    catchExceptions: true
+    mapping:
+        *: Tests\Functional\Classes\*Presenter
 
 kdyby.annotations:
-	ignore:
-		- inject
+    ignore:
+        - inject
