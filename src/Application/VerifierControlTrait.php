@@ -51,7 +51,7 @@ trait VerifierControlTrait
     }
 
     /**
-     * Returns link to destination but only if all it's requirements are met.
+     * Returns link to destination but only if all its requirements are met.
      *
      * @param string $destination
      * @param array  $args
@@ -70,7 +70,7 @@ trait VerifierControlTrait
     }
 
     /**
-     * Returns specified component but only if all it's requirements are met.
+     * Returns specified component but only if all its requirements are met.
      *
      * @param string $name
      *
