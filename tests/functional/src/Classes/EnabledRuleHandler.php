@@ -6,12 +6,11 @@ use Arachne\Verifier\Exception\VerificationException;
 use Arachne\Verifier\RuleHandlerInterface;
 use Arachne\Verifier\RuleInterface;
 use Nette\Application\Request;
-use Nette\Object;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  */
-class EnabledRuleHandler extends Object implements RuleHandlerInterface
+class EnabledRuleHandler implements RuleHandlerInterface
 {
     /**
      * @param RuleInterface $rule
