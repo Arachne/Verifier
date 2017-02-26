@@ -7,9 +7,9 @@ use Arachne\Verifier\Exception\UnexpectedTypeException;
 use Arachne\Verifier\Exception\VerificationException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
+use Nette\Application\UI\Component;
+use Nette\Application\UI\ComponentReflection;
 use Nette\Application\UI\Presenter;
-use Nette\Application\UI\PresenterComponent;
-use Nette\Application\UI\PresenterComponentReflection;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -112,12 +112,12 @@ class Verifier
     /**
      * Checks whether it is possible to run the given request.
      *
-     * @param Request            $request
-     * @param PresenterComponent $component
+     * @param Request   $request
+     * @param Component $component
      *
      * @return bool
      */
-    public function isLinkVerified(Request $request, PresenterComponent $component)
+    public function isLinkVerified(Request $request, Component $component)
     {
         try {
             $parameters = $request->getParameters();
@@ -136,13 +136,13 @@ class Verifier
                     if ($name !== substr($signalId, 0, $pos)) {
                         throw new InvalidArgumentException("Wrong signal receiver, expected '".substr($signalId, 0, $pos)."' component but '$name' was given.");
                     }
-                    $reflection = new PresenterComponentReflection($component);
+                    $reflection = new ComponentReflection($component);
                     $signal = substr($signalId, $pos + 1);
                 } else {
                     // signal for presenter
                     $name = null;
                     $presenter = $request->getPresenterName();
-                    $reflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
+                    $reflection = new ComponentReflection($this->presenterFactory->getPresenterClass($presenter));
                     $signal = $signalId;
                 }
 
@@ -153,7 +153,7 @@ class Verifier
                 }
             } else {
                 $presenter = $request->getPresenterName();
-                $reflection = new PresenterComponentReflection($this->presenterFactory->getPresenterClass($presenter));
+                $reflection = new ComponentReflection($this->presenterFactory->getPresenterClass($presenter));
 
                 // Presenter requirements
                 $this->checkReflection($reflection, $request);
@@ -175,15 +175,15 @@ class Verifier
     /**
      * Checks whether the parent component can create the subcomponent with given name.
      *
-     * @param string             $name
-     * @param Request            $request
-     * @param PresenterComponent $parent
+     * @param string    $name
+     * @param Request   $request
+     * @param Component $parent
      *
      * @return bool
      */
-    public function isComponentVerified($name, Request $request, PresenterComponent $parent)
+    public function isComponentVerified($name, Request $request, Component $parent)
     {
-        $reflection = new PresenterComponentReflection($parent);
+        $reflection = new ComponentReflection($parent);
         $method = 'createComponent'.ucfirst($name);
         if ($reflection->hasMethod($method)) {
             $factory = $reflection->getMethod($method);
@@ -200,10 +200,10 @@ class Verifier
     /**
      * Sets public properties of the component to true or false according to their associated rules (if any).
      *
-     * @param Request            $request
-     * @param PresenterComponent $component
+     * @param Request   $request
+     * @param Component $component
      */
-    public function verifyProperties(Request $request, PresenterComponent $component)
+    public function verifyProperties(Request $request, Component $component)
     {
         $reflection = new ReflectionClass($component);
         $id = $component->getParent() ? $component->getUniqueId() : null;
