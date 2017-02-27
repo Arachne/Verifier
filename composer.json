@@ -24,8 +24,7 @@
         "arachne/codeception": "^0.7.3",
         "codeception/codeception": "^2.2.0",
         "eloquent/phony": "^0.13.5",
-        "latte/latte": "^2.4.0",
-        "tracy/tracy": "^2.4.0"
+        "latte/latte": "^2.4.0"
     },
     "minimum-stability": "alpha",
     "autoload": {
