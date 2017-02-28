@@ -125,6 +125,7 @@ There is also the `n:ifComponentVerified` macro to check whether the component i
 
 Verifier has built-in rules `All` and `Either`. They are no good by themselves but if you have some other rules you might need some more complicated conditions.
 
+```php
 /**
  * This presenter is available only if MyRule("x") is met or both MyRule("y") and @MyRule("z") are met.
  * @Either(rules = {
