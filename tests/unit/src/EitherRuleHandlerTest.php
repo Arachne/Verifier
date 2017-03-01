@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\Exception\VerificationException;
 use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\Rules\Either;
@@ -66,10 +67,6 @@ class EitherRuleHandlerTest extends Unit
         $this->handler->checkRule($rule, $request);
     }
 
-    /**
-     * @expectedException \Arachne\Verifier\Exception\VerificationException
-     * @expectedExceptionMessage None of the rules was met.
-     */
     public function testEitherException()
     {
         $rule = new Either();
@@ -96,17 +93,23 @@ class EitherRuleHandlerTest extends Unit
             ->with([$rule2], $request, null)
             ->throws(Phony::mock(VerificationException::class)->get());
 
-        $this->handler->checkRule($rule, $request);
+        try {
+            $this->handler->checkRule($rule, $request);
+            self::fail();
+        } catch (VerificationException $e) {
+            self::assertSame('None of the rules was met.', $e->getMessage());
+        }
     }
 
-    /**
-     * @expectedException \Arachne\Verifier\Exception\InvalidArgumentException
-     */
     public function testUnknownAnnotation()
     {
         $rule = Phony::mock(RuleInterface::class)->get();
         $request = new Request('Test', 'GET', []);
 
-        $this->handler->checkRule($rule, $request);
+        try {
+            $this->handler->checkRule($rule, $request);
+            self::fail();
+        } catch (InvalidArgumentException $e) {
+        }
     }
 }

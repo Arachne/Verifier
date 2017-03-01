@@ -14,7 +14,6 @@ use Tests\Functional\Classes\TestPresenter;
 class RuleHandlersTest extends Unit
 {
     protected $tester;
-
     /**
      * @var Verifier
      */
@@ -27,63 +26,91 @@ class RuleHandlersTest extends Unit
 
     public function testEitherFirst()
     {
-        $request = new Request('Test', 'GET', [
-            Presenter::ACTION_KEY => 'eitherfirst',
-        ]);
+        $request = new Request(
+            'Test',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'eitherfirst',
+            ]
+        );
 
         $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testEitherSecond()
     {
-        $request = new Request('Test', 'GET', [
-            Presenter::ACTION_KEY => 'eithersecond',
-        ]);
+        $request = new Request(
+            'Test',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'eithersecond',
+            ]
+        );
 
         $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testEitherFalse()
     {
-        $request = new Request('Test', 'GET', [
-            Presenter::ACTION_KEY => 'eitherfalse',
-        ]);
+        $request = new Request(
+            'Test',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'eitherfalse',
+            ]
+        );
 
         $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testEitherInner()
     {
-        $request = new Request('Test', 'GET', [
-            Presenter::ACTION_KEY => 'eitherinner',
-        ]);
+        $request = new Request(
+            'Test',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'eitherinner',
+            ]
+        );
 
         $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testAllTrue()
     {
-        $request = new Request('Test', 'GET', [
-            Presenter::ACTION_KEY => 'alltrue',
-        ]);
+        $request = new Request(
+            'Test',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'alltrue',
+            ]
+        );
 
         $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testAllFalse()
     {
-        $request = new Request('Test', 'GET', [
-            Presenter::ACTION_KEY => 'allfalse',
-        ]);
+        $request = new Request(
+            'Test',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'allfalse',
+            ]
+        );
 
         $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testAllInner()
     {
-        $request = new Request('Test', 'GET', [
-            Presenter::ACTION_KEY => 'allinner',
-        ]);
+        $request = new Request(
+            'Test',
+            'GET',
+            [
+                Presenter::ACTION_KEY => 'allinner',
+            ]
+        );
 
         $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }

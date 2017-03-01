@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\Exception\UnexpectedTypeException;
 use Arachne\Verifier\Exception\VerificationException;
 use Arachne\Verifier\RuleHandlerInterface;
@@ -66,7 +67,7 @@ class VerifierTest extends Unit
         $reflection = $this->createClassReflection();
         $this->setupRuleProviderMock();
 
-        $this->assertEquals([new TestRule()], $this->verifier->getRules($reflection));
+        self::assertEquals([new TestRule()], $this->verifier->getRules($reflection));
     }
 
     public function testGetRulesOnMethod()
@@ -74,17 +75,18 @@ class VerifierTest extends Unit
         $reflection = $this->createMethodReflection();
         $this->setupRuleProviderMock();
 
-        $this->assertEquals([new TestRule()], $this->verifier->getRules($reflection));
+        self::assertEquals([new TestRule()], $this->verifier->getRules($reflection));
     }
 
-    /**
-     * @expectedException \Arachne\Verifier\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.
-     */
     public function testGetRulesOnReflector()
     {
         $reflection = Phony::mock(Reflector::class)->get();
-        $this->verifier->getRules($reflection);
+        try {
+            $this->verifier->getRules($reflection);
+            self::fail();
+        } catch (InvalidArgumentException $e) {
+            self::assertSame('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.', $e->getMessage());
+        }
     }
 
     public function testCheckRules()
@@ -137,7 +139,7 @@ class VerifierTest extends Unit
         $this->setupHandlerResolverMock($handler);
         $this->setupPresenterFactoryMock();
 
-        $this->assertTrue($this->verifier->isLinkVerified($request, Phony::mock(PresenterComponent::class)->get()));
+        self::assertTrue($this->verifier->isLinkVerified($request, Phony::mock(PresenterComponent::class)->get()));
     }
 
     public function testIsLinkVerifiedFalse()
@@ -153,7 +155,7 @@ class VerifierTest extends Unit
         $this->setupHandlerResolverMock($handler);
         $this->setupPresenterFactoryMock();
 
-        $this->assertFalse($this->verifier->isLinkVerified($request, Phony::mock(PresenterComponent::class)->get()));
+        self::assertFalse($this->verifier->isLinkVerified($request, Phony::mock(PresenterComponent::class)->get()));
     }
 
     public function testIsLinkVerifiedSignal()
@@ -172,7 +174,7 @@ class VerifierTest extends Unit
 
         $component = Phony::mock(PresenterComponent::class)->get();
 
-        $this->assertTrue($this->verifier->isLinkVerified($request, $component));
+        self::assertTrue($this->verifier->isLinkVerified($request, $component));
     }
 
     public function testIsComponentVerifiedTrue()
@@ -186,7 +188,7 @@ class VerifierTest extends Unit
         $parent = new TestPresenter();
         $parent->setParent(null, 'Test');
 
-        $this->assertTrue($this->verifier->isComponentVerified('component', $request, $parent));
+        self::assertTrue($this->verifier->isComponentVerified('component', $request, $parent));
     }
 
     public function testIsComponentVerifiedFalse()
@@ -199,7 +201,7 @@ class VerifierTest extends Unit
 
         $parent = new TestPresenter();
 
-        $this->assertFalse($this->verifier->isComponentVerified('component', $request, $parent));
+        self::assertFalse($this->verifier->isComponentVerified('component', $request, $parent));
     }
 
     public function testIsComponentSignalVerifiedTrue()
@@ -219,7 +221,7 @@ class VerifierTest extends Unit
         $parent = Phony::partialMock(Presenter::class)->get();
         $component->setParent($parent);
 
-        $this->assertTrue($this->verifier->isLinkVerified($request, $component));
+        self::assertTrue($this->verifier->isLinkVerified($request, $component));
     }
 
     /**
@@ -280,7 +282,7 @@ class VerifierTest extends Unit
         $parent->setParent(null, 'Test');
 
         $this->verifier->verifyProperties($request, $parent);
-        $this->assertTrue($parent->property);
+        self::assertTrue($parent->property);
     }
 
     public function testVerifyPropertiesFalse()
@@ -295,7 +297,7 @@ class VerifierTest extends Unit
         $parent->setParent(null, 'Test');
 
         $this->verifier->verifyProperties($request, $parent);
-        $this->assertFalse($parent->property);
+        self::assertFalse($parent->property);
     }
 
     /**

@@ -42,7 +42,7 @@ class ChainRuleProviderTest extends Unit
     {
         $reflector = Phony::mock(Reflector::class)->get();
 
-        $this->assertSame([], $this->chainRuleProvider->getRules($reflector));
+        self::assertSame([], $this->chainRuleProvider->getRules($reflector));
 
         $this->ruleProvider1Handle
             ->getRules
@@ -71,6 +71,6 @@ class ChainRuleProviderTest extends Unit
             ->with($reflector)
             ->returns([$rule2]);
 
-        $this->assertSame([$rule1, $rule2], $this->chainRuleProvider->getRules($reflector));
+        self::assertSame([$rule1, $rule2], $this->chainRuleProvider->getRules($reflector));
     }
 }

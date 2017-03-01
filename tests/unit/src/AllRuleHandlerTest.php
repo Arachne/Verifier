@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\Rules\All;
 use Arachne\Verifier\Rules\AllRuleHandler;
@@ -48,14 +49,15 @@ class AllRuleHandlerTest extends Unit
             ->calledWith($rule->rules, $request, null);
     }
 
-    /**
-     * @expectedException \Arachne\Verifier\Exception\InvalidArgumentException
-     */
     public function testUnknownAnnotation()
     {
         $rule = Phony::mock(RuleInterface::class)->get();
         $request = new Request('Test', 'GET', []);
 
-        $this->handler->checkRule($rule, $request);
+        try {
+            $this->handler->checkRule($rule, $request);
+            self::fail();
+        } catch (InvalidArgumentException $e) {
+        }
     }
 }

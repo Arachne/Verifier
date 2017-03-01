@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Arachne\Verifier\Annotations\AnnotationsRuleProvider;
+use Arachne\Verifier\Exception\InvalidArgumentException;
 use Codeception\Test\Unit;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Eloquent\Phony\Phpunit\Phony;
@@ -32,28 +33,29 @@ class AnnotationsRuleProviderTest extends Unit
     public function testClassAnnotations()
     {
         $reflection = new ReflectionClass(TestPresenter::class);
-        $this->assertEquals([new TestRule()], $this->provider->getRules($reflection));
+        self::assertEquals([new TestRule()], $this->provider->getRules($reflection));
     }
 
     public function testMethodAnnotations()
     {
         $reflection = new ReflectionMethod(TestPresenter::class, 'renderView');
-        $this->assertEquals([new TestRule(), new TestRule()], $this->provider->getRules($reflection));
+        self::assertEquals([new TestRule(), new TestRule()], $this->provider->getRules($reflection));
     }
 
     public function testPropertyAnnotations()
     {
         $reflection = new ReflectionProperty(TestPresenter::class, 'property');
-        $this->assertEquals([new TestRule()], $this->provider->getRules($reflection));
+        self::assertEquals([new TestRule()], $this->provider->getRules($reflection));
     }
 
-    /**
-     * @expectedException \Arachne\Verifier\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.
-     */
     public function testInvalidReflection()
     {
         $reflection = Phony::mock(Reflector::class)->get();
-        $this->provider->getRules($reflection);
+        try {
+            $this->provider->getRules($reflection);
+            self::fail();
+        } catch (InvalidArgumentException $e) {
+            self::assertSame('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.', $e->getMessage());
+        }
     }
 }
