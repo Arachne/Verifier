@@ -4,7 +4,7 @@ extensions:
     nette.http: Nette\Bridges\HttpDI\HttpExtension
     nette.latte: Nette\Bridges\ApplicationDI\LatteExtension( %tempDir% )
     arachne.codeception: Arachne\Codeception\DI\HttpExtension
-    arachne.servicecollections: Arachne\ServiceCollections\DI\ServiceCollectionsExtension
+    arachne.serviceCollections: Arachne\ServiceCollections\DI\ServiceCollectionsExtension
     arachne.verifier: Arachne\Verifier\DI\VerifierExtension
     kdyby.annotations: Kdyby\Annotations\DI\AnnotationsExtension
     inject: Nette\DI\Extensions\InjectExtension
