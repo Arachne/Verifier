@@ -4,8 +4,8 @@ includes:
 
 parameters:
     ignoreErrors:
-        - '#^Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle::\$[a-zA-Z]+#'
+        - '#^Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle::\$[a-zA-Z]++#'
+        - '#^Method [a-zA-Z\\]++::[a-zA-Z]++\(\) should return [a-zA-Z\\]++ but returns Eloquent\\Phony\\Mock\\Mock#'
         - '#^Call to an undefined method Nette\\Application\\UI\\Presenter::getVerifier\(\)#'
         - '#^Cannot call method Nette\\Application\\UI\\Presenter::createRequest\(\) from current scope#'
         - '#^Property Arachne\\Verifier\\Rules\\[a-zA-Z]++::\$rules \(Arachne\\Verifier\\RuleInterface\[\]\) does not accept Eloquent\\Phony\\Mock\\Mock\[\]#'
-        - '#^Method Tests\\Unit\\VerifierTest::create[a-zA-Z]++\(\) should return [a-zA-Z\\]++ but returns Eloquent\\Phony\\Mock\\Mock#'
