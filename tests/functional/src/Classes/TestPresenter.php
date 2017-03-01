@@ -12,7 +12,7 @@ use Nette\Application\UI\Presenter;
 class TestPresenter extends Presenter
 {
     /**
-     * @Either(@Enabled(TRUE))
+     * @Either(@Enabled(true))
      */
     public function actionEitherFirst()
     {
@@ -20,8 +20,8 @@ class TestPresenter extends Presenter
 
     /**
      * @Either({
-     *   @Enabled(FALSE),
-     *   @Enabled(TRUE),
+     *   @Enabled(false),
+     *   @Enabled(true),
      * })
      */
     public function actionEitherSecond()
@@ -30,8 +30,8 @@ class TestPresenter extends Presenter
 
     /**
      * @Either({
-     *   @Enabled(FALSE),
-     *   @Enabled(FALSE),
+     *   @Enabled(false),
+     *   @Enabled(false),
      * })
      */
     public function actionEitherFalse()
@@ -40,7 +40,7 @@ class TestPresenter extends Presenter
 
     /**
      * @Either({
-     *   @Either
+     *   @Either()
      * })
      */
     public function actionEitherInner()
@@ -48,7 +48,7 @@ class TestPresenter extends Presenter
     }
 
     /**
-     * @All(@Enabled(TRUE))
+     * @All(@Enabled(true))
      */
     public function actionAllTrue()
     {
@@ -56,8 +56,8 @@ class TestPresenter extends Presenter
 
     /**
      * @All({
-     *   @Enabled(FALSE),
-     *   @Enabled(TRUE),
+     *   @Enabled(false),
+     *   @Enabled(true),
      * })
      */
     public function actionAllFalse()
@@ -66,7 +66,7 @@ class TestPresenter extends Presenter
 
     /**
      * @Either({
-     *   @All
+     *   @All()
      * })
      */
     public function actionAllInner()

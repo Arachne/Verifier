@@ -2,6 +2,7 @@
 
 namespace Tests\Functional;
 
+use Arachne\Codeception\Module\NetteApplicationModule;
 use Codeception\Test\Unit;
 
 /**
@@ -9,6 +10,9 @@ use Codeception\Test\Unit;
  */
 class PropertyTest extends Unit
 {
+    /**
+     * @var NetteApplicationModule
+     */
     protected $tester;
 
     public function testNoProperty()

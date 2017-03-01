@@ -2,6 +2,7 @@
 
 namespace Tests\Functional;
 
+use Arachne\Codeception\Module\NetteDIModule;
 use Arachne\Verifier\Verifier;
 use Codeception\Test\Unit;
 use Nette\Application\Request;
@@ -13,7 +14,11 @@ use Tests\Functional\Classes\TestPresenter;
  */
 class RuleHandlersTest extends Unit
 {
+    /**
+     * @var NetteDIModule
+     */
     protected $tester;
+
     /**
      * @var Verifier
      */

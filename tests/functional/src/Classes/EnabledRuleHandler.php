@@ -17,24 +17,14 @@ class EnabledRuleHandler implements RuleHandlerInterface
      * @param Request       $request
      * @param string        $component
      *
-     * @throws DisabledException
+     * @throws VerificationException
      */
     public function checkRule(RuleInterface $rule, Request $request, $component = null)
     {
-        if ($rule instanceof Enabled) {
-            $this->checkRuleEnabled($rule, $request, $component);
-        } else {
-            throw new \InvalidArgumentException('Unknown rule \''.get_class($rule).'\' given.');
+        if (!$rule instanceof Enabled) {
+            throw new \InvalidArgumentException(sprintf('Unknown rule "%s" given.', get_class($rule)));
         }
-    }
 
-    /**
-     * @param Allowed $rule
-     *
-     * @throws VerificationException
-     */
-    protected function checkRuleEnabled(Enabled $rule, Request $request, $component = null)
-    {
         if (is_string($rule->value)) {
             $parameters = $request->getParameters();
             $parameter = ($component ? $component.'-' : '').ltrim($rule->value, '$');
@@ -42,6 +32,7 @@ class EnabledRuleHandler implements RuleHandlerInterface
         } else {
             $enabled = $rule->value;
         }
+
         if (!$enabled) {
             throw new VerificationException($rule, 'This action is not enabled.');
         }

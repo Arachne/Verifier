@@ -2,7 +2,10 @@
 
 namespace Tests\Functional;
 
+use Arachne\Codeception\Module\NetteDIModule;
+use Arachne\Verifier\Exception\NotSupportedException;
 use Codeception\Test\Unit;
+use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
@@ -12,12 +15,11 @@ use Nette\Application\UI\Presenter;
  */
 class ExceptionsTest extends Unit
 {
+    /**
+     * @var NetteDIModule
+     */
     protected $tester;
 
-    /**
-     * @expectedException \Arachne\Verifier\Exception\NotSupportedException
-     * @expectedExceptionMessage Rules for render methods are not supported. Define the rules for action method instead.
-     */
     public function testRenderMethod()
     {
         $request = new Request(
@@ -28,19 +30,22 @@ class ExceptionsTest extends Unit
             ]
         );
 
+        /** @var Presenter $presenter */
         $presenter = $this->tester
             ->grabService(IPresenterFactory::class)
             ->createPresenter('Article');
+
         // Canonicalization is broken in CLI.
         $presenter->autoCanonicalize = false;
-        $presenter->run($request);
+
+        try {
+            $presenter->run($request);
+            self::fail();
+        } catch (NotSupportedException $e) {
+            self::assertSame('Rules for render methods are not supported. Define the rules for action method instead.', $e->getMessage());
+        }
     }
 
-    /**
-     * @expectedException \Nette\Application\BadRequestException
-     * @expectedExceptionCode 404
-     * @expectedExceptionMessage Action 'Tests\Functional\Classes\ArticlePresenter::actionUndefinedAction' does not exist.
-     */
     public function testUndefinedAction()
     {
         $request = new Request(
@@ -50,9 +55,18 @@ class ExceptionsTest extends Unit
                 Presenter::ACTION_KEY => 'UndefinedAction',
             ]
         );
-        $this->tester
+
+        /** @var Presenter $presenter */
+        $presenter = $this->tester
             ->grabService(IPresenterFactory::class)
-            ->createPresenter('Article')
-            ->run($request);
+            ->createPresenter('Article');
+
+        try {
+            $presenter->run($request);
+            self::fail();
+        } catch (BadRequestException $e) {
+            self::assertSame(404, $e->getCode());
+            self::assertSame('Action \'Tests\Functional\Classes\ArticlePresenter::actionUndefinedAction\' does not exist.', $e->getMessage());
+        }
     }
 }

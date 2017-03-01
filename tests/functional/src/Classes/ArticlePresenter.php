@@ -20,12 +20,12 @@ class ArticlePresenter extends Presenter
 
     /**
      * @var bool
-     * @Enabled( "$privilege" )
+     * @Enabled("$privilege")
      */
     public $privilege;
 
     /**
-     * @Enabled(TRUE)
+     * @Enabled(true)
      */
     public function actionDefault()
     {
@@ -33,7 +33,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(FALSE)
+     * @Enabled(false)
      *
      * @param int $id
      */
@@ -42,7 +42,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(TRUE)
+     * @Enabled(true)
      *
      * @param int $id
      */
@@ -52,7 +52,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(TRUE)
+     * @Enabled(true)
      *
      * @param int $id
      */
@@ -61,7 +61,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(TRUE)
+     * @Enabled(true)
      *
      * @param int $id
      */
@@ -71,7 +71,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(TRUE)
+     * @Enabled(true)
      *
      * @param int $id
      */
@@ -85,7 +85,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(TRUE)
+     * @Enabled(true)
      */
     public function renderView()
     {
@@ -104,7 +104,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(TRUE)
+     * @Enabled(true)
      *
      * @return BlockControl
      */
@@ -114,7 +114,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(FALSE)
+     * @Enabled(false)
      *
      * @return BlockControl
      */
@@ -124,7 +124,7 @@ class ArticlePresenter extends Presenter
     }
 
     /**
-     * @Enabled(TRUE)
+     * @Enabled(true)
      *
      * @return ParentControl
      */
