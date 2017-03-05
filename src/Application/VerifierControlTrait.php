@@ -62,7 +62,6 @@ trait VerifierControlTrait
     {
         $link = $this->link($destination, $args);
         $presenter = $this->getPresenter();
-        $presenter->getLastCreatedRequest();
 
         if ($presenter->getVerifier()->isLinkVerified($presenter->getLastCreatedRequest(), $this)) {
             return $link;
