@@ -51,5 +51,10 @@
             "\"vendor/bin/codecept\" build",
             "\"vendor/bin/codecept\" run --debug"
         ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.9-dev"
+        }
     }
 }
