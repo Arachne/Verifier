@@ -26,7 +26,6 @@
         "eloquent/phony": "^0.14.0",
         "latte/latte": "^2.4.0"
     },
-    "minimum-stability": "alpha",
     "autoload": {
         "psr-4": {
             "Arachne\\Verifier\\": "src"
