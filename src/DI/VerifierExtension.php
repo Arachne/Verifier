@@ -90,7 +90,7 @@ class VerifierExtension extends CompilerExtension
     {
         $builder = $this->getContainerBuilder();
 
-        $latte = $builder->getByType(ILatteFactory::class) ?: 'nette.latteFactory';
+        $latte = $builder->getByType(ILatteFactory::class);
         if ($builder->hasDefinition($latte)) {
             $builder->getDefinition($latte)
                 ->addSetup(
