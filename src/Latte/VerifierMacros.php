@@ -20,17 +20,17 @@ class VerifierMacros extends MacroSet
         $me = new static($compiler);
         $me->addMacro(
             'ifComponentVerified',
-            'if ($_presenter->getVerifier()->isComponentVerified(%node.word, $_presenter->getRequest(), $_control)) {',
+            'if ($this->global->uiPresenter->getVerifier()->isComponentVerified(%node.word, $this->global->uiPresenter->getRequest(), $this->global->uiControl)) {',
             '}'
         );
         $me->addMacro(
             'ifLinkVerified',
-            'if ($_verifiedLink = $_control->linkVerified(%node.word, %node.array?)) {',
+            'if ($_verifiedLink = $this->global->uiControl->linkVerified(%node.word, %node.array?)) {',
             '}'
         );
         $me->addMacro(
             'ifPresenterLinkVerified',
-            'if ($_verifiedLink = $_presenter->linkVerified(%node.word, %node.array?)) {',
+            'if ($_verifiedLink = $this->global->uiPresenter->linkVerified(%node.word, %node.array?)) {',
             '}'
         );
         $me->addMacro(
@@ -40,7 +40,7 @@ class VerifierMacros extends MacroSet
             function (MacroNode $node, PhpWriter $writer) {
                 $word = $node->tokenizer->fetchWord();
                 if ($word) {
-                    $link = '$_control->link('.$writer->formatWord($word).', %node.array?)';
+                    $link = '$this->global->uiControl->link('.$writer->formatWord($word).', %node.array?)';
                 } else {
                     $node->modifiers .= '|safeurl';
                     $link = '$_verifiedLink';
