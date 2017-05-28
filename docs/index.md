@@ -8,7 +8,7 @@ This extension is here to provide easy annotation-based verification whether giv
 The best way to install Arachne/Verifier is using [Composer](http://getcomposer.org/):
 
 ```sh
-$ composer require arachne/verifier kdyby/annotations
+composer require arachne/verifier kdyby/annotations
 ```
 
 Now you need to register required extensions using your [neon](http://ne-on.org/) config file.
