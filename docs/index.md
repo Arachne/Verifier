@@ -45,7 +45,7 @@ To use Verifier you need two things:
 
 These will usually be provided by some other extensions:
 
-- [Arachne/SecurityVerification](https://github.com/Arachne/SecurityVerification) - authentization and authorizationand
+- [Arachne/SecurityVerification](https://github.com/Arachne/SecurityVerification) - authentization and authorization
 - [Arachne/ComponentsProtection](https://github.com/Arachne/ComponentsProtection) - bind component to certain action to fix common security hole
 - [Arachne/ParameterValidation](https://github.com/Arachne/ParameterValidation) - validate request parameters, works best with Arachne/EntityLoader
 
