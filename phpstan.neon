@@ -3,6 +3,9 @@ includes:
     - vendor-tools/phpstan/phpstan-nette/rules.neon
 
 parameters:
+    excludes_analyse:
+        - %rootDir%/../../../tests/_*
+
     ignoreErrors:
         - '#^Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle::\$[a-zA-Z]++#'
         - '#^Parameter \#[0-9]++ \$[a-zA-Z]++ of class [a-zA-Z\\]++ constructor expects [a-zA-Z\\]++, Eloquent\\Phony\\Mock\\Mock given#'
@@ -12,7 +15,4 @@ parameters:
         - '#^Call to protected method createRequest\(\) of class Nette\\Application\\UI\\Presenter#'
         - '#^Property Arachne\\Verifier\\Rules\\[a-zA-Z]++::\$rules \(Arachne\\Verifier\\RuleInterface\[\]\) does not accept Eloquent\\Phony\\Mock\\Mock\[\]#'
         - '#^Parameter \#1 \$code of method Tests\\Functional\\Classes\\ArticlePresenter::redirectVerified\(\) expects int, string given#'
-        - '#^Calling method [a-zA-Z]++\(\) on possibly nullable type Nette\\Application\\UI\\Presenter|null#'
-
-    excludes_analyse:
-        - %rootDir%/../../../tests/_helpers/*
+        - '#^Calling method [a-zA-Z]++\(\) on possibly nullable type Nette\\Application\\UI\\Presenter\|null#'
