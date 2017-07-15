@@ -12,6 +12,7 @@ use Arachne\Verifier\Rules\AllRuleHandler;
 use Arachne\Verifier\Rules\Either;
 use Arachne\Verifier\Rules\EitherRuleHandler;
 use Arachne\Verifier\Verifier;
+use Kdyby\Annotations\DI\AnnotationsExtension;
 use Nette\Application\UI\Presenter;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\DI\CompilerExtension;
@@ -61,12 +62,6 @@ class VerifierExtension extends CompilerExtension
                 ]
             );
 
-        $builder->addDefinition($this->prefix('annotationsRuleProvider'))
-            ->setClass(RuleProviderInterface::class)
-            ->setFactory(AnnotationsRuleProvider::class)
-            ->addTag(self::TAG_PROVIDER)
-            ->setAutowired(false);
-
         $builder->addDefinition($this->prefix('allRuleHandler'))
             ->setClass(AllRuleHandler::class)
             ->addTag(
@@ -84,6 +79,14 @@ class VerifierExtension extends CompilerExtension
                     Either::class,
                 ]
             );
+
+        if ($this->getExtension(AnnotationsExtension::class, false)) {
+            $builder->addDefinition($this->prefix('annotationsRuleProvider'))
+                ->setClass(RuleProviderInterface::class)
+                ->setFactory(AnnotationsRuleProvider::class)
+                ->addTag(self::TAG_PROVIDER)
+                ->setAutowired(false);
+        }
     }
 
     public function beforeCompile()
@@ -117,14 +120,19 @@ class VerifierExtension extends CompilerExtension
 
     /**
      * @param string $class
+     * @param bool   $need
      *
-     * @return CompilerExtension
+     * @return CompilerExtension|null
      */
-    private function getExtension($class)
+    private function getExtension($class, $need = true)
     {
         $extensions = $this->compiler->getExtensions($class);
 
         if (!$extensions) {
+            if (!$need) {
+                return null;
+            }
+
             throw new AssertionException(
                 sprintf('Extension "%s" requires "%s" to be installed.', get_class($this), $class)
             );
