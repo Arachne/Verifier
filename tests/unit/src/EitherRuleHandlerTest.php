@@ -54,8 +54,8 @@ class EitherRuleHandlerTest extends Unit
     {
         $rule = new Either();
         $rule->rules = [
-            $rule1 = Phony::mock(RuleInterface::class),
-            $rule2 = Phony::mock(RuleInterface::class),
+            $rule1 = Phony::mock(RuleInterface::class)->get(),
+            $rule2 = Phony::mock(RuleInterface::class)->get(),
         ];
         $request = new Request('Test', 'GET', []);
 
