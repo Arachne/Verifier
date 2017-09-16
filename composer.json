@@ -1,6 +1,6 @@
 {
     "name": "arachne/verifier",
-    "description": "Requirements verification for Nette/Application.",
+    "description": "Requirements verification for nette/application actions and components.",
     "type": "library",
     "keywords": [ "nette", "arachne", "security" ],
     "license": "MIT",
