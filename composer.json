@@ -25,6 +25,7 @@
         "eloquent/phony": "^1.0.0|^2.0.0",
         "eloquent/phony-phpunit": "^1.0.0|^2.0.0|^3.0.0",
         "kdyby/annotations": "^2.3.0",
+        "kdyby/doctrine-cache": "^2.6.1@dev",
         "latte/latte": "^2.4.0"
     },
     "autoload": {
