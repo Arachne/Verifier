@@ -28,13 +28,11 @@ class AllRuleHandler implements RuleHandlerInterface
     }
 
     /**
-     * @param All     $rule
-     * @param Request $request
-     * @param string  $component
+     * @param All $rule
      *
      * @throws VerificationException
      */
-    public function checkRule(RuleInterface $rule, Request $request, $component = null)
+    public function checkRule(RuleInterface $rule, Request $request, ?string $component = null): void
     {
         if (!$rule instanceof All) {
             throw new InvalidArgumentException('Unknown rule \''.get_class($rule).'\' given.');

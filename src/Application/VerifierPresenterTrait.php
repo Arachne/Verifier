@@ -25,10 +25,7 @@ trait VerifierPresenterTrait
      */
     private $verifier;
 
-    /**
-     * @param Verifier $verifier
-     */
-    final public function injectVerifier(Verifier $verifier)
+    final public function injectVerifier(Verifier $verifier): void
     {
         $this->verifier = $verifier;
     }
@@ -36,7 +33,7 @@ trait VerifierPresenterTrait
     /**
      * @param ReflectionClass|ReflectionMethod $reflection
      */
-    public function checkRequirements($reflection)
+    public function checkRequirements($reflection): void
     {
         $rules = $this->verifier->getRules($reflection);
 
@@ -47,23 +44,15 @@ trait VerifierPresenterTrait
         $this->verifier->checkRules($rules, $this->getRequest());
     }
 
-    /**
-     * @return Verifier
-     */
-    public function getVerifier()
+    public function getVerifier(): Verifier
     {
         return $this->verifier;
     }
 
     /**
      * Ensures that the action method exists.
-     *
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @return bool
      */
-    protected function tryCall($method, array $parameters)
+    protected function tryCall($method, array $parameters): bool
     {
         $called = parent::tryCall($method, $parameters);
         if (!$called && substr($method, 0, 6) === 'action') {

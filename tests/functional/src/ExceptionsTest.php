@@ -20,7 +20,7 @@ class ExceptionsTest extends Unit
      */
     protected $tester;
 
-    public function testRenderMethod()
+    public function testRenderMethod(): void
     {
         $request = new Request(
             'Article',
@@ -46,7 +46,7 @@ class ExceptionsTest extends Unit
         }
     }
 
-    public function testUndefinedAction()
+    public function testUndefinedAction(): void
     {
         $request = new Request(
             'Article',

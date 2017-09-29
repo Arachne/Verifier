@@ -16,10 +16,7 @@ class Either implements RuleInterface
      */
     public $rules = [];
 
-    /**
-     * @return int
-     */
-    public function getCode()
+    public function getCode(): int
     {
         return $this->rules ? reset($this->rules)->getCode() : 404;
     }

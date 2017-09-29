@@ -31,7 +31,7 @@ class AnnotationsRuleProvider implements RuleProviderInterface
      *
      * @return RuleInterface[]
      */
-    public function getRules(Reflector $reflection)
+    public function getRules(Reflector $reflection): array
     {
         if ($reflection instanceof ReflectionMethod) {
             $rules = $this->reader->getMethodAnnotations($reflection);

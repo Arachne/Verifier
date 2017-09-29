@@ -50,7 +50,7 @@ class VerifierTest extends Unit
      */
     private $verifier;
 
-    protected function _before()
+    protected function _before(): void
     {
         $this->ruleProviderHandle = Phony::mock(RuleProviderInterface::class);
         $this->handlerResolver = Phony::stub();
@@ -62,7 +62,7 @@ class VerifierTest extends Unit
         );
     }
 
-    public function testGetRulesOnClass()
+    public function testGetRulesOnClass(): void
     {
         $reflection = $this->createClassReflection();
         $this->setupRuleProviderMock();
@@ -70,7 +70,7 @@ class VerifierTest extends Unit
         self::assertEquals([new TestRule()], $this->verifier->getRules($reflection));
     }
 
-    public function testGetRulesOnMethod()
+    public function testGetRulesOnMethod(): void
     {
         $reflection = $this->createMethodReflection();
         $this->setupRuleProviderMock();
@@ -78,7 +78,7 @@ class VerifierTest extends Unit
         self::assertEquals([new TestRule()], $this->verifier->getRules($reflection));
     }
 
-    public function testGetRulesOnReflector()
+    public function testGetRulesOnReflector(): void
     {
         $reflection = Phony::mock(Reflector::class)->get();
         try {
@@ -89,7 +89,7 @@ class VerifierTest extends Unit
         }
     }
 
-    public function testCheckRules()
+    public function testCheckRules(): void
     {
         $request = Phony::mock(Request::class)->get();
         $handler = $this->createHandlerMock($request);
@@ -99,7 +99,7 @@ class VerifierTest extends Unit
         $this->verifier->checkRules([new TestRule(), new TestRule()], $request);
     }
 
-    public function testCheckReflectionOnClass()
+    public function testCheckReflectionOnClass(): void
     {
         $reflection = $this->createClassReflection();
         $request = Phony::mock(Request::class)->get();
@@ -112,7 +112,7 @@ class VerifierTest extends Unit
         $this->verifier->checkReflection($reflection, $request);
     }
 
-    public function testCheckReflectionOnMethod()
+    public function testCheckReflectionOnMethod(): void
     {
         $reflection = $this->createMethodReflection();
         $request = Phony::mock(Request::class)->get();
@@ -125,7 +125,7 @@ class VerifierTest extends Unit
         $this->verifier->checkReflection($reflection, $request);
     }
 
-    public function testIsLinkVerifiedTrue()
+    public function testIsLinkVerifiedTrue(): void
     {
         $request = $this->createRequestMock(
             [
@@ -142,7 +142,7 @@ class VerifierTest extends Unit
         self::assertTrue($this->verifier->isLinkVerified($request, Phony::mock(PresenterComponent::class)->get()));
     }
 
-    public function testIsLinkVerifiedFalse()
+    public function testIsLinkVerifiedFalse(): void
     {
         $request = $this->createRequestMock(
             [
@@ -158,7 +158,7 @@ class VerifierTest extends Unit
         self::assertFalse($this->verifier->isLinkVerified($request, Phony::mock(PresenterComponent::class)->get()));
     }
 
-    public function testIsLinkVerifiedSignal()
+    public function testIsLinkVerifiedSignal(): void
     {
         $request = $this->createRequestMock(
             [
@@ -177,7 +177,7 @@ class VerifierTest extends Unit
         self::assertTrue($this->verifier->isLinkVerified($request, $component));
     }
 
-    public function testIsComponentVerifiedTrue()
+    public function testIsComponentVerifiedTrue(): void
     {
         $request = Phony::mock(Request::class)->get();
         $handler = $this->createHandlerMock($request);
@@ -191,7 +191,7 @@ class VerifierTest extends Unit
         self::assertTrue($this->verifier->isComponentVerified('component', $request, $parent));
     }
 
-    public function testIsComponentVerifiedFalse()
+    public function testIsComponentVerifiedFalse(): void
     {
         $request = Phony::mock(Request::class)->get();
         $handler = $this->createHandlerMock($request, null, true);
@@ -204,7 +204,7 @@ class VerifierTest extends Unit
         self::assertFalse($this->verifier->isComponentVerified('component', $request, $parent));
     }
 
-    public function testIsComponentSignalVerifiedTrue()
+    public function testIsComponentSignalVerifiedTrue(): void
     {
         $request = $this->createRequestMock(
             [
@@ -228,7 +228,7 @@ class VerifierTest extends Unit
      * @expectedException \Arachne\Verifier\Exception\InvalidArgumentException
      * @expectedExceptionMessage Wrong signal receiver, expected 'component' component but 'test-component' was given.
      */
-    public function testWrongSignalReceiver()
+    public function testWrongSignalReceiver(): void
     {
         $request = $this->createRequestMock(
             [
@@ -245,7 +245,7 @@ class VerifierTest extends Unit
         $this->verifier->isLinkVerified($request, $componentHandle->get());
     }
 
-    public function testInvalidRule()
+    public function testInvalidRule(): void
     {
         $request = $this->createRequestMock(
             [
@@ -270,7 +270,7 @@ class VerifierTest extends Unit
             ->calledWith(InvalidRule::class);
     }
 
-    public function testVerifyPropertiesTrue()
+    public function testVerifyPropertiesTrue(): void
     {
         $request = Phony::mock(Request::class)->get();
         $handler = $this->createHandlerMock($request);
@@ -285,7 +285,7 @@ class VerifierTest extends Unit
         self::assertTrue($parent->property);
     }
 
-    public function testVerifyPropertiesFalse()
+    public function testVerifyPropertiesFalse(): void
     {
         $request = Phony::mock(Request::class)->get();
         $handler = $this->createHandlerMock($request, null, true);
@@ -300,10 +300,7 @@ class VerifierTest extends Unit
         self::assertFalse($parent->property);
     }
 
-    /**
-     * @return ReflectionClass
-     */
-    private function createClassReflection()
+    private function createClassReflection(): ReflectionClass
     {
         $reflectionHandle = Phony::mock(ReflectionClass::class);
         $reflectionHandle
@@ -313,10 +310,7 @@ class VerifierTest extends Unit
         return $reflectionHandle->get();
     }
 
-    /**
-     * @return ReflectionMethod
-     */
-    private function createMethodReflection()
+    private function createMethodReflection(): ReflectionMethod
     {
         $methodHandle = Phony::mock(ReflectionMethod::class);
         $methodHandle
@@ -329,14 +323,7 @@ class VerifierTest extends Unit
         return $methodHandle->get();
     }
 
-    /**
-     * @param Request $request
-     * @param string  $component
-     * @param bool    $throw
-     *
-     * @return RuleHandlerInterface
-     */
-    private function createHandlerMock(Request $request, $component = null, $throw = false)
+    private function createHandlerMock(Request $request, ?string $component = null, bool $throw = false): RuleHandlerInterface
     {
         $ruleHandlerHandle = Phony::mock(RuleHandlerInterface::class);
 
@@ -350,12 +337,7 @@ class VerifierTest extends Unit
         return $ruleHandlerHandle->get();
     }
 
-    /**
-     * @param array $parameters
-     *
-     * @return Request
-     */
-    private function createRequestMock(array $parameters)
+    private function createRequestMock(array $parameters): Request
     {
         $requestHandle = Phony::mock(Request::class);
         $requestHandle
@@ -369,24 +351,21 @@ class VerifierTest extends Unit
         return $requestHandle->get();
     }
 
-    /**
-     * @param RuleHandlerInterface $handler
-     */
-    private function setupHandlerResolverMock(RuleHandlerInterface $handler)
+    private function setupHandlerResolverMock(RuleHandlerInterface $handler): void
     {
         $this->handlerResolver
             ->with(TestRule::class)
             ->returns($handler);
     }
 
-    private function setupRuleProviderMock()
+    private function setupRuleProviderMock(): void
     {
         $this->ruleProviderHandle
             ->getRules
             ->returns([new TestRule()]);
     }
 
-    private function setupPresenterFactoryMock()
+    private function setupPresenterFactoryMock(): void
     {
         $this->presenterFactoryHandle
             ->getPresenterClass

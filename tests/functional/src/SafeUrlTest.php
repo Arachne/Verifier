@@ -15,7 +15,7 @@ class SafeUrlTest extends Unit
      */
     protected $tester;
 
-    public function testHrefMacro()
+    public function testHrefMacro(): void
     {
         $this->tester->amOnPage('/article/safeurl');
         $this->tester->seeResponseCodeIs(200);

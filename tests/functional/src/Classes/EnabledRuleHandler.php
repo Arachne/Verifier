@@ -13,13 +13,9 @@ use Nette\Application\Request;
 class EnabledRuleHandler implements RuleHandlerInterface
 {
     /**
-     * @param RuleInterface $rule
-     * @param Request       $request
-     * @param string        $component
-     *
      * @throws VerificationException
      */
-    public function checkRule(RuleInterface $rule, Request $request, $component = null)
+    public function checkRule(RuleInterface $rule, Request $request, ?string $component = null): void
     {
         if (!$rule instanceof Enabled) {
             throw new \InvalidArgumentException(sprintf('Unknown rule "%s" given.', get_class($rule)));

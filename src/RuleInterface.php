@@ -9,8 +9,6 @@ interface RuleInterface
 {
     /**
      * Specifies HTTP code to use when the rule fails.
-     *
-     * @return int
      */
-    public function getCode();
+    public function getCode(): int;
 }

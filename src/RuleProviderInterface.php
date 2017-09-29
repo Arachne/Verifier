@@ -17,5 +17,5 @@ interface RuleProviderInterface
      *
      * @return RuleInterface[]
      */
-    public function getRules(Reflector $reflection);
+    public function getRules(Reflector $reflection): array;
 }

@@ -27,13 +27,13 @@ class AllRuleHandlerTest extends Unit
      */
     private $verifierHandle;
 
-    protected function _before()
+    protected function _before(): void
     {
         $this->verifierHandle = Phony::mock(Verifier::class);
         $this->handler = new AllRuleHandler($this->verifierHandle->get());
     }
 
-    public function testAll()
+    public function testAll(): void
     {
         $rule = new All();
         $rule->rules = [
@@ -49,7 +49,7 @@ class AllRuleHandlerTest extends Unit
             ->calledWith($rule->rules, $request, null);
     }
 
-    public function testUnknownAnnotation()
+    public function testUnknownAnnotation(): void
     {
         $rule = Phony::mock(RuleInterface::class)->get();
         $request = new Request('Test', 'GET', []);

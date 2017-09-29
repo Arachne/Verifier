@@ -31,14 +31,14 @@ class ChainRuleProviderTest extends Unit
      */
     private $chainRuleProvider;
 
-    protected function _before()
+    protected function _before(): void
     {
         $this->ruleProvider1Handle = Phony::mock(RuleProviderInterface::class);
         $this->ruleProvider2Handle = Phony::mock(RuleProviderInterface::class);
         $this->chainRuleProvider = new ChainRuleProvider(new ArrayIterator([$this->ruleProvider1Handle->get(), $this->ruleProvider2Handle->get()]));
     }
 
-    public function testProviderReturningNull()
+    public function testProviderReturningNull(): void
     {
         $reflector = Phony::mock(Reflector::class)->get();
 
@@ -53,7 +53,7 @@ class ChainRuleProviderTest extends Unit
             ->calledWith($reflector);
     }
 
-    public function testMergingProviderResults()
+    public function testMergingProviderResults(): void
     {
         $reflector = Phony::mock(Reflector::class)->get();
 

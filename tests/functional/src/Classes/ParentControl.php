@@ -12,10 +12,7 @@ class ParentControl extends Control
 {
     use VerifierControlTrait;
 
-    /**
-     * @return ChildControl
-     */
-    protected function createComponentChild()
+    protected function createComponentChild(): ChildControl
     {
         return new ChildControl();
     }

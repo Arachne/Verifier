@@ -21,7 +21,7 @@ class VerificationException extends BadRequestException
      * @param string        $message
      * @param Exception     $previous
      */
-    public function __construct(RuleInterface $rule, $message, Exception $previous = null)
+    public function __construct(RuleInterface $rule, string $message, ?Exception $previous = null)
     {
         parent::__construct($message, $rule->getCode(), $previous);
         $this->rule = $rule;
@@ -30,7 +30,7 @@ class VerificationException extends BadRequestException
     /**
      * @return RuleInterface
      */
-    public function getRule()
+    public function getRule(): RuleInterface
     {
         return $this->rule;
     }

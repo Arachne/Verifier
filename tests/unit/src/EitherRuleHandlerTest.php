@@ -28,13 +28,13 @@ class EitherRuleHandlerTest extends Unit
      */
     private $handler;
 
-    protected function _before()
+    protected function _before(): void
     {
         $this->verifierHandle = Phony::mock(Verifier::class);
         $this->handler = new EitherRuleHandler($this->verifierHandle->get());
     }
 
-    public function testEitherFirst()
+    public function testEitherFirst(): void
     {
         $rule = new Either();
         $rule->rules = [
@@ -50,7 +50,7 @@ class EitherRuleHandlerTest extends Unit
             ->calledWith([$rule1], $request, null);
     }
 
-    public function testEitherSecond()
+    public function testEitherSecond(): void
     {
         $rule = new Either();
         $rule->rules = [
@@ -67,7 +67,7 @@ class EitherRuleHandlerTest extends Unit
         $this->handler->checkRule($rule, $request);
     }
 
-    public function testEitherException()
+    public function testEitherException(): void
     {
         $rule = new Either();
         $rule1Handle = Phony::mock(RuleInterface::class);
@@ -101,7 +101,7 @@ class EitherRuleHandlerTest extends Unit
         }
     }
 
-    public function testUnknownAnnotation()
+    public function testUnknownAnnotation(): void
     {
         $rule = Phony::mock(RuleInterface::class)->get();
         $request = new Request('Test', 'GET', []);

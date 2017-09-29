@@ -54,7 +54,7 @@ class Verifier
      *
      * @return RuleInterface[]
      */
-    public function getRules(Reflector $reflection)
+    public function getRules(Reflector $reflection): array
     {
         if ($reflection instanceof ReflectionMethod) {
             $key = $reflection->getDeclaringClass()->getName().'::'.$reflection->getName();
@@ -77,12 +77,10 @@ class Verifier
      * Checks whether the given rules are met.
      *
      * @param RuleInterface[] $rules
-     * @param Request         $request
-     * @param string          $component
      *
      * @throws VerificationException
      */
-    public function checkRules(array $rules, Request $request, $component = null)
+    public function checkRules(array $rules, Request $request, ?string $component = null): void
     {
         foreach ($rules as $rule) {
             $class = get_class($rule);
@@ -98,12 +96,10 @@ class Verifier
      * Checks whether all rules of the given reflection are met.
      *
      * @param ReflectionClass|ReflectionMethod $reflection
-     * @param Request                          $request
-     * @param string                           $component
      *
      * @throws VerificationException
      */
-    public function checkReflection(Reflector $reflection, Request $request, $component = null)
+    public function checkReflection(Reflector $reflection, Request $request, ?string $component = null): void
     {
         $rules = $this->getRules($reflection);
         $this->checkRules($rules, $request, $component);
@@ -111,13 +107,8 @@ class Verifier
 
     /**
      * Checks whether it is possible to run the given request.
-     *
-     * @param Request   $request
-     * @param Component $component
-     *
-     * @return bool
      */
-    public function isLinkVerified(Request $request, Component $component)
+    public function isLinkVerified(Request $request, Component $component): bool
     {
         try {
             $parameters = $request->getParameters();
@@ -174,14 +165,8 @@ class Verifier
 
     /**
      * Checks whether the parent component can create the subcomponent with given name.
-     *
-     * @param string    $name
-     * @param Request   $request
-     * @param Component $parent
-     *
-     * @return bool
      */
-    public function isComponentVerified($name, Request $request, Component $parent)
+    public function isComponentVerified(string $name, Request $request, Component $parent): bool
     {
         $reflection = new ComponentReflection($parent);
         $method = 'createComponent'.ucfirst($name);
@@ -199,11 +184,8 @@ class Verifier
 
     /**
      * Sets public properties of the component to true or false according to their associated rules (if any).
-     *
-     * @param Request   $request
-     * @param Component $component
      */
-    public function verifyProperties(Request $request, Component $component)
+    public function verifyProperties(Request $request, Component $component): void
     {
         $reflection = new ReflectionClass($component);
         $id = $component->getParent() ? $component->getUniqueId() : null;

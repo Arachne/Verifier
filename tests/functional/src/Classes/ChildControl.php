@@ -15,12 +15,12 @@ class ChildControl extends Control
     /**
      * @Enabled( "$parameter" )
      */
-    public function handleSignal1($parameter)
+    public function handleSignal1($parameter): void
     {
         $this->redirectVerified('signal2!');
     }
 
-    public function handleSignal2()
+    public function handleSignal2(): void
     {
     }
 }

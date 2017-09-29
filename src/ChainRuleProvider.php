@@ -23,7 +23,7 @@ class ChainRuleProvider implements RuleProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getRules(Reflector $reflection)
+    public function getRules(Reflector $reflection): array
     {
         $rules = [];
         foreach ($this->providers as $provider) {

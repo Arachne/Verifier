@@ -20,7 +20,7 @@ trait VerifierControlTrait
     /**
      * @param ReflectionClass|ReflectionMethod $reflection
      */
-    public function checkRequirements($reflection)
+    public function checkRequirements($reflection): void
     {
         $this->getPresenter()->getVerifier()->checkReflection($reflection, $this->getPresenter()->getRequest(), $this->getUniqueId());
     }
@@ -32,7 +32,7 @@ trait VerifierControlTrait
      * @param string  $destination
      * @param mixed[] $parameters
      */
-    public function redirectVerified($code, $destination = null, $parameters = [])
+    public function redirectVerified($code, $destination = null, $parameters = []): void
     {
         // first parameter is optional
         if (!is_numeric($code)) {
@@ -52,46 +52,31 @@ trait VerifierControlTrait
 
     /**
      * Returns link to destination but only if all its requirements are met.
-     *
-     * @param string $destination
-     * @param array  $args
-     *
-     * @return string|null
      */
-    public function linkVerified($destination, $args = [])
+    public function linkVerified(string $destination, array $args = []): ?string
     {
         $link = $this->link($destination, $args);
         $presenter = $this->getPresenter();
 
-        if ($presenter->getVerifier()->isLinkVerified($presenter->getLastCreatedRequest(), $this)) {
-            return $link;
-        }
+        return $presenter->getVerifier()->isLinkVerified($presenter->getLastCreatedRequest(), $this) ? $link : null;
     }
 
     /**
      * Returns specified component but only if all its requirements are met.
-     *
-     * @param string $name
-     *
-     * @return IComponent|null
      */
-    public function getComponentVerified($name)
+    public function getComponentVerified(string $name): ?IComponent
     {
         $presenter = $this->getPresenter();
 
-        if ($presenter->getVerifier()->isComponentVerified($name, $presenter->getRequest(), $this)) {
-            return $this->getComponent($name);
-        }
+        return $presenter->getVerifier()->isComponentVerified($name, $presenter->getRequest(), $this) ? $this->getComponent($name) : null;
     }
 
     /**
      * Component factory. Delegates the creation of components to a createComponent<Name> method.
      *
      * @param string $name
-     *
-     * @return IComponent|null
      */
-    protected function createComponent($name)
+    protected function createComponent($name): ?IComponent
     {
         $method = 'createComponent'.ucfirst($name);
         if (method_exists($this, $method)) {
@@ -106,7 +91,7 @@ trait VerifierControlTrait
      *
      * @param IComponent
      */
-    protected function attached($component)
+    protected function attached($component): void
     {
         if ($component instanceof Presenter) {
             $this->onPresenter($component);

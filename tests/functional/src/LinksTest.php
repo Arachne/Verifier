@@ -15,7 +15,7 @@ class LinksTest extends Unit
      */
     protected $tester;
 
-    public function testLinkMacro()
+    public function testLinkMacro(): void
     {
         $this->tester->amOnPage('/article/');
         $this->tester->seeResponseCodeIs(200);
@@ -25,21 +25,21 @@ class LinksTest extends Unit
         $this->tester->dontSeeLink('Checked link', '/article/edit/1');
     }
 
-    public function testRedirect()
+    public function testRedirect(): void
     {
         $this->tester->amOnPage('/article/remove/1');
         $this->tester->seeResponseCodeIs(302);
         $this->tester->seeRedirectTo('/article/delete/1');
     }
 
-    public function testRedirectCustomCode()
+    public function testRedirectCustomCode(): void
     {
         $this->tester->amOnPage('/article/redirect/1');
         $this->tester->seeResponseCodeIs(301);
         $this->tester->seeRedirectTo('/article/delete/1');
     }
 
-    public function testRedirectNotAllowed()
+    public function testRedirectNotAllowed(): void
     {
         $this->tester->amOnPage('/article/modify/1');
         // Response code should never be 302 because the redirect target action is not allowed.
@@ -47,7 +47,7 @@ class LinksTest extends Unit
         $this->tester->seeResponseCodeIs(404);
     }
 
-    public function testActionNotAllowed()
+    public function testActionNotAllowed(): void
     {
         $this->tester->amOnPage('/article/edit/1');
         $this->tester->seeResponseCodeIs(403);

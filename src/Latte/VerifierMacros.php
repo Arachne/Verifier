@@ -12,10 +12,7 @@ use Latte\PhpWriter;
  */
 class VerifierMacros extends MacroSet
 {
-    /**
-     * @param Compiler $compiler
-     */
-    public static function install(Compiler $compiler)
+    public static function install(Compiler $compiler): void
     {
         $me = new static($compiler);
         $me->addMacro(

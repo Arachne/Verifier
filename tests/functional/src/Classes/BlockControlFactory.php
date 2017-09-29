@@ -10,5 +10,5 @@ interface BlockControlFactory
     /**
      * @return BlockControl
      */
-    public function create();
+    public function create(): BlockControl;
 }

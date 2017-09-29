@@ -15,7 +15,7 @@ class ComponentsTest extends Unit
      */
     protected $tester;
 
-    public function testComponentMacro()
+    public function testComponentMacro(): void
     {
         $this->tester->amOnPage('/article/');
         $this->tester->seeResponseCodeIs(200);
@@ -24,7 +24,7 @@ class ComponentsTest extends Unit
         $this->tester->see('fallback');
     }
 
-    public function testLinkMacroInComponent()
+    public function testLinkMacroInComponent(): void
     {
         $this->tester->amOnPage('/article/');
         $this->tester->seeResponseCodeIs(200);
@@ -36,27 +36,27 @@ class ComponentsTest extends Unit
         $this->tester->dontSee('Signal called!');
     }
 
-    public function testComponentSignal()
+    public function testComponentSignal(): void
     {
         $this->tester->amOnPage('/article/?do=header-signal&header-parameter=1');
         $this->tester->seeResponseCodeIs(200);
         $this->tester->see('Signal called!');
     }
 
-    public function testComponentNotAllowed()
+    public function testComponentNotAllowed(): void
     {
         $this->tester->amOnPage('/article/component-not-enabled');
         $this->tester->seeResponseCodeIs(403);
     }
 
-    public function testSubComponentAllowed()
+    public function testSubComponentAllowed(): void
     {
         $this->tester->amOnPage('/article/?do=parent-child-signal1&parent-child-parameter=1');
         $this->tester->seeResponseCodeIs(302);
         $this->tester->seeRedirectTo('/article/?do=parent-child-signal2');
     }
 
-    public function testSubComponentNotAllowed()
+    public function testSubComponentNotAllowed(): void
     {
         $this->tester->amOnPage('/article/?do=parent-child-signal1&parent-child-parameter=0');
         $this->tester->seeResponseCodeIs(403);

@@ -24,31 +24,31 @@ class AnnotationsRuleProviderTest extends Unit
      */
     private $provider;
 
-    protected function _before()
+    protected function _before(): void
     {
         $reader = new AnnotationReader();
         $this->provider = new AnnotationsRuleProvider($reader);
     }
 
-    public function testClassAnnotations()
+    public function testClassAnnotations(): void
     {
         $reflection = new ReflectionClass(TestPresenter::class);
         self::assertEquals([new TestRule()], $this->provider->getRules($reflection));
     }
 
-    public function testMethodAnnotations()
+    public function testMethodAnnotations(): void
     {
         $reflection = new ReflectionMethod(TestPresenter::class, 'renderView');
         self::assertEquals([new TestRule(), new TestRule()], $this->provider->getRules($reflection));
     }
 
-    public function testPropertyAnnotations()
+    public function testPropertyAnnotations(): void
     {
         $reflection = new ReflectionProperty(TestPresenter::class, 'property');
         self::assertEquals([new TestRule()], $this->provider->getRules($reflection));
     }
 
-    public function testInvalidReflection()
+    public function testInvalidReflection(): void
     {
         $reflection = Phony::mock(Reflector::class)->get();
         try {

@@ -18,7 +18,7 @@ class BlockControl extends Control
      */
     public $privilege;
 
-    public function render()
+    public function render(): void
     {
         $this->getTemplate()->privilege = $this->privilege;
         $this->template->setFile(__DIR__.'/../../templates/block.latte');
@@ -28,7 +28,7 @@ class BlockControl extends Control
     /**
      * @Enabled( "$parameter" )
      */
-    public function handleSignal($parameter)
+    public function handleSignal($parameter): void
     {
         $this->template->message = 'Signal called!';
     }

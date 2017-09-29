@@ -14,7 +14,7 @@ class TestPresenter extends Presenter
     /**
      * @Either(@Enabled(true))
      */
-    public function actionEitherFirst()
+    public function actionEitherFirst(): void
     {
     }
 
@@ -24,7 +24,7 @@ class TestPresenter extends Presenter
      *   @Enabled(true),
      * })
      */
-    public function actionEitherSecond()
+    public function actionEitherSecond(): void
     {
     }
 
@@ -34,7 +34,7 @@ class TestPresenter extends Presenter
      *   @Enabled(false),
      * })
      */
-    public function actionEitherFalse()
+    public function actionEitherFalse(): void
     {
     }
 
@@ -43,14 +43,14 @@ class TestPresenter extends Presenter
      *   @Either()
      * })
      */
-    public function actionEitherInner()
+    public function actionEitherInner(): void
     {
     }
 
     /**
      * @All(@Enabled(true))
      */
-    public function actionAllTrue()
+    public function actionAllTrue(): void
     {
     }
 
@@ -60,7 +60,7 @@ class TestPresenter extends Presenter
      *   @Enabled(true),
      * })
      */
-    public function actionAllFalse()
+    public function actionAllFalse(): void
     {
     }
 
@@ -69,7 +69,7 @@ class TestPresenter extends Presenter
      *   @All()
      * })
      */
-    public function actionAllInner()
+    public function actionAllInner(): void
     {
     }
 }

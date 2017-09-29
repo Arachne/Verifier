@@ -11,10 +11,7 @@ use Arachne\Verifier\RuleInterface;
  */
 abstract class SecurityRule implements RuleInterface
 {
-    /**
-     * @return int
-     */
-    public function getCode()
+    public function getCode(): int
     {
         return 403;
     }

@@ -27,7 +27,7 @@ class VerifierExtension extends CompilerExtension
     const TAG_PROVIDER = 'arachne.verifier.ruleProvider';
     const TAG_VERIFY_PROPERTIES = 'arachne.verifier.verifyProperties';
 
-    public function loadConfiguration()
+    public function loadConfiguration(): void
     {
         $builder = $this->getContainerBuilder();
 
@@ -47,7 +47,7 @@ class VerifierExtension extends CompilerExtension
         );
 
         $builder->addDefinition($this->prefix('chainRuleProvider'))
-            ->setClass(ChainRuleProvider::class)
+            ->setType(ChainRuleProvider::class)
             ->setArguments(
                 [
                     'providers' => '@'.$providerIterator,
@@ -55,7 +55,7 @@ class VerifierExtension extends CompilerExtension
             );
 
         $builder->addDefinition($this->prefix('verifier'))
-            ->setClass(Verifier::class)
+            ->setType(Verifier::class)
             ->setArguments(
                 [
                     'handlerResolver' => '@'.$handlerResolver,
@@ -63,7 +63,7 @@ class VerifierExtension extends CompilerExtension
             );
 
         $builder->addDefinition($this->prefix('allRuleHandler'))
-            ->setClass(AllRuleHandler::class)
+            ->setType(AllRuleHandler::class)
             ->addTag(
                 self::TAG_HANDLER,
                 [
@@ -72,7 +72,7 @@ class VerifierExtension extends CompilerExtension
             );
 
         $builder->addDefinition($this->prefix('eitherRuleHandler'))
-            ->setClass(EitherRuleHandler::class)
+            ->setType(EitherRuleHandler::class)
             ->addTag(
                 self::TAG_HANDLER,
                 [
@@ -82,14 +82,14 @@ class VerifierExtension extends CompilerExtension
 
         if ($this->getExtension(AnnotationsExtension::class, false)) {
             $builder->addDefinition($this->prefix('annotationsRuleProvider'))
-                ->setClass(RuleProviderInterface::class)
+                ->setType(RuleProviderInterface::class)
                 ->setFactory(AnnotationsRuleProvider::class)
                 ->addTag(self::TAG_PROVIDER)
                 ->setAutowired(false);
         }
     }
 
-    public function beforeCompile()
+    public function beforeCompile(): void
     {
         $builder = $this->getContainerBuilder();
 
@@ -118,13 +118,7 @@ class VerifierExtension extends CompilerExtension
         }
     }
 
-    /**
-     * @param string $class
-     * @param bool   $need
-     *
-     * @return CompilerExtension|null
-     */
-    private function getExtension($class, $need = true)
+    private function getExtension(string $class, bool $need = true): ?CompilerExtension
     {
         $extensions = $this->compiler->getExtensions($class);
 

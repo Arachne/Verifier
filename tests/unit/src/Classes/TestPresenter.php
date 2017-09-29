@@ -19,7 +19,7 @@ class TestPresenter extends Presenter
     /**
      * @TestRule
      */
-    public function actionAction()
+    public function actionAction(): void
     {
     }
 
@@ -28,7 +28,7 @@ class TestPresenter extends Presenter
      *
      * @TestRule
      */
-    public function renderAction()
+    public function renderAction(): void
     {
     }
 
@@ -36,21 +36,21 @@ class TestPresenter extends Presenter
      * @TestRule
      * @TestRule
      */
-    public function renderView()
+    public function renderView(): void
     {
     }
 
     /**
      * @TestRule
      */
-    public function handleSignal()
+    public function handleSignal(): void
     {
     }
 
     /**
      * @TestRule
      */
-    public function createComponentComponent()
+    public function createComponentComponent(): void
     {
     }
 }

@@ -11,10 +11,7 @@ use Arachne\Verifier\RuleInterface;
  */
 abstract class ValidationRule implements RuleInterface
 {
-    /**
-     * @return int
-     */
-    public function getCode()
+    public function getCode(): int
     {
         return 404;
     }

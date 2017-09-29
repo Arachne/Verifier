@@ -24,12 +24,12 @@ class RuleHandlersTest extends Unit
      */
     private $verifier;
 
-    public function _before()
+    public function _before(): void
     {
         $this->verifier = $this->tester->grabService(Verifier::class);
     }
 
-    public function testEitherFirst()
+    public function testEitherFirst(): void
     {
         $request = new Request(
             'Test',
@@ -42,7 +42,7 @@ class RuleHandlersTest extends Unit
         $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
-    public function testEitherSecond()
+    public function testEitherSecond(): void
     {
         $request = new Request(
             'Test',
@@ -55,7 +55,7 @@ class RuleHandlersTest extends Unit
         $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
-    public function testEitherFalse()
+    public function testEitherFalse(): void
     {
         $request = new Request(
             'Test',
@@ -68,7 +68,7 @@ class RuleHandlersTest extends Unit
         $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
-    public function testEitherInner()
+    public function testEitherInner(): void
     {
         $request = new Request(
             'Test',
@@ -81,7 +81,7 @@ class RuleHandlersTest extends Unit
         $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
-    public function testAllTrue()
+    public function testAllTrue(): void
     {
         $request = new Request(
             'Test',
@@ -94,7 +94,7 @@ class RuleHandlersTest extends Unit
         $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
-    public function testAllFalse()
+    public function testAllFalse(): void
     {
         $request = new Request(
             'Test',
@@ -107,7 +107,7 @@ class RuleHandlersTest extends Unit
         $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
-    public function testAllInner()
+    public function testAllInner(): void
     {
         $request = new Request(
             'Test',

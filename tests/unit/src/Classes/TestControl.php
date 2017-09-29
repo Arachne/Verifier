@@ -14,14 +14,14 @@ class TestControl extends Control
     /**
      * @TestRule
      */
-    public function handleSignal()
+    public function handleSignal(): void
     {
     }
 
     /**
      * @TestRule
      */
-    public function createComponentComponent()
+    public function createComponentComponent(): void
     {
     }
 }

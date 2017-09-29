@@ -15,7 +15,7 @@ class PropertyTest extends Unit
      */
     protected $tester;
 
-    public function testNoProperty()
+    public function testNoProperty(): void
     {
         $this->tester->amOnPage('/article/');
         $this->tester->seeResponseCodeIs(200);
@@ -23,7 +23,7 @@ class PropertyTest extends Unit
         $this->tester->dontSee('Component property verified');
     }
 
-    public function testPresenterProperty()
+    public function testPresenterProperty(): void
     {
         $this->tester->amOnPage('/article/?privilege=1');
         $this->tester->seeResponseCodeIs(200);
@@ -31,7 +31,7 @@ class PropertyTest extends Unit
         $this->tester->dontSee('Component property verified');
     }
 
-    public function testComponentProperty()
+    public function testComponentProperty(): void
     {
         $this->tester->amOnPage('/article/?header-privilege=1');
         $this->tester->seeResponseCodeIs(200);

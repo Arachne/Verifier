@@ -27,7 +27,7 @@ class ArticlePresenter extends Presenter
     /**
      * @Enabled(true)
      */
-    public function actionDefault()
+    public function actionDefault(): void
     {
         $this->getTemplate()->privilege = $this->privilege;
     }
@@ -37,7 +37,7 @@ class ArticlePresenter extends Presenter
      *
      * @param int $id
      */
-    public function actionEdit($id)
+    public function actionEdit($id): void
     {
     }
 
@@ -46,7 +46,7 @@ class ArticlePresenter extends Presenter
      *
      * @param int $id
      */
-    public function actionModify($id)
+    public function actionModify($id): void
     {
         $this->redirectVerified('edit', $id);
     }
@@ -56,7 +56,7 @@ class ArticlePresenter extends Presenter
      *
      * @param int $id
      */
-    public function actionDelete($id)
+    public function actionDelete($id): void
     {
     }
 
@@ -65,7 +65,7 @@ class ArticlePresenter extends Presenter
      *
      * @param int $id
      */
-    public function actionRemove($id)
+    public function actionRemove($id): void
     {
         $this->redirectVerified('delete', $id);
     }
@@ -75,65 +75,59 @@ class ArticlePresenter extends Presenter
      *
      * @param int $id
      */
-    public function actionRedirect($id)
+    public function actionRedirect($id): void
     {
         $this->redirectVerified(301, 'delete', $id);
     }
 
-    public function actionView()
+    public function actionView(): void
     {
     }
 
     /**
      * @Enabled(true)
      */
-    public function renderView()
+    public function renderView(): void
     {
     }
 
-    public function actionSafeurl()
+    public function actionSafeurl(): void
     {
     }
 
-    public function actionComponentNotEnabled()
+    public function actionComponentNotEnabled(): void
     {
     }
 
-    public function renderUndefinedAction()
+    public function renderUndefinedAction(): void
     {
     }
 
     /**
      * @Enabled(true)
-     *
-     * @return BlockControl
      */
-    protected function createComponentHeader()
+    protected function createComponentHeader(): BlockControl
     {
         return $this->factory->create();
     }
 
     /**
      * @Enabled(false)
-     *
-     * @return BlockControl
      */
-    protected function createComponentFooter()
+    protected function createComponentFooter(): BlockControl
     {
         return new BlockControl();
     }
 
     /**
      * @Enabled(true)
-     *
-     * @return ParentControl
      */
-    protected function createComponentParent()
+    protected function createComponentParent(): ParentControl
     {
         return new ParentControl();
     }
 
-    public function formatTemplateFiles()
+    public function formatTemplateFiles(): array
     {
         $name = $this->getName();
         $presenter = substr($name, strrpos(':'.$name, ':'));
