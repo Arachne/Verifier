@@ -66,7 +66,11 @@ services:
 
 ### Presenter
 
-In presenters you can now use these rules to restrict access to the whole presenter or separately to its actions, signals and components. Note that rules for views are NOT supported. Also class-level annotations for non-presenter components are NOT supported.
+In presenters you can now use these rules to restrict access to the whole presenter or separately to its actions, signals and components.
+
+Note that rules for render methods are NOT supported and will cause an exception. The reason is that a rule on render method would not protect signals which might easily cause a security issue in your application.
+
+Also class-level annotations for non-presenter components are NOT supported. These are not possible to implement reliably because the return typehint of `createComponent*` method may not be the exact class of the component.
 
 ```php
 use App\MyRule;
