@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Functional\Classes;
 
 use Nette\Application\IRouter;
