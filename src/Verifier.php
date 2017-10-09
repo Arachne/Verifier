@@ -86,7 +86,7 @@ class Verifier
     {
         foreach ($rules as $rule) {
             $class = get_class($rule);
-            $handler = call_user_func($this->handlerResolver, $class);
+            $handler = ($this->handlerResolver)($class);
             if (!$handler instanceof RuleHandlerInterface) {
                 throw new UnexpectedTypeException("No rule handler found for type '$class'.");
             }
