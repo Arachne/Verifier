@@ -28,7 +28,9 @@ class RuleHandlersTest extends Unit
 
     public function _before(): void
     {
-        $this->verifier = $this->tester->grabService(Verifier::class);
+        /** @var Verifier $verifier */
+        $verifier = $this->tester->grabService(Verifier::class);
+        $this->verifier = $verifier;
     }
 
     public function testEitherFirst(): void
