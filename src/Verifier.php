@@ -52,8 +52,6 @@ class Verifier
     /**
      * Returns rules that are required for given reflection.
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     *
      * @return RuleInterface[]
      */
     public function getRules(Reflector $reflection): array
