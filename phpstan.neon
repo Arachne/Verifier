@@ -8,7 +8,6 @@ parameters:
         - %rootDir%/../../../tests/_*
 
     ignoreErrors:
-        - '#^Access to an undefined property Eloquent\\Phony\\Mock\\Handle\\InstanceHandle(<[^>]+>)?::\$[a-zA-Z]++#'
         - '#^Call to an undefined method Nette\\Application\\UI\\Presenter::getVerifier\(\)#'
         - '#^Call to protected method createRequest\(\) of class Nette\\Application\\UI\\Presenter#'
         - '#^Parameter \#1 \$code of method Tests\\Functional\\Classes\\ArticlePresenter::redirectVerified\(\) expects int, string given#'
