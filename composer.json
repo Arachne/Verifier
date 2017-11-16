@@ -24,7 +24,7 @@
         "doctrine/annotations": "^1.3.0",
         "eloquent/phony": "^2.0.0",
         "eloquent/phony-phpunit": "^3.0.0",
-        "eloquent/phpstan-phony": "dev-master",
+        "eloquent/phpstan-phony": "^0.1.0",
         "friendsofphp/php-cs-fixer": "^2.7.0@dev",
         "kdyby/annotations": "^2.3.0",
         "kdyby/doctrine-cache": "^2.6.1@dev",
