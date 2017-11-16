@@ -32,10 +32,11 @@ class ExceptionsTest extends Unit
             ]
         );
 
+        /** @var IPresenterFactory $presenterFactory */
+        $presenterFactory = $this->tester->grabService(IPresenterFactory::class);
+
         /** @var Presenter $presenter */
-        $presenter = $this->tester
-            ->grabService(IPresenterFactory::class)
-            ->createPresenter('Article');
+        $presenter = $presenterFactory->createPresenter('Article');
 
         // Canonicalization is broken in CLI.
         $presenter->autoCanonicalize = false;

@@ -6,6 +6,7 @@ namespace Tests\Functional\Classes;
 
 use Arachne\Verifier\Application\VerifierControlTrait;
 use Nette\Application\UI\Control;
+use Nette\Application\UI\ITemplate;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
@@ -23,8 +24,12 @@ class BlockControl extends Control
     public function render(): void
     {
         $this->getTemplate()->privilege = $this->privilege;
-        $this->template->setFile(__DIR__.'/../../templates/block.latte');
-        $this->template->render();
+
+        /** @var ITemplate $template */
+        $template = $this->template;
+
+        $template->setFile(__DIR__.'/../../templates/block.latte');
+        $template->render();
     }
 
     /**
