@@ -80,17 +80,6 @@ class VerifierTest extends Unit
         self::assertEquals([new TestRule()], $this->verifier->getRules($reflection));
     }
 
-    public function testGetRulesOnReflector(): void
-    {
-        $reflection = Phony::mock(Reflector::class)->get();
-        try {
-            $this->verifier->getRules($reflection);
-            self::fail();
-        } catch (InvalidArgumentException $e) {
-            self::assertSame('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.', $e->getMessage());
-        }
-    }
-
     public function testCheckRules(): void
     {
         $request = Phony::mock(Request::class)->get();
@@ -333,7 +322,7 @@ class VerifierTest extends Unit
             $ruleHandlerHandle
                 ->checkRule
                 ->with(self::isInstanceOf(TestRule::class), $request, $component)
-                ->throws(Phony::mock(VerificationException::class));
+                ->throws(Phony::mock(VerificationException::class)->get());
         }
 
         return $ruleHandlerHandle->get();

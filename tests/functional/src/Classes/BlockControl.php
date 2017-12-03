@@ -6,9 +6,12 @@ namespace Tests\Functional\Classes;
 
 use Arachne\Verifier\Application\VerifierControlTrait;
 use Nette\Application\UI\Control;
+use Nette\Bridges\ApplicationLatte\Template;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
+ *
+ * @property-read Template $template
  */
 class BlockControl extends Control
 {

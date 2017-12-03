@@ -50,16 +50,4 @@ class AllRuleHandlerTest extends Unit
             ->checkRules
             ->calledWith($rule->rules, $request, null);
     }
-
-    public function testUnknownAnnotation(): void
-    {
-        $rule = Phony::mock(RuleInterface::class)->get();
-        $request = new Request('Test', 'GET', []);
-
-        try {
-            $this->handler->checkRule($rule, $request);
-            self::fail();
-        } catch (InvalidArgumentException $e) {
-        }
-    }
 }

@@ -91,7 +91,7 @@ trait VerifierControlTrait
     /**
      * Calls onPresenter event which is used to verify component properties.
      *
-     * @param IComponent
+     * @param IComponent $component
      */
     protected function attached($component): void
     {

@@ -49,15 +49,4 @@ class AnnotationsRuleProviderTest extends Unit
         $reflection = new ReflectionProperty(TestPresenter::class, 'property');
         self::assertEquals([new TestRule()], $this->provider->getRules($reflection));
     }
-
-    public function testInvalidReflection(): void
-    {
-        $reflection = Phony::mock(Reflector::class)->get();
-        try {
-            $this->provider->getRules($reflection);
-            self::fail();
-        } catch (InvalidArgumentException $e) {
-            self::assertSame('Reflection must be an instance of either ReflectionMethod, ReflectionClass or ReflectionProperty.', $e->getMessage());
-        }
-    }
 }

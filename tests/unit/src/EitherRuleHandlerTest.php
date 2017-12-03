@@ -102,16 +102,4 @@ class EitherRuleHandlerTest extends Unit
             self::assertSame('None of the rules was met.', $e->getMessage());
         }
     }
-
-    public function testUnknownAnnotation(): void
-    {
-        $rule = Phony::mock(RuleInterface::class)->get();
-        $request = new Request('Test', 'GET', []);
-
-        try {
-            $this->handler->checkRule($rule, $request);
-            self::fail();
-        } catch (InvalidArgumentException $e) {
-        }
-    }
 }

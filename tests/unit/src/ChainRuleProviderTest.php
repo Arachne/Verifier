@@ -11,7 +11,7 @@ use ArrayIterator;
 use Codeception\Test\Unit;
 use Eloquent\Phony\Mock\Handle\InstanceHandle;
 use Eloquent\Phony\Phpunit\Phony;
-use Reflector;
+use ReflectionClass;
 
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
@@ -42,7 +42,7 @@ class ChainRuleProviderTest extends Unit
 
     public function testProviderReturningNull(): void
     {
-        $reflector = Phony::mock(Reflector::class)->get();
+        $reflector = Phony::mock(ReflectionClass::class)->get();
 
         self::assertSame([], $this->chainRuleProvider->getRules($reflector));
 
@@ -57,7 +57,7 @@ class ChainRuleProviderTest extends Unit
 
     public function testMergingProviderResults(): void
     {
-        $reflector = Phony::mock(Reflector::class)->get();
+        $reflector = Phony::mock(ReflectionClass::class)->get();
 
         $rule1 = Phony::mock(RuleInterface::class)->get();
 
