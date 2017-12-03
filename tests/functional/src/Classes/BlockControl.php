@@ -11,7 +11,7 @@ use Nette\Bridges\ApplicationLatte\Template;
 /**
  * @author Jáchym Toušek <enumag@gmail.com>
  *
- * @property-read Template $template
+ * @property Template $template
  */
 class BlockControl extends Control
 {

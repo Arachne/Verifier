@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\RuleInterface;
 use Arachne\Verifier\Rules\All;
 use Arachne\Verifier\Rules\AllRuleHandler;

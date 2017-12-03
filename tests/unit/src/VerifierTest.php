@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Arachne\Verifier\Exception\InvalidArgumentException;
 use Arachne\Verifier\Exception\UnexpectedTypeException;
 use Arachne\Verifier\Exception\VerificationException;
 use Arachne\Verifier\RuleHandlerInterface;
@@ -20,8 +19,6 @@ use Nette\Application\UI\Presenter;
 use Nette\Application\UI\PresenterComponent;
 use ReflectionClass;
 use ReflectionMethod;
-use ReflectionProperty;
-use Reflector;
 use Tests\Unit\Classes\InvalidRule;
 use Tests\Unit\Classes\TestControl;
 use Tests\Unit\Classes\TestPresenter;
