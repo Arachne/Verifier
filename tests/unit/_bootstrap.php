@@ -1,3 +1,3 @@
 <?php
 
-\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
+\Doctrine\Common\Annotations\AnnotationRegistry::registerUniqueLoader('class_exists');
