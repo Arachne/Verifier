@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": "^7.1.0",
-        "arachne/service-collections": "^0.1.0",
+        "arachne/service-collections": "^0.2.0",
         "nette/application": "^2.4.0",
         "nette/di": "^2.4.10",
         "nette/utils": "^2.4.0"
@@ -61,7 +61,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "0.10-dev"
         }
     }
 }
