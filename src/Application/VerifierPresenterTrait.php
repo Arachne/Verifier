@@ -74,13 +74,4 @@ trait VerifierPresenterTrait
     {
         return parent::createRequest($component, $destination, $parameters, $mode);
     }
-
-    /**
-     * Calls onStartup event which is used to verify presenter properties.
-     */
-    public function startup()
-    {
-        parent::startup();
-        $this->onStartup();
-    }
 }
