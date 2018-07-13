@@ -32,7 +32,7 @@ trait VerifierControlTrait
     /**
      * Redirects to destination if all the requirements are met.
      *
-     * @param int          $code
+     * @param int|string   $code
      * @param string|array $destination
      * @param mixed[]      $parameters
      */

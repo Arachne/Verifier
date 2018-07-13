@@ -131,8 +131,8 @@ class ArticlePresenter extends Presenter
 
     public function formatTemplateFiles(): array
     {
-        $name = $this->getName();
-        $presenter = substr($name, strrpos(':'.$name, ':'));
+        $name = (string) $this->getName();
+        $presenter = substr($name, (int) strrpos(':'.$name, ':'));
 
         return [__DIR__."/../../templates/$presenter.$this->view.latte"];
     }
