@@ -106,7 +106,9 @@ class VerifierExtension extends CompilerExtension
 
         foreach ($builder->findByTag(self::TAG_VERIFY_PROPERTIES) as $service => $attributes) {
             $definition = $builder->getDefinition($service);
-            if (is_subclass_of($definition->getClass(), Presenter::class)) {
+
+            $type = $definition->getType();
+            if ($type !== null && is_subclass_of($type, Presenter::class)) {
                 $definition->addSetup(
                     '$service->onStartup[] = function () use ($service) { ?->verifyProperties($service->getRequest(), $service); }',
                     ['@'.Verifier::class]
