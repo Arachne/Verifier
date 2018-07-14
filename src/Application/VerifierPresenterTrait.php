@@ -7,6 +7,7 @@ namespace Arachne\Verifier\Application;
 use Arachne\Verifier\Exception\NotSupportedException;
 use Arachne\Verifier\Verifier;
 use Nette\Application\BadRequestException;
+use Nette\Application\Request;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -43,7 +44,9 @@ trait VerifierPresenterTrait
             throw new NotSupportedException('Rules for render methods are not supported. Define the rules for action method instead.');
         }
 
-        $this->verifier->checkRules($rules, $this->getRequest());
+        /** @var Request $request */
+        $request = $this->getRequest();
+        $this->verifier->checkRules($rules, $request);
     }
 
     public function getVerifier(): Verifier

@@ -24,15 +24,17 @@ trait VerifierControlTrait
      */
     public function checkRequirements($reflection): void
     {
-        $this->getPresenter()->getVerifier()->checkReflection($reflection, $this->getPresenter()->getRequest(), $this->getUniqueId());
+        /** @var Presenter $presenter */
+        $presenter = $this->getPresenter();
+        $presenter->getVerifier()->checkReflection($reflection, $presenter->getRequest(), $this->getUniqueId());
     }
 
     /**
      * Redirects to destination if all the requirements are met.
      *
-     * @param int     $code
-     * @param string  $destination
-     * @param mixed[] $parameters
+     * @param int|string   $code
+     * @param string|array $destination
+     * @param mixed[]      $parameters
      */
     public function redirectVerified($code, $destination = null, $parameters = []): void
     {
@@ -45,6 +47,7 @@ trait VerifierControlTrait
             $parameters = array_slice(func_get_args(), 2);
         }
 
+        /** @var Presenter $presenter */
         $presenter = $this->getPresenter();
         $link = $presenter->createRequest($this, $destination, $parameters, 'redirect');
         if ($presenter->getVerifier()->isLinkVerified($presenter->getLastCreatedRequest(), $this)) {
@@ -58,6 +61,8 @@ trait VerifierControlTrait
     public function linkVerified(string $destination, array $args = []): ?string
     {
         $link = $this->link($destination, $args);
+
+        /** @var Presenter $presenter */
         $presenter = $this->getPresenter();
 
         return $presenter->getVerifier()->isLinkVerified($presenter->getLastCreatedRequest(), $this) ? $link : null;
@@ -68,6 +73,7 @@ trait VerifierControlTrait
      */
     public function getComponentVerified(string $name): ?IComponent
     {
+        /** @var Presenter $presenter */
         $presenter = $this->getPresenter();
 
         return $presenter->getVerifier()->isComponentVerified($name, $presenter->getRequest(), $this) ? $this->getComponent($name) : null;
