@@ -13,6 +13,5 @@ use Arachne\Verifier\Rules\SecurityRule;
  */
 class Enabled extends SecurityRule
 {
-    /** @var string|bool */
     public $value;
 }

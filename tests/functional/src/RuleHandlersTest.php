@@ -41,7 +41,7 @@ class RuleHandlersTest extends Unit
             ]
         );
 
-        self::assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
+        $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testEitherSecond(): void
@@ -54,7 +54,7 @@ class RuleHandlersTest extends Unit
             ]
         );
 
-        self::assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
+        $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testEitherFalse(): void
@@ -67,7 +67,7 @@ class RuleHandlersTest extends Unit
             ]
         );
 
-        self::assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
+        $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testEitherInner(): void
@@ -80,7 +80,7 @@ class RuleHandlersTest extends Unit
             ]
         );
 
-        self::assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
+        $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testAllTrue(): void
@@ -93,7 +93,7 @@ class RuleHandlersTest extends Unit
             ]
         );
 
-        self::assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
+        $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testAllFalse(): void
@@ -106,7 +106,7 @@ class RuleHandlersTest extends Unit
             ]
         );
 
-        self::assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
+        $this->assertFalse($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 
     public function testAllInner(): void
@@ -119,6 +119,6 @@ class RuleHandlersTest extends Unit
             ]
         );
 
-        self::assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
+        $this->assertTrue($this->verifier->isLinkVerified($request, new TestPresenter()));
     }
 }

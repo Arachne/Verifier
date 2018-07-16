@@ -16,10 +16,8 @@ class ChildControl extends Control
 
     /**
      * @Enabled( "$parameter" )
-     *
-     * @param string $parameter
      */
-    public function handleSignal1(string $parameter): void
+    public function handleSignal1($parameter): void
     {
         $this->redirectVerified('signal2!');
     }

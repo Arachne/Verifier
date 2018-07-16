@@ -64,7 +64,7 @@ trait VerifierPresenterTrait
      *
      * @return bool
      */
-    protected function tryCall(string $method, array $parameters): bool
+    protected function tryCall($method, array $parameters): bool
     {
         $called = parent::tryCall($method, $parameters);
         if (!$called && substr($method, 0, 6) === 'action') {
