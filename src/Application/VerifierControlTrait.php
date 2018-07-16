@@ -34,7 +34,7 @@ trait VerifierControlTrait
      *
      * @param int|string   $code
      * @param string|array $destination
-     * @param mixed[]      $parameters
+     * @param mixed        $parameters
      */
     public function redirectVerified($code, $destination = null, $parameters = []): void
     {
@@ -43,6 +43,8 @@ trait VerifierControlTrait
             $parameters = is_array($destination) ? $destination : array_slice(func_get_args(), 1);
             $destination = $code;
             $code = null;
+        } elseif (!is_array($parameters)) {
+            $parameters = array_slice(func_get_args(), 2);
         }
 
         /** @var Presenter $presenter */

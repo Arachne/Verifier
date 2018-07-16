@@ -52,8 +52,6 @@ class Verifier
     /**
      * Returns rules that are required for given reflection.
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     *
      * @return RuleInterface[]
      */
     public function getRules(Reflector $reflection): array
@@ -175,7 +173,7 @@ class Verifier
         if ($reflection->hasMethod($method)) {
             $factory = $reflection->getMethod($method);
             try {
-                $this->checkReflection($factory, $request, (bool) $parent->getParent() ? $parent->getUniqueId() : null);
+                $this->checkReflection($factory, $request, $parent->getParent() !== null ? $parent->getUniqueId() : null);
             } catch (VerificationException $e) {
                 return false;
             }
@@ -190,11 +188,11 @@ class Verifier
     public function verifyProperties(Request $request, Component $component): void
     {
         $reflection = new ReflectionClass($component);
-        $id = (bool) $component->getParent() ? $component->getUniqueId() : null;
+        $id = $component->getParent() !== null ? $component->getUniqueId() : null;
 
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $rules = $this->getRules($property);
-            if (!(bool) $rules) {
+            if ($rules === []) {
                 continue;
             }
 

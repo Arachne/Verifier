@@ -29,8 +29,6 @@ class AnnotationsRuleProvider implements RuleProviderInterface
     }
 
     /**
-     * @param Reflector $reflection
-     *
      * @return RuleInterface[]
      */
     public function getRules(Reflector $reflection): array

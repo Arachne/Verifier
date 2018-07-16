@@ -56,13 +56,6 @@ trait VerifierPresenterTrait
 
     /**
      * Ensures that the action method exists.
-     *
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @throws BadRequestException
-     *
-     * @return bool
      */
     protected function tryCall($method, array $parameters): bool
     {
