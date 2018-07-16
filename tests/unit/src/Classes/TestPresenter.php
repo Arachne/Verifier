@@ -15,6 +15,8 @@ class TestPresenter extends Presenter
 {
     /**
      * @TestRule
+     *
+     * @var string
      */
     public $property;
 
