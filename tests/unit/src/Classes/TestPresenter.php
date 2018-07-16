@@ -14,6 +14,7 @@ use Nette\Application\UI\Presenter;
 class TestPresenter extends Presenter
 {
     /**
+     * @var string
      * @TestRule
      */
     public $property;

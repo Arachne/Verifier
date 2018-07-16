@@ -250,7 +250,7 @@ class VerifierTest extends Unit
 
         try {
             $this->verifier->isLinkVerified($request, $component);
-            $this->fail();
+            self::fail();
         } catch (UnexpectedTypeException $e) {
         }
 

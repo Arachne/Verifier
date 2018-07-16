@@ -43,8 +43,6 @@ trait VerifierControlTrait
             $parameters = is_array($destination) ? $destination : array_slice(func_get_args(), 1);
             $destination = $code;
             $code = null;
-        } elseif (!is_array($parameters)) {
-            $parameters = array_slice(func_get_args(), 2);
         }
 
         /** @var Presenter $presenter */
@@ -88,7 +86,7 @@ trait VerifierControlTrait
     {
         $method = 'createComponent'.ucfirst($name);
         if (method_exists($this, $method)) {
-            $this->checkRequirements($this->getReflection()->getMethod($method));
+            $this->checkRequirements(self::getReflection()->getMethod($method));
         }
 
         return parent::createComponent($name);

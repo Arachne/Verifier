@@ -29,7 +29,7 @@ class AnnotationsRuleProvider implements RuleProviderInterface
     }
 
     /**
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * @param Reflector $reflection
      *
      * @return RuleInterface[]
      */

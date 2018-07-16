@@ -40,7 +40,7 @@ trait VerifierPresenterTrait
     {
         $rules = $this->verifier->getRules($reflection);
 
-        if ($rules && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
+        if ((bool) $rules && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
             throw new NotSupportedException('Rules for render methods are not supported. Define the rules for action method instead.');
         }
 
@@ -56,8 +56,15 @@ trait VerifierPresenterTrait
 
     /**
      * Ensures that the action method exists.
+     *
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @throws BadRequestException
+     *
+     * @return bool
      */
-    protected function tryCall($method, array $parameters): bool
+    protected function tryCall(string $method, array $parameters): bool
     {
         $called = parent::tryCall($method, $parameters);
         if (!$called && substr($method, 0, 6) === 'action') {
@@ -81,7 +88,7 @@ trait VerifierPresenterTrait
     /**
      * Calls onStartup event which is used to verify presenter properties.
      */
-    public function startup()
+    public function startup(): void
     {
         parent::startup();
         $this->onStartup();

@@ -82,7 +82,7 @@ class VerifierExtension extends CompilerExtension
                 ]
             );
 
-        if ($this->getExtension(AnnotationsExtension::class, false)) {
+        if ((bool) $this->getExtension(AnnotationsExtension::class, false)) {
             $builder->addDefinition($this->prefix('annotationsRuleProvider'))
                 ->setType(RuleProviderInterface::class)
                 ->setFactory(AnnotationsRuleProvider::class)
@@ -126,7 +126,7 @@ class VerifierExtension extends CompilerExtension
     {
         $extensions = $this->compiler->getExtensions($class);
 
-        if (!$extensions) {
+        if (!(bool) $extensions) {
             if (!$need) {
                 return null;
             }

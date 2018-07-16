@@ -175,7 +175,7 @@ class Verifier
         if ($reflection->hasMethod($method)) {
             $factory = $reflection->getMethod($method);
             try {
-                $this->checkReflection($factory, $request, $parent->getParent() ? $parent->getUniqueId() : null);
+                $this->checkReflection($factory, $request, (bool) $parent->getParent() ? $parent->getUniqueId() : null);
             } catch (VerificationException $e) {
                 return false;
             }
@@ -190,11 +190,11 @@ class Verifier
     public function verifyProperties(Request $request, Component $component): void
     {
         $reflection = new ReflectionClass($component);
-        $id = $component->getParent() ? $component->getUniqueId() : null;
+        $id = (bool) $component->getParent() ? $component->getUniqueId() : null;
 
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $rules = $this->getRules($property);
-            if (!$rules) {
+            if (!(bool) $rules) {
                 continue;
             }
 
