@@ -121,7 +121,7 @@ class Verifier
                 }
 
                 $pos = strrpos($signalId, '-');
-                if ($pos) {
+                if (is_numeric($pos)) {
                     // signal for a component
                     $name = $component->getUniqueId();
                     if ($name !== substr($signalId, 0, $pos)) {
