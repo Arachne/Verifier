@@ -19,11 +19,6 @@ trait VerifierPresenterTrait
     use VerifierControlTrait;
 
     /**
-     * @var callable[]
-     */
-    public $onStartup;
-
-    /**
      * @var Verifier
      */
     private $verifier;
@@ -76,14 +71,5 @@ trait VerifierPresenterTrait
     public function createRequest($component, $destination, array $parameters, $mode)
     {
         return parent::createRequest($component, $destination, $parameters, $mode);
-    }
-
-    /**
-     * Calls onStartup event which is used to verify presenter properties.
-     */
-    public function startup(): void
-    {
-        parent::startup();
-        $this->onStartup();
     }
 }
