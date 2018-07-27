@@ -13,5 +13,8 @@ use Arachne\Verifier\Rules\SecurityRule;
  */
 class Enabled extends SecurityRule
 {
+    /**
+     * @var mixed
+     */
     public $value;
 }

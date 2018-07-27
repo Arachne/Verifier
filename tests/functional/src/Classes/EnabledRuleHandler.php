@@ -28,7 +28,7 @@ class EnabledRuleHandler implements RuleHandlerInterface
             $parameter = ($component !== null ? $component.'-' : '').ltrim($rule->value, '$');
             $enabled = isset($parameters[$parameter]) && (bool) $parameters[$parameter];
         } else {
-            $enabled = $rule->value;
+            $enabled = (bool) $rule->value;
         }
 
         if (!$enabled) {
