@@ -40,7 +40,7 @@ trait VerifierPresenterTrait
     {
         $rules = $this->verifier->getRules($reflection);
 
-        if ($rules && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
+        if ($rules !== [] && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
             throw new NotSupportedException('Rules for render methods are not supported. Define the rules for action method instead.');
         }
 
@@ -81,7 +81,7 @@ trait VerifierPresenterTrait
     /**
      * Calls onStartup event which is used to verify presenter properties.
      */
-    public function startup()
+    public function startup(): void
     {
         parent::startup();
         $this->onStartup();

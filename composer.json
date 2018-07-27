@@ -30,7 +30,8 @@
         "kdyby/doctrine-cache": "^2.6.1",
         "latte/latte": "^2.4.0",
         "phpstan/phpstan": "^0.10.1",
-        "phpstan/phpstan-nette": "^0.10.0"
+        "phpstan/phpstan-nette": "^0.10.0",
+        "phpstan/phpstan-strict-rules": "^0.10.0"
     },
     "autoload": {
         "psr-4": {

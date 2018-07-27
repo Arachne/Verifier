@@ -38,14 +38,14 @@ class VerifierMacros extends MacroSet
             null,
             function (MacroNode $node, PhpWriter $writer) {
                 $word = $node->tokenizer->fetchWord();
-                if ($word) {
+                if ((bool) $word) {
                     $link = '$this->global->uiControl->link('.$writer->formatWord($word).', %node.array?)';
                 } else {
                     $node->modifiers .= '|safeurl';
                     $link = '$_verifiedLink';
                 }
 
-                return ' ?> href="<?php '.$writer->using($node)->write('echo %escape(%modify('.$link.'))').' ?>"<?php ';
+                return ' ?> href="<?php '.PhpWriter::using($node)->write('echo %escape(%modify('.$link.'))').' ?>"<?php ';
             }
         );
     }

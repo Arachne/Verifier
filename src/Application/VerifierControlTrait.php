@@ -34,7 +34,7 @@ trait VerifierControlTrait
      *
      * @param int|string   $code
      * @param string|array $destination
-     * @param mixed[]      $parameters
+     * @param mixed        $parameters
      */
     public function redirectVerified($code, $destination = null, $parameters = []): void
     {
@@ -88,7 +88,7 @@ trait VerifierControlTrait
     {
         $method = 'createComponent'.ucfirst($name);
         if (method_exists($this, $method)) {
-            $this->checkRequirements($this->getReflection()->getMethod($method));
+            $this->checkRequirements(self::getReflection()->getMethod($method));
         }
 
         return parent::createComponent($name);

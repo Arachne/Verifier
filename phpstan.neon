@@ -1,6 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-nette/extension.neon
     - vendor/phpstan/phpstan-nette/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/eloquent/phpstan-phony/phony.neon
     - vendor/arachne/codeception/extension.neon
 
@@ -11,3 +12,4 @@ parameters:
     ignoreErrors:
         - '#^Call to an undefined method Nette\\Application\\UI\\Presenter::getVerifier\(\)#'
         - '#^Call to protected method createRequest\(\) of class Nette\\Application\\UI\\Presenter#'
+        - '#^Method Tests\\Functional\\Classes\\ArticlePresenter::#'

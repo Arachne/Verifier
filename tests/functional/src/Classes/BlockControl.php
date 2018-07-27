@@ -33,7 +33,7 @@ class BlockControl extends Control
     /**
      * @Enabled( "$parameter" )
      */
-    public function handleSignal($parameter): void
+    public function handleSignal(string $parameter): void
     {
         $this->template->message = 'Signal called!';
     }

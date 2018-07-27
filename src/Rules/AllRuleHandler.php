@@ -30,8 +30,6 @@ class AllRuleHandler implements RuleHandlerInterface
     }
 
     /**
-     * @param All $rule
-     *
      * @throws VerificationException
      */
     public function checkRule(RuleInterface $rule, Request $request, ?string $component = null): void
