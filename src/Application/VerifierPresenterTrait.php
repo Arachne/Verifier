@@ -40,7 +40,7 @@ trait VerifierPresenterTrait
     {
         $rules = $this->verifier->getRules($reflection);
 
-        if ((bool) $rules && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
+        if ($rules !== [] && $reflection instanceof ReflectionMethod && substr($reflection->getName(), 0, 6) === 'render') {
             throw new NotSupportedException('Rules for render methods are not supported. Define the rules for action method instead.');
         }
 
