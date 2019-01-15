@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Functional;
 
-use Arachne\Codeception\Module\NetteDIModule;
 use Arachne\Verifier\Exception\NotSupportedException;
 use Codeception\Test\Unit;
+use Contributte\Codeception\Module\NetteDIModule;
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenterFactory;
 use Nette\Application\Request;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Functional;
 
-use Arachne\Codeception\Module\NetteDIModule;
 use Arachne\Verifier\Verifier;
 use Codeception\Test\Unit;
+use Contributte\Codeception\Module\NetteDIModule;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 use Tests\Functional\Classes\TestPresenter;
